@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![ChefNest Banner](https://asvini123.github.io/chefproject/images/graph1_confusion_matrix.png)
+![ChefNest Banner](public/images/graph1_confusion_matrix.png)
 
 [![GitHub Repo](https://img.shields.io/badge/📦%20Source%20Code-GitHub-181717?style=for-the-badge&logo=github)](https://github.com/asvini123/chefproject)
 [![Node.js](https://img.shields.io/badge/Node.js-v18+-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
@@ -18,12 +18,6 @@
 **ChefNest** is a full-stack web application that connects customers with professional private chefs for personalized home dining experiences. The platform includes an integrated **AI-powered Diet Classification System** using a trained **XGBoost Machine Learning Model** that classifies users into optimal diet categories (Keto, Balanced, High-Protein, Low-Carb).
 
 > 🎓 Developed as a Final Year Undergraduate Project — 2026
-
----
-
-## 🌐 Live Website
-
-🔗 **[https://asvini123.github.io/chefproject/](https://asvini123.github.io/chefproject/)**
 
 ---
 
@@ -65,11 +59,11 @@
 
 | Confusion Matrix | Feature Importance |
 |:---:|:---:|
-| ![Graph 1](https://asvini123.github.io/chefproject/images/graph1_confusion_matrix.png) | ![Graph 2](https://asvini123.github.io/chefproject/images/graph2_feature_importance.png) |
+| ![Graph 1](public/images/graph1_confusion_matrix.png) | ![Graph 2](public/images/graph2_feature_importance.png) |
 
 | SMOTE vs ADASYN Comparison | Classification Metrics |
 |:---:|:---:|
-| ![Graph 3](https://asvini123.github.io/chefproject/images/graph3_smote_vs_adasyn_comparison.png) | ![Graph 4](https://asvini123.github.io/chefproject/images/graph4_classification_metrics.png) |
+| ![Graph 3](public/images/graph3_smote_vs_adasyn_comparison.png) | ![Graph 4](public/images/graph4_classification_metrics.png) |
 
 ---
 

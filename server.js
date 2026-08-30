@@ -120,26 +120,47 @@ app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 app.use(express.json({ limit: '25mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Session Configuration — persistent MongoDB store
+// Session Configuration — persistent MongoDB store (cloud / local / memory fallback)
 const session = require('express-session');
-const { MongoStore } = require('connect-mongo');
 
-app.use(session({
+const sessionConfig = {
   secret: process.env.SESSION_SECRET || 'chefnest-secret-key-12345',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: 'mongodb://localhost:27017/chefnest',
-    collectionName: 'sessions',
-    ttl: 7 * 24 * 60 * 60, // 7 days in seconds
-    autoRemove: 'native'
-  }),
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     httpOnly: true,
-    secure: false // set true only with HTTPS
+    secure: false
   }
-}));
+};
+
+if (process.env.MONGODB_URI) {
+  try {
+    const MongoStore = require('connect-mongo');
+    sessionConfig.store = MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+      collectionName: 'sessions',
+      ttl: 7 * 24 * 60 * 60,
+      autoRemove: 'native'
+    });
+  } catch (e) {
+    console.error('MongoStore URI error:', e.message);
+  }
+} else if (!process.env.VERCEL) {
+  try {
+    const MongoStore = require('connect-mongo');
+    sessionConfig.store = MongoStore.create({
+      mongoUrl: 'mongodb://localhost:27017/chefnest',
+      collectionName: 'sessions',
+      ttl: 7 * 24 * 60 * 60,
+      autoRemove: 'native'
+    });
+  } catch (e) {
+    console.error('MongoStore local error:', e.message);
+  }
+}
+
+app.use(session(sessionConfig));
 
 // Expose user session to EJS templates globally
 app.use((req, res, next) => {

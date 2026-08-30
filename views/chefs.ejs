@@ -1,0 +1,235 @@
+<%- include('partials/header', { title: 'Explore Chefs - ChefNest' }) %>
+
+<link rel="stylesheet" href="/css/chefs.css">
+
+<main class="chefs-list-page">
+
+  <!-- ============================================================ -->
+  <!--  HERO HEADER                                                  -->
+  <!-- ============================================================ -->
+  <section class="chefs-hero">
+    <div class="chefs-hero-overlay"></div>
+    <div class="chefs-hero-content">
+      <span class="chefs-subtitle">Our Culinary Experts</span>
+      <h1 class="chefs-title">
+        <% if (typeof query !== 'undefined' && query) { %>
+          Search Results for "<span class="highlight"><%= query %></span>"
+        <% } else if (typeof location !== 'undefined' && location) { %>
+          Chefs in "<span class="highlight"><%= location %></span>"
+        <% } else if (typeof course !== 'undefined' && course) { %>
+          Specialists in "<span class="highlight"><%= course %></span>"
+        <% } else { %>
+          Meet Our <span class="highlight">Culinary Masters</span>
+        <% } %>
+      </h1>
+      <p class="chefs-tagline">Browse professional background-checked chefs, choose custom menus, and dine in style at home.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!--  MAIN GRID SECTION                                            -->
+  <!-- ============================================================ -->
+  <section class="chefs-grid-section">
+    <div class="chefs-container">
+      
+      <!-- Filter and Stats Bar -->
+      <div class="chefs-stats-bar">
+        <div class="stats-text">
+          Showing <strong><%= chefs.length %></strong> verified chef<%= chefs.length === 1 ? '' : 's' %> available
+        </div>
+        <div class="quick-links">
+          <a href="/chefs" class="clear-filters-btn">All Chefs</a>
+          <a href="/#popular-cuisines" class="cuisine-link">By Cuisine &rarr;</a>
+        </div>
+      </div>
+
+      <% if (chefs.length === 0) { %>
+        <!-- No Chefs Found State -->
+        <div class="no-chefs-card">
+          <div class="no-chefs-icon">👨‍🍳</div>
+          <h3>No Chefs Found</h3>
+          <p>We couldn't find any verified chefs matching your exact search criteria right now.</p>
+          <div class="suggested-actions">
+            <p><strong>Suggestions:</strong></p>
+            <ul>
+              <li>Check your spelling or try more general keywords.</li>
+              <li>Try searching for popular cities like "Colombo", "Chennai", or "Kuala Lumpur".</li>
+              <li>Explore cuisines like "Sri Lankan", "Indian", "Chinese", or "Italian".</li>
+            </ul>
+            <a href="/chefs" class="btn-primary">View All Chefs</a>
+            <a href="/" class="btn-secondary">Go to Home</a>
+          </div>
+        </div>
+      <% } else { %>
+        <!-- Chefs Grid -->
+        <div class="chefs-display-grid">
+          <% chefs.forEach(chef => { %>
+            <div class="chef-display-card">
+              <!-- Image Section -->
+              <div class="chef-card-img-wrap">
+                <% if (chef.profilePhoto) { %>
+                  <img src="<%= chef.profilePhoto %>" alt="Chef <%= chef.firstName %>">
+                <% } else { %>
+                  <div class="chef-avatar-fallback">
+                    <%= chef.firstName.charAt(0) %><%= chef.lastName.charAt(0) %>
+                  </div>
+                <% } %>
+                <div class="chef-badge-overlay">✓ Verified</div>
+              </div>
+
+              <!-- Content Section -->
+              <div class="chef-card-body">
+                <div class="chef-card-header">
+                  <div>
+                    <h3>Chef <%= chef.firstName %> <%= chef.lastName %></h3>
+                    <span class="chef-city-tag">📍 <%= chef.city %></span>
+                  </div>
+                  <div class="chef-card-rating">
+                    <span class="star-rating">★</span>
+                    <span class="rating-num">5.0</span>
+                  </div>
+                </div>
+
+                <p class="chef-card-type"><%= chef.chefType || 'Personal Chef' %> · <%= chef.experience || 3 %> Years Exp.</p>
+                <p class="chef-card-bio"><%= chef.bio || 'Professional chef dedicated to creating memorable dining experiences customized to your dietary needs and taste preferences.' %></p>
+
+                <!-- Cuisines list -->
+                <div class="chef-cuisines-tags">
+                  <% if (chef.cuisines && chef.cuisines.length > 0) { %>
+                    <% chef.cuisines.forEach(cuisine => { %>
+                      <span class="cuisine-tag"><%= cuisine %></span>
+                    <% }) %>
+                  <% } else { %>
+                    <span class="cuisine-tag">Multi-Cuisine</span>
+                  <% } %>
+                </div>
+
+                <!-- Footer with Rate & Action -->
+                <div class="chef-card-footer">
+                  <div class="rate-box">
+                    <span class="rate-title">HOURLY RATE</span>
+                    <span class="rate-amount">LKR <%= chef.hourlyRate || 2500 %>/hr</span>
+                  </div>
+                  <% 
+                    let foodParam = '';
+                    if (typeof query !== 'undefined' && query && typeof query === 'string' && query.startsWith('Food: ')) {
+                      foodParam = query.replace('Food: ', '');
+                    }
+                    const chefBookUrl = `/chefs/${chef._id}?book=1${foodParam ? '&food=' + encodeURIComponent(foodParam) : ''}`;
+                    const isUserLoggedIn = typeof user !== 'undefined' && user;
+                  %>
+                  <a href="<%= isUserLoggedIn ? chefBookUrl : `/login?redirect=${encodeURIComponent(chefBookUrl)}` %>" class="btn-book-chef">Book Chef</a>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+
+        <!-- Pagination Controls Container -->
+        <div class="pagination-container" id="chefsPagination" style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin: 3rem 0 1rem; flex-wrap: wrap;"></div>
+
+        <style>
+          .page-btn {
+            min-width: 42px;
+            height: 42px;
+            padding: 0 12px;
+            border-radius: 50%;
+            border: 1px solid rgba(44, 95, 45, 0.15);
+            background: #fff;
+            color: var(--forest-green);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+          }
+          .page-btn:hover:not(.disabled) {
+            background: var(--forest-green);
+            color: #fff;
+            border-color: var(--forest-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(44, 95, 45, 0.15);
+          }
+          .page-btn.active {
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+            color: #fff;
+            border-color: var(--orange);
+            box-shadow: 0 4px 12px rgba(217, 122, 43, 0.3);
+          }
+          .page-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f5f5f5;
+            color: #999;
+          }
+        </style>
+
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            const itemsPerPage = 6;
+            const cards = document.querySelectorAll(".chef-display-card");
+            const totalItems = cards.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const paginationContainer = document.getElementById("chefsPagination");
+
+            if (totalPages <= 1) return;
+
+            let currentPage = 1;
+
+            function showPage(page) {
+              currentPage = page;
+              const start = (page - 1) * itemsPerPage;
+              const end = start + itemsPerPage;
+
+              cards.forEach((card, idx) => {
+                if (idx >= start && idx < end) {
+                  card.style.display = "grid";
+                } else {
+                  card.style.display = "none";
+                }
+              });
+
+              renderControls();
+              window.scrollTo({ top: document.querySelector('.chefs-grid-section').offsetTop - 80, behavior: 'smooth' });
+            }
+
+            function renderControls() {
+              paginationContainer.innerHTML = "";
+
+              const prevBtn = document.createElement("button");
+              prevBtn.className = "page-btn" + (currentPage === 1 ? " disabled" : "");
+              prevBtn.innerHTML = "←";
+              prevBtn.disabled = currentPage === 1;
+              prevBtn.onclick = () => showPage(currentPage - 1);
+              paginationContainer.appendChild(prevBtn);
+
+              for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement("button");
+                pageBtn.className = "page-btn" + (currentPage === i ? " active" : "");
+                pageBtn.innerText = i;
+                pageBtn.onclick = () => showPage(i);
+                paginationContainer.appendChild(pageBtn);
+              }
+
+              const nextBtn = document.createElement("button");
+              nextBtn.className = "page-btn" + (currentPage === totalPages ? " disabled" : "");
+              nextBtn.innerHTML = "→";
+              nextBtn.disabled = currentPage === totalPages;
+              nextBtn.onclick = () => showPage(currentPage + 1);
+              paginationContainer.appendChild(nextBtn);
+            }
+
+            showPage(1);
+          });
+        </script>
+      <% } %>
+
+    </div>
+  </section>
+
+</main>
+
+<%- include('partials/footer') %>

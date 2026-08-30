@@ -1,0 +1,57 @@
+<%- include('partials/header', { title: 'Discover Cuisines - ChefNest' }) %>
+
+<link rel="stylesheet" href="/css/cuisines.css">
+<main class="cuisines-page">
+
+  <!-- ============================================================ -->
+  <!--  HERO BANNER                                                  -->
+  <!-- ============================================================ -->
+  <section class="cuisines-hero">
+    <div class="cuisines-hero-overlay"></div>
+    <div class="cuisines-hero-content">
+      <span class="cuisines-subtitle">Gastronomic World Tour</span>
+      <h1 class="cuisines-title">Explore Global Cuisines</h1>
+      <p class="cuisines-tagline">Browse and book verified chefs specializing in authentic traditional dishes and modern fusion cooking.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!--  MAIN GRID SECTION                                            -->
+  <!-- ============================================================ -->
+  <section class="cuisines-grid-section">
+    <div class="cuisines-container">
+      
+      <div class="cuisines-display-grid">
+        <% if (typeof cuisines !== 'undefined' && cuisines && cuisines.length > 0) { %>
+          <% cuisines.forEach(c => { %>
+            <div class="cuisine-display-card" style="display:flex; flex-direction:column; background:#fff; border-radius:18px; overflow:hidden; box-shadow:0 6px 20px rgba(44,95,45,0.08); border:1px solid #e8eee8; transition:transform 0.3s ease, box-shadow 0.3s ease;">
+              <div class="cuisine-card-header-img" style="background-image: url('<%= c.image || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&auto=format&fit=crop&q=80' %>'); background-size:cover; background-position:center; height:200px; position:relative; width:100%;">
+                <span class="cuisine-card-badge" style="position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.65); color:#fff; font-size:0.75rem; font-weight:700; padding:0.25rem 0.7rem; border-radius:20px; text-transform:uppercase; letter-spacing:0.5px; backdrop-filter:blur(4px);"><%= c.name %> Cuisine</span>
+              </div>
+              <div class="cuisine-card-body" style="padding:1.4rem; flex:1; display:flex; flex-direction:column;">
+                <h3 style="margin:0 0 0.5rem; font-size:1.25rem; font-weight:800; color:#1E2E1E;"><%= c.name %></h3>
+                <p class="cuisine-card-desc" style="margin:0 0 1.2rem; font-size:0.88rem; color:#6B7B6B; line-height:1.45; flex:1;">
+                  <%= c.description || `Specialty ${c.name} dishes, signature spices, and authentic culinary masterclasses.` %>
+                </p>
+                <div class="cuisine-card-footer" style="margin-top:auto; padding-top:1rem; border-top:1px solid #f2f6f2; display:flex; justify-content:space-between; align-items:center;">
+                  <a href="/cuisines/<%= encodeURIComponent(c.name) %>/foods" class="btn-cuisine-search" style="display:inline-flex; align-items:center; gap:0.4rem; background:#2C5F2D; color:#fff; padding:0.55rem 1.1rem; border-radius:10px; font-size:0.85rem; font-weight:700; text-decoration:none; transition:background 0.2s;">
+                    Find Foods &rarr;
+                  </a>
+                  <span class="cuisine-chefs-count" style="font-size:0.78rem; font-weight:700; color:#2C5F2D; background:#edf5ed; padding:0.2rem 0.6rem; border-radius:12px;">Verified Chefs</span>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div style="grid-column:1/-1; text-align:center; padding:3rem; color:#888;">
+            <p>No cuisines available right now. Check back soon!</p>
+          </div>
+        <% } %>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<%- include('partials/footer') %>

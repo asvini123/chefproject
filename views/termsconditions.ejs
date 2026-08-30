@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms &amp; Conditions — ChefNest</title>
+  <meta name="description" content="ChefNest Platform Terms &amp; Conditions — Rules, chef verification, bookings, payments, and user guidelines.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/termsconditions.css">
+</head>
+<body>
+
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress-container">
+    <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+  </div>
+
+  <!-- Animated Background Blobs -->
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+
+  <!-- Top Sticky Navigation Bar -->
+  <header class="terms-navbar">
+    <div class="navbar-inner">
+      <a href="/" class="brand-link">
+        <img src="/images/logo2.png" alt="ChefNest Logo" style="height: 48px; width: auto; object-fit: contain;">
+      </a>
+
+      <div class="nav-actions">
+        <button class="btn-nav-action" onclick="window.print()" title="Print Terms">
+          🖨️ <span>Print / PDF</span>
+        </button>
+        <a href="/signup" class="btn-nav-action btn-primary-action">
+          <span>Back to Signup</span> →
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Terms Wrapper -->
+  <div class="terms-wrapper">
+
+    <!-- Hero Card Header -->
+    <div class="terms-hero">
+      <div class="badge-tag">📜 Legal Agreement</div>
+      <h1 class="terms-title">ChefNest – Terms &amp; Conditions</h1>
+      <p class="terms-subtitle">
+        Please read these terms carefully before registering or using the ChefNest platform. 
+        By accessing ChefNest, you agree to comply with all policies outlined below.
+      </p>
+      
+      <p style="font-size:0.9rem; color:#6EE7B7; font-weight:600; margin-bottom:1.5rem;">
+        📅 Last Updated: July 2026
+      </p>
+
+      <!-- Live Filter Search Box -->
+      <div class="search-box-wrap">
+        <span class="search-icon-pos">🔍</span>
+        <input type="text" id="termsSearchInput" class="search-input" placeholder="Search terms (e.g. refund, verification, payment, cancellation)..." onkeyup="filterTerms()">
+      </div>
+    </div>
+
+    <!-- Main Grid: Sidebar TOC + Content Column -->
+    <div class="terms-layout">
+
+      <!-- Sticky Table of Contents Sidebar -->
+      <aside class="terms-sidebar">
+        <div class="toc-heading">📋 Table of Contents</div>
+        <ul class="toc-list" id="tocList">
+          <li class="toc-item active" data-sec="sec-1"><a href="#sec-1">1. Acceptance of Terms</a></li>
+          <li class="toc-item" data-sec="sec-2"><a href="#sec-2">2. Accounts &amp; Registration</a></li>
+          <li class="toc-item" data-sec="sec-3"><a href="#sec-3">3. Chef Verification</a></li>
+          <li class="toc-item" data-sec="sec-4"><a href="#sec-4">4. Booking a Chef</a></li>
+          <li class="toc-item" data-sec="sec-5"><a href="#sec-5">5. Groceries &amp; Ingredients</a></li>
+          <li class="toc-item" data-sec="sec-6"><a href="#sec-6">6. Payments &amp; Charges</a></li>
+          <li class="toc-item" data-sec="sec-7"><a href="#sec-7">7. Cancellations &amp; Refunds</a></li>
+          <li class="toc-item" data-sec="sec-8"><a href="#sec-8">8. Live Cooking Courses</a></li>
+          <li class="toc-item" data-sec="sec-9"><a href="#sec-9">9. Health &amp; Allergy Disclaimer</a></li>
+          <li class="toc-item" data-sec="sec-10"><a href="#sec-10">10. User Conduct Rules</a></li>
+          <li class="toc-item" data-sec="sec-11"><a href="#sec-11">11. Admin Rights</a></li>
+          <li class="toc-item" data-sec="sec-12"><a href="#sec-12">12. Limitation of Liability</a></li>
+          <li class="toc-item" data-sec="sec-13"><a href="#sec-13">13. Food Safety &amp; Hygiene</a></li>
+          <li class="toc-item" data-sec="sec-14"><a href="#sec-14">14. Ratings &amp; Reviews</a></li>
+          <li class="toc-item" data-sec="sec-15"><a href="#sec-15">15. Intellectual Property</a></li>
+          <li class="toc-item" data-sec="sec-16"><a href="#sec-16">16. Privacy Policy</a></li>
+          <li class="toc-item" data-sec="sec-17"><a href="#sec-17">17. Changes to Terms</a></li>
+          <li class="toc-item" data-sec="sec-18"><a href="#sec-18">18. Governing Law</a></li>
+          <li class="toc-item" data-sec="sec-19"><a href="#sec-19">19. Contact Us</a></li>
+        </ul>
+      </aside>
+
+      <!-- Terms Content Body -->
+      <main class="terms-content-card">
+
+        <!-- 1. Acceptance of Terms -->
+        <section class="term-section" id="sec-1">
+          <div class="section-num-title">
+            <div class="section-number">01</div>
+            <h2 class="section-title">Acceptance of Terms</h2>
+          </div>
+          <div class="term-body">
+            <p>
+              By accessing or using the ChefNest platform (&quot;Platform,&quot; &quot;we,&quot; &quot;us,&quot; &quot;our&quot;), you (&quot;User&quot;) agree to be bound by these Terms and Conditions. If you do not agree, please do not use the Platform. 
+            </p>
+            <p>
+              ChefNest connects Customers with verified independent Chefs for in-home cooking services, private dining bookings, meal preparations, and live cooking courses.
+            </p>
+          </div>
+        </section>
+
+        <!-- 2. User Accounts and Registration -->
+        <section class="term-section" id="sec-2">
+          <div class="section-num-title">
+            <div class="section-number">02</div>
+            <h2 class="section-title">User Accounts and Registration</h2>
+          </div>
+          <div class="term-body">
+            <div class="clause-list">
+              <div class="clause-item">
+                <strong>2.1 Accurate Information:</strong> Users must register with accurate, current, and complete information including full name, verified contact number, valid email address, and residential address.
+              </div>
+              <div class="clause-item">
+                <strong>2.2 Credential Security:</strong> Users are responsible for maintaining the confidentiality of their login credentials and account activity.
+              </div>
+              <div class="clause-item">
+                <strong>2.3 Account Suspension:</strong> ChefNest reserves the right to suspend or terminate accounts found to contain false information, impersonation, or engaged in fraudulent activity.
+              </div>
+              <div class="clause-item">
+                <strong>2.4 Minimum Age Requirement:</strong> Users must be at least 18 years old to register independently, or have explicit parental/guardian consent.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Chef Registration and Verification -->
+        <section class="term-section" id="sec-3">
+          <div class="section-num-title">
+            <div class="section-number">03</div>
+            <h2 class="section-title">Chef Registration and Verification</h2>
+          </div>
+          <div class="term-body">
+            <div class="clause-list">
+              <div class="clause-item">
+                <strong>3.1 Document Submission &amp; Admin Review:</strong> All applicant Chefs must submit valid identification (NIC), Police Clearance certificates, and optional culinary certifications for verification before receiving Admin approval.
+              </div>
+              <div class="clause-item">
+                <strong>3.2 Approval Discretion:</strong> ChefNest Admin reserves sole discretion to approve, reject, or revoke a Chef&#39;s verification status at any time.
+              </div>
+              <div class="clause-item">
+                <strong>3.3 Independent Contractor Status:</strong> Chefs operate as independent service providers and contractors, not employees or direct agents of ChefNest.
+              </div>
+              <div class="clause-item">
+                <strong>3.4 Standard of Conduct:</strong> Chefs must uphold rigorous hygiene, food safety standards, punctual arrival, and respectful professional conduct at all times while fulfilling customer bookings.
+              </div>
+            </div>
+
+            <div class="highlight-box">
+              <p>
+                <strong>⚠️ Strict Approval Rule:</strong> Chef accounts remain in a pending state upon registration and CANNOT log in or accept bookings until approved by ChefNest Admin.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Booking a Chef -->
+        <section class="term-section" id="sec-4">
+          <div class="section-num-title">
+            <div class="section-number">04</div>
+            <h2 class="section-title">Booking a Chef</h2>
+          </div>
+          <div class="term-body">
+            <div class="clause-list">
+              <div class="clause-item">
+                <strong>4.1 Search &amp; Selection:</strong> Customers may search, filter, and request bookings based on cuisine specializations, availability, pricing, and guest capacity.
+              </div>
+              <div class="clause-item">
+                <strong>4.2 Confirmation:</strong> Booking confirmation is subject to Chef schedule availability and explicit booking acceptance.
+              </div>
+              <div class="clause-item">
+                <strong>4.3 Transparent Pricing:</strong> Pricing is based on hourly rates, guest counts, duration, and optional grocery support.
+              </div>
+              <div class="clause-item">
+                <strong>4.4 Customer Responsibilities:</strong> Customers must provide accurate location addresses, guest numbers, kitchen access, and explicit dietary restriction details during booking.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Ingredient and Grocery Requests -->
+        <section class="term-section" id="sec-5">
+          <div class="section-num-title">
+            <div class="section-number">05</div>
+            <h2 class="section-title">Ingredient and Grocery Requests</h2>
+          </div>
+          <div class="term-body">
+            <div class="clause-list">
+              <div class="clause-item">
+                <strong>5.1 Ingredient Requests:</strong> Chefs may request additional groceries or specific fresh ingredients needed to prepare chosen dishes.
+              </div>
+              <div class="clause-item">
+                <strong>5.2 Admin Approval:</strong> All grocery cost requests require Admin review and approval before being finalized and added to the customer invoice.
+              </div>
+              <div class="clause-item">
+                <strong>5.3 Cost Allocation:</strong> Approved grocery costs are borne by the customer and added transparently to the booking total fee.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Payments -->
+        <section class="term-section" id="sec-6">
+          <div class="section-num-title">
+            <div class="section-number">06</div>
+            <h2 class="section-title">Payments and Charges</h2>
+          </div>
+          <div class="term-body">
+            <div class="clause-list">
+              <div class="clause-item">
+                <strong>6.1 Cash on Delivery (COD) / Direct Payment:</strong> Cooking service payments are settled via Cash on Delivery (COD) or approved digital checkout methods.
+              </div>
+              <div class="clause-item">
+                <strong>6.2 Cooking Course Payments:</strong> Course enrolments require bank transfer or digital payment with WhatsApp receipt verification submitted to Admin.
+              </div>
+              <div class="clause-item">
+                <strong>6.3 Payment Gateway Disclaimer:</strong> ChefNest is not responsible for third-party payment gateway downtime or bank transfer delay failures.
+              </div>
+              <div class="clause-item">
+                <strong>6.4 Taxes &amp; Service Charges:</strong> All prices displayed at checkout include applicable service charges and platform processing fees as specified.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. Cancellations and Refunds -->
+        <section class="term-section" id="sec-7">
+          <div class="section-num-title">
+            <div class="section-number">07</div>
+            <h2 class="section-title">Cancellations and Refunds</h2>
+          </div>
+          <div class="term-body">
+            <div class="clause-list">
+              <div class="clause-item">
+                <strong>7.1 Free Cancellation Window:</strong> Customers may cancel bookings without penalty up to 12 hours prior to the scheduled service time.
+              </div>
+              <div class="clause-item">
+                <strong>7.2 Late Cancellation Fee:</strong> Cancellations made under 12 hours may incur a 30% late cancellation handling fee.
+              </div>
+              <div class="clause-item">
+                <strong>7.3 Chef No-Show Penalties:</strong> Chefs who cancel without reasonable cause face immediate account suspension and rating penalties.
+              </div>
+              <div class="clause-item">
+                <strong>7.4 Refund Processing:</strong> Approved refund claims will be processed to the customer&#39;s original account within 3 to 5 business days.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. Cooking Courses -->
+        <section class="term-section" id="sec-8">
+          <div class="section-num-title">
+            <div class="section-number">08</div>
+            <h2 class="section-title">Live Culinary &amp; Cooking Courses</h2>
+          </div>
+          <div class="term-body">
+            <div class="clause-list">
+              <div class="clause-item">
+                <strong>8.1 Delivery Medium:</strong> Courses are delivered live online (via Zoom or platform video links) by verified master chefs.
+              </div>
+              <div class="clause-item">
+                <strong>8.2 Advance Payment:</strong> Full course fees must be confirmed prior to access link issuance.
+              </div>
+              <div class="clause-item">
+                <strong>8.3 Technical Disruptions:</strong> ChefNest is not liable for customer-side internet or device hardware disruptions during live sessions.
+              </div>
+              <div class="clause-item">
+                <strong>8.4 Intellectual Rights:</strong> Course materials and video recordings are strictly for personal participant use and may not be copied or redistributed.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 9. Dietary, Health, and Allergy Disclaimers -->
+        <section class="term-section" id="sec-9">
+          <div class="section-num-title">
+            <div class="section-number">09</div>
+            <h2 class="section-title">Dietary, Health, and Allergy Disclaimers</h2>
+          </div>
+          <div class="term-body">
+            <div class="clause-list">
+              <div class="clause-item">
+                <strong>9.1 Customer Disclosure Duty:</strong> Customers are solely responsible for detailing all food allergies (e.g., nuts, gluten, seafood, dairy) and health conditions in the booking form.
+              </div>
+              <div class="clause-item">
+                <strong>9.2 Liability Waiver:</strong> ChefNest and its listed Chefs shall not be held liable for allergic reactions caused by undisclosed or inaccurate dietary details provided by the customer.
+              </div>
+              <div class="clause-item">
+                <strong>9.3 AI Recommendations:</strong> AI-based menu suggestions on ChefNest serve for informational inspiration only and do not substitute medical or professional nutritional advice.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 10. User Conduct Rules -->
+        <section class="term-section" id="sec-10">
+          <div class="section-num-title">
+            <div class="section-number">10</div>
+            <h2 class="section-title">User Conduct &amp; Prohibited Actions</h2>
+          </div>
+          <div class="term-body">
+            <p>Users and Chefs explicitly agree <strong>NOT</strong> to:</p>
+            <div class="clause-list">
+              <div class="clause-item">Provide false identity, forged certificates, or inaccurate personal information.</div>
+              <div class="clause-item">Harass, abuse, discriminate against, or mistreat any Chef, Customer, or Platform team member.</div>
+              <div class="clause-item">Use ChefNest for unlawful, illegal, or unethical purposes.</div>
+              <div class="clause-item">Attempt off-platform transactions to bypass ChefNest platform safeguards or service fees.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 11. Admin Rights -->
+        <section class="term-section" id="sec-11">
+          <div class="section-num-title">
+            <div class="section-number">11</div>
+            <h2 class="section-title">Admin Rights &amp; Governance</h2>
+          </div>
+          <div class="term-body">
+            <p>ChefNest System Administrators reserve full rights to:</p>
+            <div class="clause-list">
+              <div class="clause-item">Approve, reject, or request re-verification for Chef accounts and document submissions.</div>
+              <div class="clause-item">Monitor bookings, platform messages, grocery requests, and customer reviews.</div>
+              <div class="clause-item">Suspend or permanently ban any account breaching these Terms and Conditions.</div>
+              <div class="clause-item">Modify service coverage zones, promotional pricing, and platform features at any time.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 12. Limitation of Liability -->
+        <section class="term-section" id="sec-12">
+          <div class="section-num-title">
+            <div class="section-number">12</div>
+            <h2 class="section-title">Limitation of Liability</h2>
+          </div>
+          <div class="term-body">
+            <div class="clause-list">
+              <div class="clause-item">
+                <strong>12.1 Intermediary Role:</strong> ChefNest acts as a digital matching platform connecting customers and independent culinary professionals.
+              </div>
+              <div class="clause-item">
+                <strong>12.2 Indirect Damages:</strong> ChefNest shall not be liable for indirect, punitive, or consequential damages resulting from platform usage or individual service encounters.
+              </div>
+              <div class="clause-item">
+                <strong>12.3 Assumption of Risk:</strong> Usage of the ChefNest platform and hosting in-home services is undertaken at the User&#39;s own risk.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 13. Food Safety & Hygiene Standards -->
+        <section class="term-section" id="sec-13">
+          <div class="section-num-title">
+            <div class="section-number">13</div>
+            <h2 class="section-title">Food Safety &amp; Hygiene Standards</h2>
+          </div>
+          <div class="term-body">
+            <div class="clause-list">
+              <div class="clause-item">
+                <strong>13.1 Sanitation Compliance:</strong> All registered Chefs must follow strict culinary sanitation protocols, wear proper cooking attire, and ensure food preparation environments are thoroughly cleaned.
+              </div>
+              <div class="clause-item">
+                <strong>13.2 Inspection Rights:</strong> ChefNest reserves the right to unlist any Chef receiving repeated hygiene or quality complaints from customers.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 14. Ratings & Reviews -->
+        <section class="term-section" id="sec-14">
+          <div class="section-num-title">
+            <div class="section-number">14</div>
+            <h2 class="section-title">Ratings, Reviews &amp; Community Guidelines</h2>
+          </div>
+          <div class="term-body">
+            <p>
+              After booking completion, customers may leave ratings and written reviews. Reviews must reflect genuine experiences. Defamatory, abusive, or spam reviews will be moderated and removed by Admin.
+            </p>
+          </div>
+        </section>
+
+        <!-- 15. Intellectual Property -->
+        <section class="term-section" id="sec-15">
+          <div class="section-num-title">
+            <div class="section-number">15</div>
+            <h2 class="section-title">Intellectual Property Rights</h2>
+          </div>
+          <div class="term-body">
+            <p>
+              All original logos, brand assets, UI designs, code, software, and content published on ChefNest are the exclusive property of ChefNest and protected under Sri Lankan and international copyright laws.
+            </p>
+          </div>
+        </section>
+
+        <!-- 16. Privacy Policy -->
+        <section class="term-section" id="sec-16">
+          <div class="section-num-title">
+            <div class="section-number">16</div>
+            <h2 class="section-title">Privacy Policy</h2>
+          </div>
+          <div class="term-body">
+            <p>
+              User personal data, phone numbers, and location details are collected and stored securely in accordance with our Privacy Policy. Data is utilized strictly for booking dispatch, account verification, and customer support.
+            </p>
+          </div>
+        </section>
+
+        <!-- 17. Changes to Terms -->
+        <section class="term-section" id="sec-17">
+          <div class="section-num-title">
+            <div class="section-number">17</div>
+            <h2 class="section-title">Changes to Terms</h2>
+          </div>
+          <div class="term-body">
+            <p>
+              ChefNest reserves the right to revise or update these Terms and Conditions at any time. Updated versions will be posted on this page with a revised date. Continued platform use signifies full acceptance of changes.
+            </p>
+          </div>
+        </section>
+
+        <!-- 18. Governing Law -->
+        <section class="term-section" id="sec-18">
+          <div class="section-num-title">
+            <div class="section-number">18</div>
+            <h2 class="section-title">Governing Law</h2>
+          </div>
+          <div class="term-body">
+            <p>
+              These Terms and Conditions shall be governed by and construed in accordance with the laws of the Democratic Socialist Republic of Sri Lanka.
+            </p>
+          </div>
+        </section>
+
+        <!-- 19. Contact Us -->
+        <section class="term-section" id="sec-19">
+          <div class="section-num-title">
+            <div class="section-number">19</div>
+            <h2 class="section-title">Contact Us</h2>
+          </div>
+          <div class="term-body">
+            <p>
+              If you have any questions, feedback, or concerns regarding these Terms and Conditions, please contact the ChefNest support team:
+            </p>
+
+            <div class="contact-card-box">
+              <a href="mailto:support@chefnest.com" class="contact-item">
+                <div class="contact-icon">📧</div>
+                <div>
+                  <strong>Email Support</strong>
+                  <div style="font-size:0.85rem; color:var(--text-muted);">support@chefnest.com</div>
+                </div>
+              </a>
+
+              <a href="tel:+94771234567" class="contact-item">
+                <div class="contact-icon">📞</div>
+                <div>
+                  <strong>Phone / WhatsApp</strong>
+                  <div style="font-size:0.85rem; color:var(--text-muted);">+94 77 123 4567</div>
+                </div>
+              </a>
+
+              <a href="/contact" class="contact-item">
+                <div class="contact-icon">💬</div>
+                <div>
+                  <strong>Contact Form</strong>
+                  <div style="font-size:0.85rem; color:var(--text-muted);">Send Direct Message</div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer Actions Bar -->
+        <div class="terms-footer-actions">
+          <div class="terms-accept-bar">
+            <a href="/signup" class="btn-accept-confirm">
+              <span>I Agree &amp; Proceed to Signup</span> ✓
+            </a>
+          </div>
+          <a href="#" class="btn-nav-action" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;">
+            ▲ Top of Page
+          </a>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Back to Top Floating Button -->
+  <button class="back-to-top" id="backToTopBtn" onclick="window.scrollTo({top:0, behavior:'smooth'})" title="Scroll to top">
+    ▲
+  </button>
+
+  <!-- Include Footer partial if present -->
+  <%- include('partials/footer') %>
+
+  <!-- Interactive Scripts -->
+  <script>
+    // ── Scroll Progress & Floating Button ─────────────────────────
+    window.onscroll = function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("scrollProgressBar").style.width = scrolled + "%";
+
+      const topBtn = document.getElementById("backToTopBtn");
+      if (winScroll > 300) {
+        topBtn.classList.add("visible");
+      } else {
+        topBtn.classList.remove("visible");
+      }
+
+      // Scroll spy highlight active TOC item
+      const sections = document.querySelectorAll(".term-section");
+      sections.forEach(sec => {
+        const top = sec.offsetTop - 120;
+        const bottom = top + sec.offsetHeight;
+        if (winScroll >= top && winScroll < bottom) {
+          const secId = sec.getAttribute("id");
+          document.querySelectorAll(".toc-item").forEach(item => {
+            item.classList.toggle("active", item.getAttribute("data-sec") === secId);
+          });
+        }
+      });
+    };
+
+    // ── Search & Filter Terms ─────────────────────────────────────
+    function filterTerms() {
+      const query = document.getElementById("termsSearchInput").value.toLowerCase();
+      const sections = document.querySelectorAll(".term-section");
+
+      sections.forEach(sec => {
+        const text = sec.textContent.toLowerCase();
+        if (text.includes(query)) {
+          sec.style.display = "block";
+        } else {
+          sec.style.display = "none";
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

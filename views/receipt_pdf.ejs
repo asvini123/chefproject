@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ChefNest - Booking Receipt #<%= booking._id.toString().slice(-8).toUpperCase() %></title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #333;
+      background: #f4f6f8;
+      padding: 40px 20px;
+      margin: 0;
+    }
+    .receipt-container {
+      max-width: 650px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 40px;
+      border: 1px solid #e2e8f0;
+    }
+    .header {
+      text-align: center;
+      border-bottom: 3px solid #2c5f2d;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .logo {
+      font-size: 36px;
+      font-weight: 800;
+      color: #2c5f2d;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      color: #718096;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .status-badge {
+      background: #e6f4ea;
+      color: #137333;
+      border: 1px solid #137333;
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 13px;
+      margin-top: 15px;
+      text-transform: uppercase;
+    }
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    .details-table td {
+      padding: 12px 0;
+      border-bottom: 1px dashed #e2e8f0;
+      font-size: 15px;
+    }
+    .details-table td:first-child {
+      color: #718096;
+      font-weight: 500;
+    }
+    .details-table td:last-child {
+      text-align: right;
+      color: #1a202c;
+      font-weight: 600;
+    }
+    .total-box {
+      background: #f7fafc;
+      border: 1px solid #edf2f7;
+      border-radius: 8px;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .total-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2d3748;
+    }
+    .total-amount {
+      font-size: 24px;
+      font-weight: 800;
+      color: #2c5f2d;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #a0aec0;
+      font-size: 13px;
+      border-top: 1px solid #edf2f7;
+      padding-top: 20px;
+    }
+    .print-btn-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .btn-print {
+      background: #2c5f2d;
+      color: #fff;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(44,95,45,0.2);
+      transition: all 0.2s;
+    }
+    .btn-print:hover {
+      background: #214722;
+    }
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      .receipt-container {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+      }
+      .btn-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="receipt-container">
+    <div class="header" style="text-align: center;">
+      <img src="/images/logo2.png" alt="ChefNest Logo" style="height: 55px; margin-bottom: 8px; display: block; margin-left: auto; margin-right: auto;">
+      <div class="subtitle">Official Booking Receipt</div>
+      <div class="status-badge" style="border: 2px solid #2c5f2d; color: #2c5f2d; padding: 4px 12px; border-radius: 12px; font-weight: 700;">Confirmed</div>
+    </div>
+
+    <table class="details-table">
+      <% if (typeof receipt !== 'undefined' && receipt) { %>
+      <tr>
+        <td>Transaction ID</td>
+        <td style="color: #2c5f2d; font-family: monospace; font-size: 16px;"><%= receipt.transactionId %></td>
+      </tr>
+      <tr>
+        <td>Payment Date</td>
+        <td><%= new Date(receipt.createdAt).toLocaleString() %></td>
+      </tr>
+      <% } %>
+      <tr>
+        <td>Booking ID</td>
+        <td>#<%= booking._id.toString().slice(-8).toUpperCase() %></td>
+      </tr>
+      <tr>
+        <td>Assigned Chef</td>
+        <td>Chef <%= booking.chefId ? booking.chefId.firstName + ' ' + booking.chefId.lastName : 'N/A' %></td>
+      </tr>
+      <tr>
+        <td>Booking Type</td>
+        <td><%= booking.bookingType %></td>
+      </tr>
+      <tr>
+        <td>Dishes Selected</td>
+        <td><%= booking.menu.join(', ') || 'N/A' %></td>
+      </tr>
+      <tr>
+        <td>Date & Time</td>
+        <td><%= new Date(booking.date).toDateString() %> at <%= booking.time %></td>
+      </tr>
+      <tr>
+        <td>Duration</td>
+        <td><%= booking.duration %> hours</td>
+      </tr>
+      <tr>
+        <td>Location (Home Address)</td>
+        <td><%= booking.location %></td>
+      </tr>
+      <tr>
+        <td>Guests</td>
+        <td><%= booking.guests.adults %> adults, <%= booking.guests.children %> children</td>
+      </tr>
+      <tr>
+        <td>Grocery Support</td>
+        <td><%= booking.grocerySupport ? 'Yes (Rs. 500)' : 'No (Ingredients provided by customer)' %></td>
+      </tr>
+      <tr>
+        <td>Payment Method</td>
+        <td><%= booking.paymentMethod %></td>
+      </tr>
+      <tr>
+        <td>Payment Status</td>
+        <td><%= booking.paymentStatus === 'Completed' ? 'Paid / Completed' : 'Pending / Cash Payment' %></td>
+      </tr>
+    </table>
+
+    <div class="total-box">
+      <span class="total-title">Total Amount Paid</span>
+      <span class="total-amount">Rs.<%= booking.totalAmount %></span>
+    </div>
+
+    <div class="footer">
+      <p>Thank you for choosing ChefNest! Please show this receipt to the chef when they arrive at your home.</p>
+      <p>Need support? Contact us 24/7 at support@chefnest.com</p>
+    </div>
+
+    <div class="print-btn-container">
+      <p style="color:#718096; font-size:13px; margin-bottom:12px;">Click the button below → In the print dialog, change destination to <strong>"Save as PDF"</strong> to download.</p>
+      <button class="btn-print" onclick="window.print()">Save as PDF / Print Receipt</button>
+    </div>
+  </div>
+
+  <script>
+    // Auto-trigger print dialog so user just needs to click "Save as PDF"
+    window.addEventListener('load', () => {
+      setTimeout(() => { window.print(); }, 600);
+    });
+  </script>
+</body>
+</html>

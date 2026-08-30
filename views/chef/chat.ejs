@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chef Global Lounge — ChefNest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2C5F2D;
+      --primary-dark: #1e421f;
+      --accent: #D97A2B;
+      --bg-cream: #faf9f5;
+      --card-bg: #ffffff;
+      --text-dark: #1f2937;
+      --text-muted: #6b7280;
+      --border-light: #e5e7eb;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-cream);
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .chat-header {
+      background: var(--primary);
+      color: white;
+      padding: 0.9rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      z-index: 10;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .header-left h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .header-sub {
+      font-size: 0.8rem;
+      opacity: 0.85;
+    }
+    .back-btn {
+      color: white;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: rgba(255,255,255,0.15);
+      padding: 0.45rem 1rem;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .back-btn:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .chat-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 900px;
+      margin: 1rem auto;
+      width: 100%;
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+      height: calc(100vh - 110px);
+    }
+    .chat-notice {
+      background: #fdfbf7;
+      border-bottom: 1px solid #f0ede8;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .messages-container {
+      flex: 1;
+      padding: 1.2rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      background: #fafcf9;
+    }
+    .msg-group {
+      display: flex;
+      gap: 0.6rem;
+      max-width: 75%;
+    }
+    .msg-group.mine {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .msg-group.mine .avatar {
+      background: var(--accent);
+    }
+    .bubble {
+      padding: 0.65rem 0.95rem;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+    .msg-group.mine .bubble {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .sender-name {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.2rem;
+    }
+    .msg-group.mine .sender-name {
+      display: none;
+    }
+    .msg-time {
+      font-size: 0.65rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+      text-align: right;
+    }
+    .input-bar {
+      display: flex;
+      padding: 0.9rem 1.2rem;
+      border-top: 1px solid var(--border-light);
+      background: white;
+      gap: 0.6rem;
+    }
+    .chat-input {
+      flex: 1;
+      padding: 0.7rem 1.1rem;
+      border: 1.5px solid var(--border-light);
+      border-radius: 24px;
+      outline: none;
+      font-size: 0.9rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .chat-input:focus {
+      border-color: var(--primary);
+    }
+    .send-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.65rem 1.4rem;
+      border-radius: 24px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.2s;
+    }
+    .send-btn:hover {
+      background: var(--primary-dark);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="chat-header">
+    <div class="header-left">
+      <div>
+        <h2>👨‍🍳 Chef Community Lounge</h2>
+        <span class="header-sub">Network &amp; discuss with fellow verified chefs across Sri Lanka</span>
+      </div>
+    </div>
+    <a href="/chef/dashboard" class="back-btn">← Back to Dashboard</a>
+  </header>
+
+  <div class="chat-wrapper">
+    <div class="chat-notice">
+      <span>💡</span>
+      <span>Messages in this room are visible to all approved chefs. Keep discussions professional and supportive!</span>
+    </div>
+
+    <div class="messages-container" id="messagesBox">
+      <% if (typeof messages !== 'undefined' && messages.length > 0) { %>
+        <% messages.forEach(m => { %>
+          <% const isMine = String(m.senderId ? (m.senderId._id || m.senderId) : '') === String(user._id); %>
+          <% const senderName = m.senderId ? `${m.senderId.firstName} ${m.senderId.lastName}` : 'Chef'; %>
+          <% const initial = m.senderId ? m.senderId.firstName.charAt(0).toUpperCase() : 'C'; %>
+          <div class="msg-group <%= isMine ? 'mine' : '' %>" data-id="<%= m._id %>">
+            <div class="avatar"><%= initial %></div>
+            <div class="bubble">
+              <div class="sender-name"><%= senderName %></div>
+              <div class="content"><%= m.content %></div>
+              <div class="msg-time"><%= new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div id="emptyNotice" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+          <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">👨‍🍳💬</div>
+          <p>Welcome to the Chef Community Lounge! Start the discussion by typing below.</p>
+        </div>
+      <% } %>
+    </div>
+
+    <form class="input-bar" onsubmit="handleSend(event)">
+      <input type="text" id="msgInput" class="chat-input" placeholder="Share a cooking tip, recipe advice, or ask fellow chefs..." autocomplete="off" required>
+      <button type="submit" class="send-btn" id="sendBtn">Send 📤</button>
+    </form>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const currentChefId = "<%= user._id %>";
+    const currentChefName = "<%= user.firstName %> <%= user.lastName %>";
+    const socket = io();
+    const seenMsgIds = new Set();
+
+    // Track pre-rendered message IDs
+    document.querySelectorAll('.msg-group[data-id]').forEach(el => {
+      seenMsgIds.add(el.getAttribute('data-id'));
+    });
+
+    const messagesBox = document.getElementById('messagesBox');
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+
+    socket.on('receive-global-message', (data) => {
+      if (data._id && seenMsgIds.has(data._id)) return;
+      if (data._id) seenMsgIds.add(data._id);
+      appendGlobalMessage(data);
+    });
+
+    function appendGlobalMessage(data) {
+      const empty = document.getElementById('emptyNotice');
+      if (empty) empty.remove();
+
+      const isMine = String(data.senderId) === String(currentChefId);
+      const initial = data.firstName ? data.firstName.charAt(0).toUpperCase() : (data.sender ? data.sender.charAt(0).toUpperCase() : 'C');
+      const time = new Date(data.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const div = document.createElement('div');
+      div.className = 'msg-group ' + (isMine ? 'mine' : '');
+      if (data._id) div.setAttribute('data-id', data._id);
+
+      div.innerHTML = `
+        <div class="avatar">${initial}</div>
+        <div class="bubble">
+          <div class="sender-name">${escapeHtml(data.sender || 'Chef')}</div>
+          <div class="content">${escapeHtml(data.content)}</div>
+          <div class="msg-time">${time}</div>
+        </div>
+      `;
+      messagesBox.appendChild(div);
+      messagesBox.scrollTop = messagesBox.scrollHeight;
+    }
+
+    function handleSend(e) {
+      e.preventDefault();
+      const input = document.getElementById('msgInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+
+      // Socket single source of truth for real-time + MongoDB save
+      socket.emit('send-global-message', {
+        senderId: currentChefId,
+        content: text
+      });
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>

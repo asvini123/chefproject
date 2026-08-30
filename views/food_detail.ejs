@@ -1,0 +1,376 @@
+<%- include('partials/header', { title: `${food.name} - ChefNest`, pageCss: 'cuisines.css' }) %>
+
+<style>
+  .food-detail-wrapper {
+    padding: 3rem 5% 5rem;
+    background-color: #fdfaf6;
+    min-height: 80vh;
+    font-family: inherit;
+  }
+  .food-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.06);
+    overflow: hidden;
+    border: 1px solid rgba(44,95,45,0.08);
+  }
+  .food-header {
+    padding: 2.5rem 3rem 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid #f0f4f0;
+    background: linear-gradient(180deg, #fafcf9 0%, #ffffff 100%);
+  }
+  .food-breadcrumbs {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #b5601d;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+  }
+  .food-breadcrumbs a {
+    color: #2C5F2D;
+    text-decoration: none;
+  }
+  .food-title {
+    font-family: serif;
+    font-size: 3rem;
+    color: #1a3a1b;
+    margin-bottom: 0.8rem;
+    font-weight: 800;
+    line-height: 1.15;
+  }
+  .food-meta {
+    display: flex;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .meta-badge {
+    padding: 0.4rem 1.1rem;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .cuisine-badge { background: #fff2e5; color: #b5601d; border: 1px solid #fedbc0; }
+  .category-badge { background: #eef7ee; color: #2C5F2D; border: 1px solid #d4ebd4; }
+  .spice-badge { background: #fdf0f0; color: #c0392b; border: 1px solid #fad5d5; }
+  
+  .food-description {
+    font-size: 1.05rem;
+    color: #666;
+    max-width: 820px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Gallery Showcase */
+  .gallery-showcase {
+    padding: 2rem 3rem;
+    background: #fbfdfb;
+    border-bottom: 1px solid #f0f4f0;
+  }
+  .main-photo-container {
+    width: 100%;
+    height: 480px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  }
+  .main-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+  .thumbnails-strip {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  .thumb-item {
+    width: 100px;
+    height: 75px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2.5px solid transparent;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+  }
+  .thumb-item:hover, .thumb-item.active {
+    opacity: 1;
+    border-color: #2C5F2D;
+    transform: translateY(-2px);
+  }
+  .thumb-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .food-body {
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 3.5rem;
+  }
+  
+  .section-title {
+    font-family: serif;
+    font-size: 1.6rem;
+    color: #1a3a1b;
+    margin-bottom: 1.2rem;
+    font-weight: 700;
+  }
+  
+  /* Nutrition Table */
+  .nutrition-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    background: #fff;
+    border: 1px solid #edf2ed;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .nutrition-table th, .nutrition-table td {
+    padding: 0.8rem 1.2rem;
+    border-bottom: 1px solid #f0f4f0;
+    text-align: left;
+    font-size: 0.92rem;
+  }
+  .nutrition-table th {
+    font-weight: 700;
+    color: #1a3a1b;
+    background: #f7faf7;
+  }
+  
+  /* Detail Lists */
+  .detail-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+  }
+  .detail-list li {
+    padding: 0.65rem 0;
+    border-bottom: 1px dashed #e8eee8;
+    color: #555;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .detail-list li::before {
+    content: '✓';
+    color: #2C5F2D;
+    font-weight: 800;
+    font-size: 0.9rem;
+  }
+  
+  /* Prep Time Box */
+  .time-box {
+    background: linear-gradient(135deg, #1a3a1b 0%, #2C5F2D 100%);
+    color: #ffffff;
+    padding: 1.8rem;
+    border-radius: 14px;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 24px rgba(44,95,45,0.18);
+  }
+  .time-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    font-size: 0.92rem;
+  }
+  .time-row:last-child { border: none; margin: 0; padding: 0; }
+  
+  /* Tags */
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 2rem; }
+  .tag { background: #f4f8f4; padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.85rem; border: 1px solid #ddecdd; color: #2C5F2D; font-weight: 600; }
+  
+  .btn-find-chef {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, #2C5F2D 0%, #1f4720 100%);
+    color: #ffffff !important;
+    padding: 1.2rem;
+    border-radius: 14px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 8px 24px rgba(44, 95, 45, 0.28);
+    cursor: pointer;
+    border: none;
+    box-sizing: border-box;
+  }
+  .btn-find-chef:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(44, 95, 45, 0.38);
+  }
+
+  @media (max-width: 900px) {
+    .food-body { grid-template-columns: 1fr; padding: 2rem 1.5rem; gap: 2rem; }
+    .gallery-showcase { padding: 1.5rem 1rem; }
+    .main-photo-container { height: 320px; }
+    .food-title { font-size: 2.2rem; }
+  }
+</style>
+
+<main class="food-detail-wrapper">
+  <div class="food-detail-container">
+    
+    <!-- Header -->
+    <div class="food-header">
+      <div class="food-breadcrumbs">
+        <a href="/cuisines">Cuisines</a> &nbsp;/&nbsp; 
+        <a href="/cuisines/<%= encodeURIComponent(food.cuisine) %>/foods"><%= food.cuisine %> Foods</a> &nbsp;/&nbsp; 
+        <%= food.name %>
+      </div>
+      <h1 class="food-title"><%= food.name %></h1>
+      
+      <div class="food-meta">
+        <span class="meta-badge cuisine-badge"><%= food.cuisine %> Cuisine</span>
+        <span class="meta-badge category-badge"><%= food.category || 'Specialty Dish' %></span>
+        <span class="meta-badge spice-badge">
+          Spice Intensity: <%= (food.spiceLevel || 2) %> / 5
+        </span>
+      </div>
+      
+      <p class="food-description"><%= food.description %></p>
+    </div>
+
+    <!-- Multi-Image Gallery Showcase -->
+    <div class="gallery-showcase">
+      <% const allImages = (food.images && food.images.length > 0) ? food.images : ['/images/placeholder.jpg']; %>
+      <div class="main-photo-container">
+        <img id="mainPhoto" src="<%= allImages[0] %>" alt="<%= food.name %>" class="main-photo-img">
+      </div>
+      
+      <% if (allImages.length > 1) { %>
+        <div class="thumbnails-strip">
+          <% allImages.forEach((img, idx) => { %>
+            <div class="thumb-item <%= idx === 0 ? 'active' : '' %>" onclick="switchPhoto('<%= img %>', this)">
+              <img src="<%= img %>" alt="<%= food.name %> thumbnail <%= idx + 1 %>">
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Details Body -->
+    <div class="food-body">
+      
+      <!-- Left Column: Calories & Ingredients -->
+      <div>
+        <h2 class="section-title">Calories &amp; Nutrition Facts</h2>
+        <p style="margin-bottom: 1rem; color: #666; font-size: 0.95rem;">
+          Serving Size: <strong><%= food.servingSize || '1-2 servings' %></strong> &nbsp;|&nbsp; 
+          Total Calories: <strong style="color: #b5601d;"><%= food.calories %></strong>
+        </p>
+        
+        <table class="nutrition-table">
+          <tr><th>Nutrient</th><th>Amount per Serving</th></tr>
+          <% if(food.nutrition) { %>
+            <tr><td>Protein</td><td><strong><%= food.nutrition.protein %></strong></td></tr>
+            <tr><td>Carbohydrates</td><td><strong><%= food.nutrition.carbs %></strong></td></tr>
+            <tr><td>Fat</td><td><strong><%= food.nutrition.fat %></strong></td></tr>
+            <tr><td>Saturated Fat</td><td><%= food.nutrition.saturatedFat %></td></tr>
+            <tr><td>Dietary Fiber</td><td><%= food.nutrition.fiber %></td></tr>
+            <tr><td>Sugar</td><td><%= food.nutrition.sugar %></td></tr>
+            <tr><td>Cholesterol</td><td><%= food.nutrition.cholesterol %></td></tr>
+            <tr><td>Sodium</td><td><%= food.nutrition.sodium %></td></tr>
+          <% } %>
+        </table>
+
+        <h2 class="section-title">Fresh Ingredients &amp; Recipe Blend</h2>
+        <ul class="detail-list">
+          <% (food.ingredients || []).forEach(item => { %>
+            <li><%= item %></li>
+          <% }) %>
+        </ul>
+      </div>
+
+      <!-- Right Column: Time, Health Tips, Dietary & Find Chef -->
+      <div>
+        <!-- Preparation Time -->
+        <div class="time-box">
+          <h3 style="margin: 0 0 1.2rem; font-family: serif; font-size: 1.3rem;">Preparation &amp; Cooking Timeline</h3>
+          <% if(food.prepTime) { %>
+            <div class="time-row"><span>Prep Work</span><strong><%= food.prepTime.preparation %></strong></div>
+            <div class="time-row"><span>Marination</span><strong><%= food.prepTime.marination %></strong></div>
+            <div class="time-row"><span>Cooking</span><strong><%= food.prepTime.cooking %></strong></div>
+            <div class="time-row" style="font-size: 1.05rem; color: #f4c28d; border-top: 1.5px solid rgba(255,255,255,0.25); padding-top: 0.6rem; margin-top: 0.6rem;">
+              <span>Total Time</span><strong><%= food.prepTime.total %></strong>
+            </div>
+          <% } %>
+        </div>
+
+        <h2 class="section-title">Dietary &amp; Allergens</h2>
+        <div class="tag-cloud">
+          <% (food.dietaryInfo || []).forEach(item => { %>
+            <span class="tag"><%= item %></span>
+          <% }) %>
+          <% (food.allergens || []).forEach(item => { %>
+            <span class="tag" style="background: #fff3f3; color: #c0392b; border-color: #ffd6d6;">Allergen: <%= item %></span>
+          <% }) %>
+        </div>
+
+        <h2 class="section-title">Chef Culinary Tips</h2>
+        <ul class="detail-list">
+          <% (food.healthTips || []).forEach(item => { %>
+            <li><%= item %></li>
+          <% }) %>
+        </ul>
+
+        <h2 class="section-title">Best Recommended For</h2>
+        <div class="tag-cloud">
+          <% (food.suitableFor || []).forEach(item => { %>
+            <span class="tag"><%= item %></span>
+          <% }) %>
+        </div>
+
+        <!-- Prominent Action: Find Chef for this Food -->
+        <div style="margin-top: 2.5rem;">
+          <a href="/chefs?food=<%= encodeURIComponent(food.name) %>&cuisine=<%= encodeURIComponent(food.cuisine) %>" class="btn-find-chef">
+            Find Chef for this Food &rarr;
+          </a>
+          <p style="text-align: center; font-size: 0.82rem; color: #888; margin-top: 0.6rem;">
+            Matches verified local chefs specializing in <%= food.cuisine %> culinary traditions.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  function switchPhoto(src, el) {
+    const main = document.getElementById('mainPhoto');
+    if (main) {
+      main.style.opacity = '0.4';
+      setTimeout(() => {
+        main.src = src;
+        main.style.opacity = '1';
+      }, 150);
+    }
+    document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+    if (el) el.classList.add('active');
+  }
+</script>
+
+<%- include('partials/footer') %>

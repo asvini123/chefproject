@@ -1,0 +1,24 @@
+# Node.js dependencies
+node_modules/
+
+# Environment
+.env
+
+# Heavy Uploads and Heavy Hero/Course Images
+public/uploads/
+public/images/*
+!public/images/graph*.png
+!public/images/diet_model_analysis_chart.png
+
+# Large Model Binary files
+*.pkl
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+
+# Scratch files
+scratch/

@@ -1,0 +1,808 @@
+<%- include('partials/header', { title: 'ChefNest - Your kitchen - Our chefs ', pageCss: 'style.css' }) %>
+
+<main class="homepage-container">
+  <!-- HERO BANNER -->
+  <section class="hero-section" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-badge"> Luxury Private Dining Experience</span>
+      <h1 class="hero-title">Your kitchen - Our chefs <br><span class="highlight-text">freshly cooked at home </span></h1>
+      <p class="hero-tagline">Professional culinary masterminds, custom menus, and absolute convenience. Fine dining, redefined for your table.</p>
+      
+      <!-- Hero Search Bar -->
+      <div class="hero-search-container">
+        <form action="/search" method="get" class="hero-search-form" id="heroSearchForm">
+          <input type="hidden" name="district" id="hiddenDistrict" value="">
+          <input type="hidden" name="location" id="hiddenLocation" value="">
+
+          <!-- District Custom Dropdown -->
+          <div class="input-group custom-dropdown-group" id="districtGroup">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <div class="custom-dropdown-trigger" id="districtTrigger" tabindex="0">
+              <span class="trigger-label" id="districtLabel">Select District</span>
+              <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="custom-dropdown-menu" id="districtMenu">
+              <div class="dropdown-search-box">
+                <input type="text" placeholder="Filter district..." class="dropdown-filter-input" id="districtFilterInput">
+              </div>
+              <div class="dropdown-options-list" id="districtOptionsList">
+                <div class="dropdown-option" data-value="Colombo">Colombo</div>
+                <div class="dropdown-option" data-value="Gampaha">Gampaha</div>
+                <div class="dropdown-option" data-value="Kalutara">Kalutara</div>
+                <div class="dropdown-option" data-value="Kandy">Kandy</div>
+                <div class="dropdown-option" data-value="Matale">Matale</div>
+                <div class="dropdown-option" data-value="Nuwara Eliya">Nuwara Eliya</div>
+                <div class="dropdown-option" data-value="Galle">Galle</div>
+                <div class="dropdown-option" data-value="Matara">Matara</div>
+                <div class="dropdown-option" data-value="Hambantota">Hambantota</div>
+                <div class="dropdown-option" data-value="Jaffna">Jaffna</div>
+                <div class="dropdown-option" data-value="Kilinochchi">Kilinochchi</div>
+                <div class="dropdown-option" data-value="Mannar">Mannar</div>
+                <div class="dropdown-option" data-value="Vavuniya">Vavuniya</div>
+                <div class="dropdown-option" data-value="Mullaitivu">Mullaitivu</div>
+                <div class="dropdown-option" data-value="Batticaloa">Batticaloa</div>
+                <div class="dropdown-option" data-value="Ampara">Ampara</div>
+                <div class="dropdown-option" data-value="Trincomalee">Trincomalee</div>
+                <div class="dropdown-option" data-value="Kurunegala">Kurunegala</div>
+                <div class="dropdown-option" data-value="Puttalam">Puttalam</div>
+                <div class="dropdown-option" data-value="Anuradhapura">Anuradhapura</div>
+                <div class="dropdown-option" data-value="Polonnaruwa">Polonnaruwa</div>
+                <div class="dropdown-option" data-value="Badulla">Badulla</div>
+                <div class="dropdown-option" data-value="Moneragala">Moneragala</div>
+                <div class="dropdown-option" data-value="Ratnapura">Ratnapura</div>
+                <div class="dropdown-option" data-value="Kegalle">Kegalle</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="search-divider"></div>
+
+          <!-- City/Town Custom Dropdown -->
+          <div class="input-group custom-dropdown-group is-disabled" id="cityGroup">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+            <div class="custom-dropdown-trigger" id="cityTrigger" tabindex="0">
+              <span class="trigger-label" id="cityLabel">Select City/Town</span>
+              <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="custom-dropdown-menu" id="cityMenu">
+              <div class="dropdown-search-box">
+                <input type="text" placeholder="Filter city..." class="dropdown-filter-input" id="cityFilterInput">
+              </div>
+              <div class="dropdown-options-list" id="cityOptionsList">
+                <div class="dropdown-placeholder-msg">Select a district first</div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">Find a chef near you</button>
+        </form>
+      </div>
+      
+      <div class="hero-cta-buttons">
+        <a href="/chefs" class="cta-btn btn-secondary">Get Started</a>
+        <a href="#how-it-works" class="cta-btn btn-outline">How it Works</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-subtitle">Simple & Elegant</span>
+        <h2 class="section-title">How ChefNest Works</h2>
+        <div class="title-underline"></div>
+      </div>
+      
+      <div class="steps-grid">
+        <div class="step-card" data-step="1">
+          <div class="step-icon-wrap">
+            <div class="step-number">1</div>
+            <!-- Search SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><path d="M11 8v6"></path><path d="M8 11h6"></path></svg>
+          </div>
+          <h3>Search</h3>
+          <p>Find top-rated local chefs matching your location, preferred cuisines, and event type.</p>
+        </div>
+        
+        <div class="step-card" data-step="2">
+          <div class="step-icon-wrap">
+            <div class="step-number">2</div>
+            <!-- Select SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+          <h3>Select Chef</h3>
+          <p>Browse customized menus, ratings, past client feedback, and check chef certifications.</p>
+        </div>
+        
+        <div class="step-card" data-step="3">
+          <div class="step-icon-wrap">
+            <div class="step-number">3</div>
+            <!-- Calendar SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          </div>
+          <h3>Book & Customize</h3>
+          <p>Schedule your date, personalize the menu directly with the chef, and securely book online.</p>
+        </div>
+        
+        <div class="step-card" data-step="4">
+          <div class="step-icon-wrap">
+            <div class="step-number">4</div>
+            <!-- Enjoy SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
+          <h3>Enjoy</h3>
+          <p>Relax while the chef buys fresh ingredients, cooks in your kitchen, serves, and cleans up completely!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED CHEFS -->
+  <section class="featured-chefs" id="featured-chefs">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-subtitle">Meet Our Masters</span>
+        <h2 class="section-title">Featured Culinary Experts</h2>
+        <div class="title-underline"></div>
+      </div>
+      
+      <!-- Admin Featured Row -->
+      <% if (admin) { %>
+      <div class="admin-featured-row" style="display: flex; justify-content: center; margin-bottom: 3rem;">
+        <div class="chef-card" style="max-width: 450px; width: 100%; transform: scale(1.05);">
+          <div class="chef-img-container" style="height: 380px;">
+            <img src="<%= admin.profilePhoto && admin.profilePhoto.trim() !== '' ? admin.profilePhoto : '/images/admin.png' %>" alt="<%= admin.firstName %> <%= admin.lastName %>" onerror="this.src='/images/admin.png'">
+            <div class="chef-overlay-badge" style="background:var(--orange);">Lead Admin</div>
+          </div>
+          <div class="chef-info">
+            <div class="chef-rating">
+              <span class="stars">★★★★★</span>
+              <span class="rating-val">5.0</span>
+              <span class="reviews-count">(Project Team Lead)</span>
+            </div>
+            <h3><%= admin.firstName %> <%= admin.lastName %></h3>
+            <p class="chef-specialty">Culinary Admin & Operations</p>
+            <p class="chef-bio">Responsible for verifying all chefs, maintaining platform health, and ensuring every home dining experience meets the highest standard.</p>
+            <div class="chef-footer">
+              <span class="chef-price">Admin / Support</span>
+              <a href="/about" class="btn-chef-cta">About Admin</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% } %>
+
+      <div class="chefs-grid">
+        <!-- 3 Jaffna Chefs -->
+        <% if (jaffnaChefs && jaffnaChefs.length > 0) { %>
+          <% jaffnaChefs.forEach(chef => { %>
+            <div class="chef-card">
+              <div class="chef-img-container">
+                <img src="<%= chef.profilePhoto && chef.profilePhoto.trim() !== '' ? chef.profilePhoto : '/images/chef1.png' %>" alt="Chef <%= chef.firstName %> <%= chef.lastName %>" onerror="this.src='/images/chef1.png'">
+                <div class="chef-overlay-badge">Featured</div>
+              </div>
+              <div class="chef-info">
+                <div class="chef-rating">
+                  <span class="stars">★★★★★</span>
+                  <span class="rating-val">4.9</span>
+                  <span class="reviews-count">(Verified)</span>
+                </div>
+                <h3>Chef <%= chef.firstName %> <%= chef.lastName %></h3>
+                <p class="chef-specialty"><%= chef.chefType || 'Private Chef' %></p>
+                <p class="chef-bio"><%= chef.experience || 5 %>+ years of experience. Bringing authentic flavors directly to your home dining table.</p>
+                <div class="chef-footer">
+                  <span class="chef-price">From LKR <%= chef.hourlyRate || '5,000' %>/hr</span>
+                  <a href="/chefs/<%= chef._id %>" class="btn-chef-cta">View Profile</a>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <p>No featured chefs available at the moment.</p>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- POPULAR CUISINES -->
+  <section class="popular-cuisines" id="popular-cuisines">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-subtitle">Around the World</span>
+        <h2 class="section-title">Popular Cuisines</h2>
+        <div class="title-underline"></div>
+      </div>
+      
+      <div class="cuisines-grid">
+        <% if (typeof cuisines !== 'undefined' && cuisines.length > 0) { %>
+          <% cuisines.forEach(cuisine => { 
+               let desc = `Explore authentic ${cuisine.name} dishes and highly rated chefs specializing in this cuisine.`;
+               
+               const nameLower = cuisine.name.toLowerCase();
+               if (nameLower.includes('sri lankan') || nameLower.includes('indian')) {
+                 if (nameLower.includes('sri lankan')) desc = 'Spicy crab curries, hoppers, and aromatic coconut sambols.';
+                 else desc = 'Rich tandoori dishes, butter chicken, and fragrant biryanis.';
+               } else if (nameLower.includes('italian')) {
+                 desc = 'Wood-fired pizza, handmade ravioli, and creamy panna cotta.';
+               } else if (nameLower.includes('chinese') || nameLower.includes('malaysian')) {
+                 if (nameLower.includes('chinese')) desc = 'Hand-pulled noodles, traditional dim sum, and glazed roast duck.';
+                 else desc = 'Fragrant Nasi Lemak, savory Laksa, and smoky Satay skewers.';
+               } else if (nameLower.includes('mexican')) {
+                 desc = 'Zesty tacos, fresh guacamole, and sizzling fajitas.';
+               } else if (nameLower.includes('french')) {
+                 desc = 'Artisanal cheeses, buttery croissants, and classic coq au vin.';
+               } else if (nameLower.includes('vegan')) {
+                 desc = 'Plant-based specialties, fresh organic bowls, and healthy delights.';
+               }
+          %>
+            <a href="/cuisines" class="cuisine-card">
+              <h3><%= cuisine.name %></h3>
+              <p><%= desc %></p>
+              <span class="cuisine-link-text">Explore Chefs &rarr;</span>
+            </a>
+          <% }) %>
+        <% } else { %>
+          <!-- Fallbacks if no cuisines in DB -->
+          <a href="/cuisines" class="cuisine-card">
+            <div class="cuisine-bg-pattern cs-sri-lankan"></div>
+            <div class="cuisine-icon">🌶️</div>
+            <h3>Sri Lankan</h3>
+            <p>Spicy crab curries, hoppers, and aromatic coconut sambols.</p>
+            <span class="cuisine-link-text">Explore Chefs &rarr;</span>
+          </a>
+          <a href="/cuisines" class="cuisine-card">
+            <div class="cuisine-bg-pattern cs-italian"></div>
+            <div class="cuisine-icon">🍝</div>
+            <h3>Italian</h3>
+            <p>Wood-fired pizza, handmade ravioli, and creamy panna cotta.</p>
+            <span class="cuisine-link-text">Explore Chefs &rarr;</span>
+          </a>
+          <a href="/cuisines" class="cuisine-card">
+            <div class="cuisine-bg-pattern cs-indian"></div>
+            <div class="cuisine-icon">🍛</div>
+            <h3>Indian</h3>
+            <p>Rich tandoori dishes, butter chicken, and fragrant biryanis.</p>
+            <span class="cuisine-link-text">Explore Chefs &rarr;</span>
+          </a>
+          <a href="/cuisines" class="cuisine-card">
+            <div class="cuisine-bg-pattern cs-chinese"></div>
+            <div class="cuisine-icon">🍜</div>
+            <h3>Chinese</h3>
+            <p>Hand-pulled noodles, traditional dim sum, and glazed roast duck.</p>
+            <span class="cuisine-link-text">Explore Chefs &rarr;</span>
+          </a>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CHEFNEST -->
+  <section class="why-chefnest" id="why-chefnest">
+    <div class="section-container">
+      <div class="why-content-wrapper">
+        <div class="why-image-panel">
+          <!-- Premium badge card overlaid on background -->
+          <div class="why-badge-card">
+            <h4>100% Guaranteed</h4>
+            <p>Culinary Satisfaction</p>
+          </div>
+        </div>
+        
+        <div class="why-text-panel">
+          <span class="section-subtitle">Our Promise</span>
+          <h2 class="section-title">Why Discerning Guests Choose ChefNest</h2>
+          <div class="title-underline left-aligned"></div>
+          <p class="why-description">We handle every culinary detail with uncompromising precision. From matching you with elite chefs to verifying safety standards, we ensure a flawless dining experience.</p>
+          
+          <div class="highlights-list">
+            <div class="highlight-item">
+              <div class="highlight-icon"><svg class="svg-icon-stroke" style="width:24px;height:24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+              <div class="highlight-info">
+                <h4>Hygiene & Safety Assured</h4>
+                <p>All chefs follow strict sanitization protocols and wear proper protective culinary gear during service.</p>
+              </div>
+            </div>
+            
+            <div class="highlight-item">
+              <div class="highlight-icon"><svg class="svg-icon-stroke" style="width:24px;height:24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+              <div class="highlight-info">
+                <h4>100% Verified Chefs</h4>
+                <p>We perform exhaustive background checks, certification reviews, and live food trials for every chef.</p>
+              </div>
+            </div>
+            
+            <div class="highlight-item">
+              <div class="highlight-icon"><svg class="svg-icon" style="width:24px;height:24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg></div>
+              <div class="highlight-info">
+                <h4>Tailored Meal Customization</h4>
+                <p>Keto, gluten-free, vegan, or food allergies? Your chef designs custom menus exactly to your dietary guidelines.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS (CAROUSEL) -->
+  <section class="testimonials" id="testimonials">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-subtitle">Real Reviews</span>
+        <h2 class="section-title">What Our Guests Say</h2>
+        <div class="title-underline"></div>
+      </div>
+      
+      <!-- Interactive Carousel Container -->
+      <div class="carousel-container">
+        <div class="carousel-track-wrapper">
+          <ul class="carousel-track" id="carouselTrack">
+            <!-- Review 1: Colombo -->
+            <li class="carousel-slide active">
+              <div class="testimonial-card">
+                <div class="quote-icon">“</div>
+                <p class="review-text">Booked Chef Kasun for our family gathering in Colombo 07. The authentic Sri Lankan black pork curry and seafood spread was beyond restaurant quality. Professional, punctual, and left our kitchen spotless!</p>
+                <div class="client-meta">
+                  <div class="client-avatar" style="background:#1b3815; color:#fff; font-weight:700;">DW</div>
+                  <div class="client-info">
+                    <h4>Dilshan &amp; Wendy Wickremasinghe</h4>
+                    <span>Colombo 07, Sri Lanka · Verified Home Dining</span>
+                  </div>
+                  <div class="stars-rating">★★★★★</div>
+                </div>
+              </div>
+            </li>
+            
+            <!-- Review 2: Galle / Tourism -->
+            <li class="carousel-slide">
+              <div class="testimonial-card">
+                <div class="quote-icon">“</div>
+                <p class="review-text">Hosting our villa dinner in Galle Fort was completely stress-free with Chef Priya. Her 5-course coastal fusion tasting menu wowed all our overseas guests. An absolute 10/10 culinary masterpiece!</p>
+                <div class="client-meta">
+                  <div class="client-avatar" style="background:#2C5F2D; color:#fff; font-weight:700;">AK</div>
+                  <div class="client-info">
+                    <h4>Amit &amp; Kavita Krishnan</h4>
+                    <span>Galle Fort · Villa Event Booking</span>
+                  </div>
+                  <div class="stars-rating">★★★★★</div>
+                </div>
+              </div>
+            </li>
+            
+            <!-- Review 3: Jaffna Cuisine -->
+            <li class="carousel-slide">
+              <div class="testimonial-card">
+                <div class="quote-icon">“</div>
+                <p class="review-text">Chef Achchu prepared the most authentic Jaffna crab curry and odiyal kool for our private birthday event. The aromas, custom spice balance, and presentation were world-class!</p>
+                <div class="client-meta">
+                  <div class="client-avatar" style="background:#854d0e; color:#fff; font-weight:700;">TR</div>
+                  <div class="client-info">
+                    <h4>Tharshini Rajendran</h4>
+                    <span>Jaffna · Private Celebration</span>
+                  </div>
+                  <div class="stars-rating">★★★★★</div>
+                </div>
+              </div>
+            </li>
+
+            <!-- Review 4: Kandy -->
+            <li class="carousel-slide">
+              <div class="testimonial-card">
+                <div class="quote-icon">“</div>
+                <p class="review-text">Chef Sarah crafted an Italian artisanal pasta and tiramisu evening for our anniversary in Kandy. Having a private chef cook live in our kitchen was an unforgettable luxury experience!</p>
+                <div class="client-meta">
+                  <div class="client-avatar" style="background:#15803d; color:#fff; font-weight:700;">SL</div>
+                  <div class="client-info">
+                    <h4>Sahan &amp; Lauren Perera</h4>
+                    <span>Kandy · Anniversary Dinner</span>
+                  </div>
+                  <div class="stars-rating">★★★★★</div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Controls -->
+        <button class="carousel-btn btn-prev" id="prevBtn" aria-label="Previous slide">&larr;</button>
+        <button class="carousel-btn btn-next" id="nextBtn" aria-label="Next slide">&rarr;</button>
+      </div>
+
+      <!-- Indicators below the carousel -->
+      <div class="carousel-indicators" id="carouselIndicators">
+        <span class="indicator active" data-index="0"></span>
+        <span class="indicator" data-index="1"></span>
+        <span class="indicator" data-index="2"></span>
+        <span class="indicator" data-index="3"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- BECOME A CHEF RECRUITMENT BANNER -->
+  <section class="become-chef-banner" id="become-chef">
+    <div class="banner-inner">
+      <div class="banner-content">
+        <h2>Are You a Professional Culinary Artist?</h2>
+        <p>Turn your passion into a thriving independent business. Cook on your terms, design your own menus, and earn what you deserve.</p>
+      </div>
+      <div class="banner-action">
+        <a href="/signup?role=chef" class="btn-become-chef">Become a Chef at ChefNest</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Carousel Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.carousel-slide');
+    const indicators = document.querySelectorAll('.indicator');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentIndex = 0;
+    let autoSlideInterval;
+
+    function showSlide(index) {
+      if (index < 0) index = slides.length - 1;
+      if (index >= slides.length) index = 0;
+      
+      slides.forEach(slide => slide.classList.remove('active'));
+      indicators.forEach(ind => ind.classList.remove('active'));
+      
+      slides[index].classList.add('active');
+      indicators[index].classList.add('active');
+      currentIndex = index;
+    }
+
+    function nextSlide() {
+      showSlide(currentIndex + 1);
+    }
+
+    function prevSlide() {
+      showSlide(currentIndex - 1);
+    }
+
+    // Event listeners
+    if (nextBtn) nextBtn.addEventListener('click', () => {
+      nextSlide();
+      resetAutoSlide();
+    });
+    if (prevBtn) prevBtn.addEventListener('click', () => {
+      prevSlide();
+      resetAutoSlide();
+    });
+
+    indicators.forEach(indicator => {
+      indicator.addEventListener('click', (e) => {
+        const index = parseInt(e.target.getAttribute('data-index'));
+        showSlide(index);
+        resetAutoSlide();
+      });
+    });
+
+    // Auto-sliding
+    function startAutoSlide() {
+      autoSlideInterval = setInterval(nextSlide, 6000);
+    }
+
+    function resetAutoSlide() {
+      clearInterval(autoSlideInterval);
+      startAutoSlide();
+    }
+
+    startAutoSlide();
+  });
+</script>
+
+<!-- District and City Custom Dropdowns Script & Styles -->
+<style>
+  /* Custom Dropdown Styling */
+  .custom-dropdown-group {
+    position: relative !important;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    padding-left: 1.2rem;
+    cursor: pointer;
+  }
+  .custom-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 0;
+    user-select: none;
+    outline: none;
+  }
+  .custom-dropdown-trigger .trigger-label {
+    font-size: 1.02rem;
+    font-weight: 500;
+    color: #1e3a1e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: var(--font-family-sans, sans-serif);
+  }
+  .custom-dropdown-trigger .chevron-icon {
+    color: #2c5f2d;
+    transition: transform 0.25s ease;
+    margin-left: 0.5rem;
+    flex-shrink: 0;
+  }
+  .custom-dropdown-group.is-open .chevron-icon {
+    transform: rotate(180deg);
+  }
+  .custom-dropdown-group.is-disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .custom-dropdown-group.is-disabled .custom-dropdown-trigger {
+    pointer-events: none;
+  }
+  .custom-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 100%;
+    min-width: 250px;
+    max-height: 320px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22), 0 4px 12px rgba(44, 95, 45, 0.12);
+    border: 1px solid rgba(44, 95, 45, 0.15);
+    z-index: 99999;
+    padding: 0.6rem;
+    animation: dropdownFadeIn 0.2s ease forwards;
+  }
+  .custom-dropdown-group.is-open .custom-dropdown-menu {
+    display: block;
+  }
+  @keyframes dropdownFadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .dropdown-search-box {
+    padding: 0.2rem 0.2rem 0.5rem;
+    border-bottom: 1px solid #edf2ed;
+  }
+  .dropdown-filter-input {
+    width: 100%;
+    padding: 0.5rem 0.8rem;
+    border: 1.5px solid #cde0ce;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    outline: none;
+    background: #fbfdfb;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+  .dropdown-filter-input:focus {
+    border-color: #2c5f2d;
+    background: #fff;
+  }
+  .dropdown-options-list {
+    max-height: 230px;
+    overflow-y: auto;
+    padding: 0.4rem 0;
+  }
+  .dropdown-options-list::-webkit-scrollbar {
+    width: 5px;
+  }
+  .dropdown-options-list::-webkit-scrollbar-thumb {
+    background: #cbd8cb;
+    border-radius: 4px;
+  }
+  .dropdown-option {
+    padding: 0.55rem 0.85rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #2d3748;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .dropdown-option:hover {
+    background: #eef7ee;
+    color: #1a431b;
+  }
+  .dropdown-option.is-selected {
+    background: #2c5f2d;
+    color: #ffffff;
+    font-weight: 600;
+  }
+  .dropdown-placeholder-msg {
+    padding: 0.8rem;
+    text-align: center;
+    color: #8898aa;
+    font-size: 0.88rem;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const districtCities = {
+      "Colombo": ["Colombo", "Dehiwala-Mount Lavinia", "Moratuwa", "Sri Jayawardenepura Kotte", "Kaduwela", "Maharagama", "Kesbewa", "Kolonnawa", "Homagama", "Hanwella"],
+      "Gampaha": ["Gampaha", "Negombo", "Kelaniya", "Kadawatha", "Kiribathgoda", "Wattala", "Ja-Ela", "Minuwangoda", "Divulapitiya", "Mirigama"],
+      "Kalutara": ["Kalutara", "Panadura", "Horana", "Beruwala", "Aluthgama", "Bandaragama", "Wadduwa"],
+      "Kandy": ["Kandy", "Gampola", "Peradeniya", "Katugastota", "Kundasale", "Nawalapitiya", "Akurana"],
+      "Matale": ["Matale", "Dambulla", "Sigiriya", "Galewela", "Ukuwela"],
+      "Nuwara Eliya": ["Nuwara Eliya", "Hatton", "Ginigathena", "Talawakele", "Lindula"],
+      "Galle": ["Galle", "Hikkaduwa", "Karapitiya", "Ambalangoda", "Elpitiya", "Bentota", "Unawatuna"],
+      "Matara": ["Matara", "Weligama", "Akuressa", "Deniyaya", "Dikwella"],
+      "Hambantota": ["Hambantota", "Tangalle", "Beliatta", "Tissamaharama", "Ambalantota"],
+      "Jaffna": ["Jaffna", "Chavakachcheri", "Point Pedro", "Karainagar", "Nallur", "Valvettithurai"],
+      "Kilinochchi": ["Kilinochchi", "Pooneryn", "Pallai"],
+      "Mannar": ["Mannar", "Murunkan", "Madhu"],
+      "Vavuniya": ["Vavuniya", "Nedunkeni", "Cheddikulam"],
+      "Mullaitivu": ["Mullaitivu", "Puthukudiyiruppu", "Oddusuddan"],
+      "Batticaloa": ["Batticaloa", "Kattankudy", "Eravur", "Valachchenai", "Kaluwanchikudy"],
+      "Ampara": ["Ampara", "Kalmunai", "Sainthamaruthu", "Akkaraipattu", "Pottuvil"],
+      "Trincomalee": ["Trincomalee", "Mutur", "Kinniya", "Kuchchaveli"],
+      "Kurunegala": ["Kurunegala", "Kuliyapitiya", "Narammala", "Wariyapola", "Pannala", "Ibbagamuwa"],
+      "Puttalam": ["Puttalam", "Chilaw", "Wennappuwa", "Marawila", "Dankotuwa", "Kalpitiya"],
+      "Anuradhapura": ["Anuradhapura", "Mihintale", "Kekirawa", "Medawachchiya", "Eppawala", "Galgamuwa"],
+      "Polonnaruwa": ["Polonnaruwa", "Kaduruwela", "Hingurakgoda", "Medirigiriya"],
+      "Badulla": ["Badulla", "Bandarawela", "Haputale", "Ella", "Welimada", "Mahiyanganaya"],
+      "Moneragala": ["Moneragala", "Wellawaya", "Buttala", "Kataragama", "Bibile"],
+      "Ratnapura": ["Ratnapura", "Balangoda", "Embilipitiya", "Pelmadulla", "Eheliyagoda"],
+      "Kegalle": ["Kegalle", "Mawanella", "Ruwanwella", "Warakapola", "Dehiowita"]
+    };
+
+    const districtGroup = document.getElementById('districtGroup');
+    const districtTrigger = document.getElementById('districtTrigger');
+    const districtLabel = document.getElementById('districtLabel');
+    const districtOptionsList = document.getElementById('districtOptionsList');
+    const districtFilterInput = document.getElementById('districtFilterInput');
+    const hiddenDistrict = document.getElementById('hiddenDistrict');
+
+    const cityGroup = document.getElementById('cityGroup');
+    const cityTrigger = document.getElementById('cityTrigger');
+    const cityLabel = document.getElementById('cityLabel');
+    const cityOptionsList = document.getElementById('cityOptionsList');
+    const cityFilterInput = document.getElementById('cityFilterInput');
+    const hiddenLocation = document.getElementById('hiddenLocation');
+    const heroSearchForm = document.getElementById('heroSearchForm');
+
+    // Toggle District
+    if (districtTrigger) {
+      districtTrigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isOpen = districtGroup.classList.contains('is-open');
+        closeAllDropdowns();
+        if (!isOpen) {
+          districtGroup.classList.add('is-open');
+          setTimeout(() => districtFilterInput && districtFilterInput.focus(), 50);
+        }
+      });
+    }
+
+    // Toggle City
+    if (cityTrigger) {
+      cityTrigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (cityGroup.classList.contains('is-disabled')) return;
+        const isOpen = cityGroup.classList.contains('is-open');
+        closeAllDropdowns();
+        if (!isOpen) {
+          cityGroup.classList.add('is-open');
+          setTimeout(() => cityFilterInput && cityFilterInput.focus(), 50);
+        }
+      });
+    }
+
+    // District Option Selection
+    if (districtOptionsList) {
+      districtOptionsList.addEventListener('click', function(e) {
+        const option = e.target.closest('.dropdown-option');
+        if (!option) return;
+        
+        const selectedVal = option.getAttribute('data-value');
+        hiddenDistrict.value = selectedVal;
+        districtLabel.textContent = selectedVal;
+        districtLabel.style.color = '#1b3b1c';
+
+        // Update selected class
+        districtOptionsList.querySelectorAll('.dropdown-option').forEach(el => el.classList.remove('is-selected'));
+        option.classList.add('is-selected');
+
+        // Populate Cities
+        populateCities(selectedVal);
+
+        closeAllDropdowns();
+      });
+    }
+
+    function populateCities(district) {
+      cityOptionsList.innerHTML = '';
+      hiddenLocation.value = district;
+      cityLabel.textContent = 'All in ' + district;
+      cityLabel.style.color = '#1b3b1c';
+
+      const cities = districtCities[district] || [];
+      
+      // Add "All in District" option
+      const allOpt = document.createElement('div');
+      allOpt.className = 'dropdown-option is-selected';
+      allOpt.setAttribute('data-value', district);
+      allOpt.textContent = 'All in ' + district;
+      cityOptionsList.appendChild(allOpt);
+
+      cities.forEach(city => {
+        const opt = document.createElement('div');
+        opt.className = 'dropdown-option';
+        opt.setAttribute('data-value', city);
+        opt.textContent = city;
+        cityOptionsList.appendChild(opt);
+      });
+
+      cityGroup.classList.remove('is-disabled');
+    }
+
+    // City Option Selection
+    if (cityOptionsList) {
+      cityOptionsList.addEventListener('click', function(e) {
+        const option = e.target.closest('.dropdown-option');
+        if (!option) return;
+
+        const selectedCity = option.getAttribute('data-value');
+        hiddenLocation.value = selectedCity;
+        cityLabel.textContent = option.textContent;
+        cityLabel.style.color = '#1b3b1c';
+
+        cityOptionsList.querySelectorAll('.dropdown-option').forEach(el => el.classList.remove('is-selected'));
+        option.classList.add('is-selected');
+
+        closeAllDropdowns();
+      });
+    }
+
+    // Filter search inside District Dropdown
+    if (districtFilterInput) {
+      districtFilterInput.addEventListener('input', function(e) {
+        const val = e.target.value.toLowerCase().trim();
+        districtOptionsList.querySelectorAll('.dropdown-option').forEach(opt => {
+          const text = opt.textContent.toLowerCase();
+          opt.style.display = text.includes(val) ? 'block' : 'none';
+        });
+      });
+      districtFilterInput.addEventListener('click', e => e.stopPropagation());
+    }
+
+    // Filter search inside City Dropdown
+    if (cityFilterInput) {
+      cityFilterInput.addEventListener('input', function(e) {
+        const val = e.target.value.toLowerCase().trim();
+        cityOptionsList.querySelectorAll('.dropdown-option').forEach(opt => {
+          const text = opt.textContent.toLowerCase();
+          opt.style.display = text.includes(val) ? 'block' : 'none';
+        });
+      });
+      cityFilterInput.addEventListener('click', e => e.stopPropagation());
+    }
+
+    // Form Submit handling
+    if (heroSearchForm) {
+      heroSearchForm.addEventListener('submit', function(e) {
+        if (!hiddenDistrict.value && !hiddenLocation.value) {
+          e.preventDefault();
+          districtTrigger.click();
+        }
+      });
+    }
+
+    // Close on click outside
+    document.addEventListener('click', function() {
+      closeAllDropdowns();
+    });
+
+    function closeAllDropdowns() {
+      if (districtGroup) districtGroup.classList.remove('is-open');
+      if (cityGroup) cityGroup.classList.remove('is-open');
+    }
+  });
+</script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — ChefNest</title>
+  <meta name="description" content="Login to ChefNest — Smart Home Chef Booking and Culinary Service Platform.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+
+<!-- ── BACKGROUND BLOBS ──────────────────────────────── -->
+<div class="bg-blob blob-1"></div>
+<div class="bg-blob blob-2"></div>
+<div class="bg-blob blob-3"></div>
+
+<div class="auth-wrapper">
+
+  <!-- ── LEFT PANEL (Illustration) ─────────────────── -->
+  <div class="auth-left">
+    <div class="auth-left-inner">
+      <div class="brand-top">
+        <div class="logo-circle"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg></div>
+        <span class="brand-name">ChefNest</span>
+      </div>
+      <div class="left-illustration">
+        <div class="illus-card illus-card-1">
+          <span class="illus-emoji"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C8 2 5.5 4 5.5 7c0 1.25.7 2.45 1.5 3.25V13c0 2 1.5 3.5 3 4 0 1-1 2-1 2H5c-1.1 0-2 .9-2 2v1h18v-1c0-1.1-.9-2-2-2h-4s-1-1-1-2c1.5-.5 3-2 3-4v-2.75c.8-.8 1.5-2 1.5-3.25 0-3-2.5-5-6.5-5zm-2 13h4v1h-4v-1z"/></svg></span>
+          <div>
+            <strong>500+ Verified Chefs</strong>
+            <p>Ready to cook for you</p>
+          </div>
+        </div>
+        <div class="illus-badge">
+          <span><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg> 4.9/5</span>
+          <small>Rated by 10k+ users</small>
+        </div>
+        <div class="illus-card illus-card-2">
+          <span class="illus-emoji"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg></span>
+          <div>
+            <strong>Fine Dining At Home</strong>
+            <p>Chef-crafted menus</p>
+          </div>
+        </div>
+        <div class="illus-central">
+          <div class="illus-plate"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg></div>
+          <div class="illus-ring ring-1"></div>
+          <div class="illus-ring ring-2"></div>
+          <div class="illus-ring ring-3"></div>
+        </div>
+        <div class="illus-card illus-card-3">
+          <span class="illus-emoji"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg></span>
+          <div>
+            <strong>Grocery Included</strong>
+            <p>Fresh ingredients sourced</p>
+          </div>
+        </div>
+      </div>
+      <p class="left-tagline">"Savor Chef-Crafted Meals<br>In Your Own Home"</p>
+    </div>
+  </div>
+
+  <!-- ── RIGHT PANEL (Login Form) ──────────────────── -->
+  <div class="auth-right">
+    <div class="auth-card">
+
+      <!-- Back to Home Action -->
+      <div class="auth-card-header-actions">
+        <a href="/" class="back-home">
+          <svg class="svg-icon" viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          <span>Back to Home</span>
+        </a>
+      </div>
+
+      <!-- Logo (mobile only) -->
+      <div class="mobile-logo">
+        <div class="logo-circle sm"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg></div>
+        <span class="brand-name">ChefNest</span>
+      </div>
+
+      <div class="card-header">
+        <h1 class="card-title">Welcome Back!</h1>
+        <p class="card-subtitle">Login to continue your culinary journey.</p>
+      </div>
+
+      <!-- ROLE SELECTION -->
+      <div class="field-group">
+        <label class="field-label required">Select Your Role</label>
+        <div class="role-selector" id="roleSelector">
+          <button type="button" class="role-btn" data-role="admin" id="roleAdmin" onclick="selectRole('admin')">
+            <span class="role-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 10h-8.35C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H13v4h4v-4h4v-4zM7 15c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg></span>
+            <span>Admin</span>
+          </button>
+          <button type="button" class="role-btn" data-role="chef" id="roleChef" onclick="selectRole('chef')">
+            <span class="role-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C8 2 5.5 4 5.5 7c0 1.25.7 2.45 1.5 3.25V13c0 2 1.5 3.5 3 4 0 1-1 2-1 2H5c-1.1 0-2 .9-2 2v1h18v-1c0-1.1-.9-2-2-2h-4s-1-1-1-2c1.5-.5 3-2 3-4v-2.75c.8-.8 1.5-2 1.5-3.25 0-3-2.5-5-6.5-5zm-2 13h4v1h-4v-1z"/></svg></span>
+            <span>Chef</span>
+          </button>
+          <button type="button" class="role-btn" data-role="user" id="roleUser" onclick="selectRole('user')">
+            <span class="role-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span>
+            <span>User</span>
+          </button>
+        </div>
+        <span class="field-error hidden" id="roleError">Please select your role.</span>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" novalidate>
+
+        <!-- Admin Notice -->
+        <div class="info-notice hidden" id="adminNotice">
+          <span><svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span>
+          <p>Admin accounts are created by the system administrator. Contact your system admin if you need access.</p>
+        </div>
+
+        <!-- Username (Admin only) -->
+        <div class="field-group hidden" id="fieldUsername">
+          <label class="field-label required" for="username">Username</label>
+          <div class="input-wrap">
+            <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span>
+            <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username">
+          </div>
+          <span class="field-error hidden" id="usernameError">Username is required.</span>
+        </div>
+
+        <!-- Email (Chef / User) -->
+        <div class="field-group hidden" id="fieldEmail">
+          <label class="field-label required" for="loginEmail">Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></span>
+            <input type="email" id="loginEmail" name="email" placeholder="you@example.com" autocomplete="email">
+          </div>
+          <span class="field-error hidden" id="emailError">Please enter a valid email address.</span>
+        </div>
+
+        <!-- Password -->
+        <div class="field-group hidden" id="fieldPassword">
+          <label class="field-label required" for="loginPassword">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span>
+            <input type="password" id="loginPassword" name="password" placeholder="Enter your password" autocomplete="current-password">
+            <button type="button" class="toggle-pw" id="togglePwBtn" onclick="togglePassword('loginPassword', 'togglePwBtn')" aria-label="Toggle password visibility"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button>
+          </div>
+          <span class="field-error hidden" id="passwordError">Password is required.</span>
+        </div>
+
+        <!-- Remember Me + Forgot Password -->
+        <div class="form-row hidden" id="rowRememberForgot">
+          <label class="checkbox-label">
+            <input type="checkbox" id="rememberMe" name="remember">
+            <span class="checkmark"></span>
+            Remember me
+          </label>
+          <a href="/forgot-password" class="forgot-link hidden" id="forgotLink">Forgot Password?</a>
+        </div>
+
+        <!-- Chef Approval Warning -->
+        <div class="warn-notice hidden" id="chefWarn">
+          <span>⚠️</span>
+          <p>Chef accounts must be approved by Admin before login.</p>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-submit hidden" id="loginBtn" onclick="handleLogin(event)">
+          <span class="btn-text">Login</span>
+          <span class="btn-arrow">→</span>
+        </button>
+
+      </form>
+
+      <!-- Signup Link -->
+      <p class="switch-link hidden" id="signupLink">
+        Don't have an account? <a href="/signup">Sign Up</a>
+      </p>
+      <!-- Admin cannot register note -->
+      <p class="switch-link hidden" id="adminSignupNote">
+        <small style="color:var(--text-muted);">Admin accounts cannot self-register. Contact your system administrator.</small>
+      </p>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Role Selection ────────────────────────────────────────
+let selectedRole = null;
+
+function selectRole(role) {
+  selectedRole = role;
+
+  // Update button styles
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('role' + role.charAt(0).toUpperCase() + role.slice(1)).classList.add('active');
+
+  // Hide all dynamic fields first
+  const allFields = ['fieldUsername','fieldEmail','fieldPassword','rowRememberForgot',
+                     'loginBtn','adminNotice','signupLink','adminSignupNote','chefWarn','forgotLink'];
+  allFields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  });
+  document.getElementById('roleError').classList.add('hidden');
+
+  // Show fields by role
+  if (role === 'admin') {
+    show('adminNotice');
+    show('fieldUsername');
+    show('fieldPassword');
+    show('rowRememberForgot');
+    show('loginBtn');
+    show('adminSignupNote');
+  } else if (role === 'chef') {
+    show('fieldEmail');
+    show('fieldPassword');
+    show('rowRememberForgot');
+    show('forgotLink');
+    show('chefWarn');
+    show('loginBtn');
+    show('signupLink');
+  } else if (role === 'user') {
+    show('fieldEmail');
+    show('fieldPassword');
+    show('rowRememberForgot');
+    show('forgotLink');
+    show('loginBtn');
+    show('signupLink');
+  }
+}
+
+function show(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('hidden');
+}
+function hide(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('hidden');
+}
+
+// ── Toggle Password ───────────────────────────────────────
+function togglePassword(inputId, btnId) {
+  const inp = document.getElementById(inputId);
+  const btn = document.getElementById(btnId);
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    btn.innerHTML = '<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>';
+  } else {
+    inp.type = 'password';
+    btn.innerHTML = '<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>';
+  }
+}
+
+// ── Email Validation ──────────────────────────────────────
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// ── Handle Login ──────────────────────────────────────────
+function handleLogin(e) {
+  e.preventDefault();
+  let valid = true;
+
+  // Role check
+  if (!selectedRole) {
+    document.getElementById('roleError').classList.remove('hidden');
+    valid = false;
+    return;
+  }
+
+  if (selectedRole === 'admin') {
+    const username = document.getElementById('username').value.trim();
+    if (!username) {
+      document.getElementById('usernameError').classList.remove('hidden');
+      valid = false;
+    } else {
+      document.getElementById('usernameError').classList.add('hidden');
+    }
+  } else {
+    const email = document.getElementById('loginEmail').value.trim();
+    if (!isValidEmail(email)) {
+      document.getElementById('emailError').classList.remove('hidden');
+      valid = false;
+    } else {
+      document.getElementById('emailError').classList.add('hidden');
+    }
+  }
+
+  const password = document.getElementById('loginPassword').value;
+  if (!password) {
+    document.getElementById('passwordError').classList.remove('hidden');
+    valid = false;
+  } else {
+    document.getElementById('passwordError').classList.add('hidden');
+  }
+
+  if (valid) {
+    const btn = document.getElementById('loginBtn');
+    const originalContent = btn.innerHTML;
+    btn.classList.add('loading');
+    btn.innerHTML = '<span class="spinner"></span> Logging in...';
+    btn.disabled = true;
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        role: selectedRole,
+        email: email,
+        username: username,
+        password: password
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Check if there's a redirect param from courses/enroll flow
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectTo = urlParams.get('redirect');
+        const courseParam = urlParams.get('course');
+        if (redirectTo && redirectTo.startsWith('/')) {
+          // Append course param if present so modal auto-opens
+          const dest = courseParam ? redirectTo + '?course=' + encodeURIComponent(courseParam) : redirectTo;
+          window.location.href = dest;
+        } else {
+          window.location.href = data.redirectUrl || '/';
+        }
+      } else {
+        alert(data.message || 'Login failed. Please check your credentials.');
+        btn.innerHTML = originalContent;
+        btn.classList.remove('loading');
+        btn.disabled = false;
+      }
+    })
+    .catch(err => {
+      console.error('Login Error:', err);
+      alert('A network or server error occurred. Please try again.');
+      btn.innerHTML = originalContent;
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    });
+  }
+}
+
+// ── Live Email Validation ─────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const emailInput = document.getElementById('loginEmail');
+  if (emailInput) {
+    emailInput.addEventListener('blur', () => {
+      const err = document.getElementById('emailError');
+      if (emailInput.value && !isValidEmail(emailInput.value)) {
+        err.classList.remove('hidden');
+      } else {
+        err.classList.add('hidden');
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

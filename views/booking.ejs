@@ -1,0 +1,633 @@
+<%- include('partials/header', { title: `Book Chef ${chef.firstName} - ChefNest`, pageCss: 'booking.css' }) %>
+
+<main class="booking-page">
+  <div class="booking-container">
+    
+    <!-- Left Column: Booking Form -->
+    <div class="booking-form-col">
+      <!-- Steps Indicator -->
+      <div class="booking-steps-indicator">
+        <span class="step active" id="step-indicator-1">Step 1: Details</span>
+        <span class="step" id="step-indicator-2">Step 2: Menu &amp; Diet</span>
+        <span class="step" id="step-indicator-3">Step 3: Checkout</span>
+      </div>
+
+      <form id="bookingForm" action="/booking/create" method="POST">
+        <input type="hidden" name="chefId" value="<%= chef._id %>">
+        
+        <!-- STEP 1: Basic details -->
+        <div class="booking-step-panel active" id="step-panel-1">
+          <section class="booking-section">
+            <h3>1. Booking Type</h3>
+            <div class="type-options">
+              <label class="type-card">
+                <input type="radio" name="bookingType" value="Daily" checked onchange="calculatePrices()">
+                <div class="card-content">
+                  <span class="type-icon">📅</span>
+                  <strong>Daily</strong>
+                  <small>Regular schedule</small>
+                </div>
+              </label>
+              <label class="type-card">
+                <input type="radio" name="bookingType" value="Urgent" onchange="calculatePrices()">
+                <div class="card-content">
+                  <span class="type-icon">⚡</span>
+                  <strong>Urgent</strong>
+                  <small>Within 1 hour</small>
+                </div>
+              </label>
+              <label class="type-card">
+                <input type="radio" name="bookingType" value="Event" onchange="calculatePrices()">
+                <div class="card-content">
+                  <span class="type-icon">🎉</span>
+                  <strong>Event/Party</strong>
+                  <small>Celebrations</small>
+                </div>
+              </label>
+              <label class="type-card">
+                <input type="radio" name="bookingType" value="Subscription" onchange="calculatePrices()">
+                <div class="card-content">
+                  <span class="type-icon">🔁</span>
+                  <strong>Subscription</strong>
+                  <small>Weekly/Monthly</small>
+                </div>
+              </label>
+            </div>
+          </section>
+
+          <section class="booking-section mt-2">
+            <h3>2. Date, Time &amp; Location</h3>
+            <!-- Dynamic Event Section in booking.ejs -->
+            <div id="eventDetailsSection" style="display:none; background:#f4fbf4; border:1.5px solid #c8e6c9; border-radius:10px; padding:1rem; margin-bottom:1rem;">
+              <h4 style="color:#1b5e20; margin:0 0 0.8rem; font-size:0.95rem;">🎉 Event / Party Information</h4>
+              <div class="form-grid">
+                <div class="input-group">
+                  <label>Event Name / Occasion</label>
+                  <input type="text" name="eventName" id="eventNameInput" placeholder="e.g. Birthday Celebration, Wedding Function">
+                </div>
+                <div class="input-group">
+                  <label>Venue / Place Type</label>
+                  <input type="text" name="eventVenue" id="eventVenueInput" placeholder="e.g. Banquet Hall, Beach Villa, Home Garden">
+                </div>
+                <div class="input-group">
+                  <label>Event Start Time</label>
+                  <input type="time" name="eventStartTime" id="eventStartTimeInput">
+                </div>
+                <div class="input-group">
+                  <label>Event End Time</label>
+                  <input type="time" name="eventEndTime" id="eventEndTimeInput">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="input-group">
+                <label>Preferred Date</label>
+                <input type="date" name="date" id="bookingDateInput" required min="<%= new Date().toISOString().split('T')[0] %>" onchange="checkChefAvailability()">
+              </div>
+              <div class="input-group">
+                <label>Preferred Time Slot</label>
+                <input type="time" name="time" id="bookingTimeInput" required onchange="checkChefAvailability()">
+              </div>
+              <div class="input-group">
+                <label>Duration (Hours)</label>
+                <select name="duration" id="durationSelect" onchange="calculatePrices()" required>
+                  <option value="2">2 Hours</option>
+                  <option value="3" selected>3 Hours</option>
+                  <option value="4">4 Hours</option>
+                  <option value="5">5 Hours</option>
+                  <option value="6">6 Hours</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>Location Type</label>
+                <select name="locationType" required>
+                  <option value="House">House</option>
+                  <option value="Apartment">Apartment</option>
+                  <option value="Venue">Venue (for events)</option>
+                </select>
+              </div>
+              <div class="input-group full-width">
+                <label>Full Address</label>
+                <input type="text" name="location" id="bookingLocationInput" placeholder="Enter complete venue address..." value="<%= (typeof user !== 'undefined' && user) ? (user.address || '') : '' %>" required oninput="checkDistrictMatch()">
+              </div>
+              <div class="input-group full-width">
+                <label>📞 Contact Phone Number <span style="color:#d9534f;">*</span></label>
+                <input type="tel" name="phone" id="bookingPhoneInput" placeholder="e.g. 077 123 4567" value="<%= (typeof user !== 'undefined' && user) ? (user.phone || '') : '' %>" required>
+              </div>
+              <div class="input-group full-width">
+                <label>🗺️ Google Maps Link / Nearby Landmark <small style="font-weight:400; color:#666;">(For direct GPS navigation)</small></label>
+                <input type="text" name="locationMapUrl" id="locationMapUrl" placeholder="e.g. https://maps.app.goo.gl/... or near Point Pedro Junction">
+                <p style="font-size:0.75rem; color:#406841; margin-top:0.3rem; line-height:1.4;">
+                  📍 <em>Privacy Notice: Providing your Google Maps link or nearby landmark allows the chef to navigate directly to your location without calling.</em>
+                </p>
+              </div>
+            </div>
+
+            <!-- District Mismatch Warning Banner -->
+            <div id="districtMismatchWarningBox" style="display:none; background:#fffbe6; border:1.5px solid #ffe58f; border-left:4px solid #fa8c16; padding:0.85rem 1rem; border-radius:6px; margin-top:0.8rem; font-size:0.85rem; color:#873800; line-height:1.45;"></div>
+
+            <!-- Real-time Chef Availability Warning Banner -->
+            <div id="availabilityWarningBox" style="display:none; background:#fff8db; border-left:4px solid #f59e0b; padding:0.8rem 1rem; border-radius:6px; margin-top:0.8rem; font-size:0.84rem; color:#854d0e;"></div>
+          </section>
+
+          <section class="booking-section mt-2">
+            <h3>3. Guest Details</h3>
+            <div class="guest-counter">
+              <div class="counter-row">
+                <span>Adults (18+ years)</span>
+                <div class="controls">
+                  <button type="button" onclick="changeGuest('adults', -1)">-</button>
+                  <input type="number" id="adultsCount" name="adults" value="2" min="1" readonly>
+                  <button type="button" onclick="changeGuest('adults', 1)">+</button>
+                </div>
+              </div>
+              <div class="counter-row">
+                <span>Children (Under 18)</span>
+                <div class="controls">
+                  <button type="button" onclick="changeGuest('children', -1)">-</button>
+                  <input type="number" id="childrenCount" name="children" value="0" min="0" readonly>
+                  <button type="button" onclick="changeGuest('children', 1)">+</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="step-nav-buttons">
+            <span></span>
+            <button type="button" class="btn-primary-sm" onclick="switchStep(2)">Next: Menu &amp; Diet ➔</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Menu, Ingredients and Dietary Preferences -->
+        <div class="booking-step-panel" id="step-panel-2">
+          <section class="booking-section">
+            <h3>4. Menu &amp; Cuisine Details</h3>
+            <div class="form-grid">
+              <div class="input-group">
+                <label>Cuisine Type</label>
+                <select name="cuisine" required>
+                  <% if (chef.cuisines && chef.cuisines.length > 0) { %>
+                    <% chef.cuisines.forEach(c => { %>
+                      <option value="<%= c %>"><%= c.replace('_', ' ').toUpperCase() %></option>
+                    <% }) %>
+                  <% } else { %>
+                    <option value="general">GENERAL CUISINE</option>
+                  <% } %>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>Meal Session</label>
+                <div class="meal-session-checkboxes">
+                  <label><input type="checkbox" name="mealSession" value="Breakfast" onchange="calculatePrices()"> Breakfast</label>
+                  <label><input type="checkbox" name="mealSession" value="Lunch" checked onchange="calculatePrices()"> Lunch</label>
+                  <label><input type="checkbox" name="mealSession" value="Snacks" onchange="calculatePrices()"> Snacks</label>
+                  <label><input type="checkbox" name="mealSession" value="Dinner" onchange="calculatePrices()"> Dinner</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="ingredients-section mt-2">
+              <label><strong>Available Ingredients in Your Kitchen</strong> (Optional)</label>
+              <p style="font-size:0.75rem;color:#6b7f6b;margin-bottom:0.4rem;">Type ingredients separated by commas. We will automatically suggest matching dishes!</p>
+              <textarea name="availableIngredients" id="ingredientsInput" rows="2" placeholder="e.g. Chicken, Tomato, Garlic, Onion" oninput="suggestDishes()"></textarea>
+              <div id="dishSuggestions" class="dish-suggestions-container"></div>
+            </div>
+
+            <div class="grocery-card-select mt-2">
+              <div class="grocery-details">
+                <span class="grocery-icon">🛒</span>
+                <div>
+                  <strong>Need Grocery Support?</strong>
+                  <p>Our chef will purchase fresh ingredients for you. (Requires Admin Approval)</p>
+                </div>
+              </div>
+              <div class="grocery-toggle">
+                <input type="checkbox" name="grocerySupport" id="groceryCheck" value="true" onchange="calculatePrices()">
+                <label for="groceryCheck">Yes, buy groceries</label>
+              </div>
+            </div>
+          </section>
+
+          <section class="booking-section mt-2">
+            <h3>5. Health &amp; Dietary Preferences</h3>
+            <div class="form-grid">
+              <div class="input-group full-width">
+                <label class="checkbox-label">
+                  <input type="checkbox" name="dietaryPreference" value="Diabetic-friendly">
+                  <span>Diabetic-friendly meals needed</span>
+                </label>
+              </div>
+              <div class="input-group full-width">
+                <label>Allergy Details (Optional)</label>
+                <input type="text" name="allergyDetails" placeholder="e.g. Peanuts, Gluten, Dairy, Shellfish">
+              </div>
+            </div>
+          </section>
+
+          <div class="step-nav-buttons">
+            <button type="button" class="btn-outline-sm" onclick="switchStep(1)">➔ Back to Step 1</button>
+            <button type="button" class="btn-primary-sm" onclick="switchStep(3)">Next: Payment ➔</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Payment & Confirmation -->
+        <div class="booking-step-panel" id="step-panel-3">
+          <section class="booking-section">
+            <h3>6. Payment Method</h3>
+            <p style="font-size:0.8rem;color:#e67e22;margin-bottom:1rem;font-weight:500;">
+              ℹ️ You will only pay AFTER the chef accepts your booking request. No payment is charged right now.
+            </p>
+            <div class="payment-grid">
+              <label class="payment-card">
+                <input type="radio" name="paymentMethod" value="Bank Transfer" checked>
+                <div class="pay-card-content">🏛️ Bank Transfer (50% Advance to Chef)</div>
+              </label>
+            </div>
+          </section>
+
+          <section class="booking-section mt-2">
+            <h3>7. Promo Code</h3>
+            <div class="promo-input-group">
+              <input type="text" name="promoCode" placeholder="Enter promo code (e.g. WELCOME10)">
+              <button type="button" class="btn-outline-sm" onclick="showToast('✅ Promo code applied successfully!')">Apply</button>
+            </div>
+          </section>
+
+          <!-- Hidden inputs for calculated prices -->
+          <input type="hidden" name="baseRate" id="baseRateInput">
+          <input type="hidden" name="guestSurcharge" id="guestSurchargeInput">
+          <input type="hidden" name="mealCharge" id="mealChargeInput">
+          <input type="hidden" name="groceryCharge" id="groceryChargeInput">
+          <input type="hidden" name="platformFee" id="platformFeeInput" value="500">
+          <input type="hidden" name="totalAmount" id="totalAmountInput">
+
+          <div class="step-nav-buttons">
+            <button type="button" class="btn-outline-sm" onclick="switchStep(2)">➔ Back to Step 2</button>
+            <button type="submit" class="btn-primary-sm" style="background:#d35400;">🚀 Submit Booking Request</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right Column: Live Price Summary -->
+    <aside class="booking-summary-col">
+      <div class="summary-card">
+        <h3>Live Price Summary</h3>
+        <div class="chef-mini-profile">
+          <% if (chef.profilePhoto) { %>
+            <img src="<%= chef.profilePhoto %>" alt="<%= chef.firstName %>">
+          <% } else { %>
+            <div class="mini-avatar"><%= chef.firstName.charAt(0) %></div>
+          <% } %>
+          <div class="chef-mini-meta">
+            <strong><%= chef.firstName %> <%= chef.lastName %></strong>
+            <span>Rate: LKR <%= chef.hourlyRate %>/hour</span>
+          </div>
+        </div>
+        
+        <ul class="cost-breakdown">
+          <li>
+            <span>Base Rate (<span id="summary-hours">3</span> hrs):</span>
+            <strong>LKR <span id="val-base">0</span></strong>
+          </li>
+          <li>
+            <span>Booking Type Surcharge:</span>
+            <strong>LKR <span id="val-surcharge">0</span></strong>
+          </li>
+          <li>
+            <span>Guests Surcharge (<span id="summary-guests">2</span> guests):</span>
+            <strong>LKR <span id="val-guests">0</span></strong>
+          </li>
+          <li>
+            <span>Meal Sessions Surcharge:</span>
+            <strong>LKR <span id="val-meals">0</span></strong>
+          </li>
+          <li id="row-grocery" style="display:none; color:#e67e22;">
+            <span>Grocery Support Charge:</span>
+            <strong>LKR <span id="val-grocery">0</span></strong>
+          </li>
+          <li>
+            <span>Platform Fee:</span>
+            <strong>LKR 500</strong>
+          </li>
+        </ul>
+
+        <div class="total-row">
+          <span>Estimated Total:</span>
+          <strong>LKR <span id="val-total">0</span></strong>
+        </div>
+        <p style="font-size:0.75rem;color:#7f8c8d;margin-top:0.8rem;line-height:1.3;text-align:center;">
+          🔒 Secured booking process. ChefNest guarantees food safety and client protection.
+        </p>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<%- include('partials/footer') %>
+
+<script>
+  const HOURLY_RATE = <%= chef.hourlyRate || 2500 %>;
+  const CHEF_AVAILABILITY = <%- JSON.stringify(chef.availability || {}) %>;
+  const CHEF_FIRST_NAME = "<%= chef.firstName %>";
+
+  function checkChefAvailability() {
+    const dateInput = document.getElementById('bookingDateInput');
+    const timeInput = document.getElementById('bookingTimeInput');
+    const warnBox = document.getElementById('availabilityWarningBox');
+    if (!dateInput || !warnBox) return;
+
+    const dateVal = dateInput.value;
+    const timeVal = timeInput ? timeInput.value : '';
+
+    if (!dateVal) {
+      warnBox.style.display = 'none';
+      return;
+    }
+
+    const selectedDate = new Date(dateVal + 'T00:00:00');
+    const dayIndex = selectedDate.getDay(); // 0 = Sun, 1 = Mon, ...
+    const dayKeys = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayKey = dayKeys[dayIndex];
+    const dayName = dayNames[dayIndex];
+
+    const weekdays = CHEF_AVAILABILITY.weekdays || {};
+    const dayStatus = weekdays[dayKey] || 'available';
+
+    // 1. Check weekday availability
+    if (dayStatus === 'unavailable' || dayStatus === 'leave') {
+      warnBox.style.display = 'block';
+      warnBox.innerHTML = `⚠️ <strong>Notice:</strong> Chef ${CHEF_FIRST_NAME} is set as <strong>${dayStatus.toUpperCase()}</strong> on ${dayName}s. Your booking request may be declined or rescheduled by the chef.`;
+      return;
+    }
+
+    // 2. Check scheduled vacations
+    const vacations = CHEF_AVAILABILITY.vacations || [];
+    for (let v of vacations) {
+      const vStart = new Date(v.startDate);
+      const vEnd = new Date(v.endDate);
+      if (selectedDate >= vStart && selectedDate <= vEnd) {
+        warnBox.style.display = 'block';
+        warnBox.innerHTML = `⚠️ <strong>Notice:</strong> Chef ${CHEF_FIRST_NAME} is on leave from <strong>${vStart.toLocaleDateString()}</strong> to <strong>${vEnd.toLocaleDateString()}</strong> (${v.note || 'Vacation'}).`;
+        return;
+      }
+    }
+
+    // 3. Check working hours if time is provided
+    if (timeVal) {
+      const wh = CHEF_AVAILABILITY.workingHours || { start: '08:00', end: '19:00' };
+      if (timeVal < wh.start || timeVal > wh.end) {
+        warnBox.style.display = 'block';
+        warnBox.innerHTML = `⏰ <strong>Notice:</strong> Chef ${CHEF_FIRST_NAME}'s standard working hours are <strong>${wh.start} — ${wh.end}</strong>. The selected time (${timeVal}) is outside their working hours.`;
+        return;
+      }
+    }
+
+    warnBox.style.display = 'none';
+  }
+
+  function switchStep(stepNum) {
+    // Hide all step panels
+    document.querySelectorAll('.booking-step-panel').forEach(p => p.classList.remove('active'));
+    // Show selected step panel
+    document.getElementById('step-panel-' + stepNum).classList.add('active');
+    
+    // Update step indicators
+    document.querySelectorAll('.booking-steps-indicator .step').forEach((s, idx) => {
+      if (idx + 1 === stepNum) {
+        s.classList.add('active');
+      } else {
+        s.classList.remove('active');
+      }
+    });
+  }
+
+  function changeGuest(type, change) {
+    const input = document.getElementById(type === 'adults' ? 'adultsCount' : 'childrenCount');
+    let val = parseInt(input.value) + change;
+    if (val < parseInt(input.min)) val = parseInt(input.min);
+    input.value = val;
+    calculatePrices();
+  }
+
+  function calculatePrices() {
+    const duration = parseInt(document.getElementById('durationSelect').value) || 3;
+    const bookingType = document.querySelector('input[name="bookingType"]:checked').value;
+    
+    // Toggle Event section
+    const eventSec = document.getElementById('eventDetailsSection');
+    if (eventSec) eventSec.style.display = bookingType === 'Event' ? 'block' : 'none';
+
+    const adults = parseInt(document.getElementById('adultsCount').value) || 1;
+    const children = parseInt(document.getElementById('childrenCount').value) || 0;
+    const totalGuests = adults + children;
+    
+    const isGrocery = document.getElementById('groceryCheck').checked;
+    
+    // Check meals
+    const mealCheckboxes = document.querySelectorAll('input[name="mealSession"]:checked');
+    const mealsCount = mealCheckboxes.length;
+
+    // 1. Base Rate
+    const baseRate = HOURLY_RATE * duration;
+    
+    // 2. Booking Type Surcharge
+    let typeSurcharge = 0;
+    if (bookingType === 'Urgent') typeSurcharge = 1500;
+    else if (bookingType === 'Event') typeSurcharge = 2500;
+    else if (bookingType === 'Subscription') typeSurcharge = 1000;
+    
+    // 3. Guest Surcharge (beyond 1 guest)
+    const guestSurcharge = totalGuests > 1 ? (totalGuests - 1) * 300 : 0;
+    
+    // 4. Meal Charge
+    const mealCharge = mealsCount * 200;
+    
+    // 5. Grocery Support Charge
+    const groceryCharge = isGrocery ? 1000 : 0;
+    
+    // 6. Platform Fee
+    const platformFee = 500;
+    
+    // 7. Total
+    const total = baseRate + typeSurcharge + guestSurcharge + mealCharge + groceryCharge + platformFee;
+
+    // Update frontend summary values
+    document.getElementById('summary-hours').textContent = duration;
+    document.getElementById('summary-guests').textContent = totalGuests;
+    
+    document.getElementById('val-base').textContent = baseRate.toLocaleString();
+    document.getElementById('val-surcharge').textContent = typeSurcharge.toLocaleString();
+    document.getElementById('val-guests').textContent = guestSurcharge.toLocaleString();
+    document.getElementById('val-meals').textContent = mealCharge.toLocaleString();
+    
+    const groceryRow = document.getElementById('row-grocery');
+    if (isGrocery) {
+      groceryRow.style.display = 'flex';
+      document.getElementById('val-grocery').textContent = groceryCharge.toLocaleString();
+    } else {
+      groceryRow.style.display = 'none';
+    }
+    
+    document.getElementById('val-total').textContent = total.toLocaleString();
+
+    // Update hidden form inputs
+    document.getElementById('baseRateInput').value = baseRate;
+    document.getElementById('guestSurchargeInput').value = guestSurcharge;
+    document.getElementById('mealChargeInput').value = mealCharge;
+    document.getElementById('groceryChargeInput').value = groceryCharge;
+    document.getElementById('totalAmountInput').value = total;
+  }
+
+  // Suggest matching dishes using TheMealDB API
+  let debounceTimer;
+  function suggestDishes() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(async () => {
+      const input = document.getElementById('ingredientsInput').value.trim();
+      const suggestionsBox = document.getElementById('dishSuggestions');
+      if (!input) {
+        suggestionsBox.innerHTML = '';
+        return;
+      }
+      
+      // Get first ingredient
+      const ingredients = input.split(',').map(i => i.trim()).filter(Boolean);
+      if (ingredients.length === 0) return;
+      
+      try {
+        suggestionsBox.innerHTML = '<div style="color:#7f8c8d;font-size:0.8rem;padding:0.5rem;">🔍 Searching suggested meals...</div>';
+        const res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(ingredients[0])}`);
+        const data = await res.json();
+        
+        if (data && data.meals) {
+          const meals = data.meals.slice(0, 5); // top 5 matching meals
+          suggestionsBox.innerHTML = `
+            <div style="font-weight:600;font-size:0.8rem;margin-bottom:0.3rem;color:var(--green-dark);">💡 Suggested Dishes for your ingredients:</div>
+            <div style="display:flex;gap:0.5rem;overflow-x:auto;padding-bottom:0.3rem;">
+              ${meals.map(m => `
+                <div class="dish-suggestion-item" style="flex:0 0 110px;text-align:center;background:#fff;border:1px solid #e0ead0;border-radius:8px;padding:0.4rem;font-size:0.75rem;">
+                  <img src="${m.strMealThumb}" alt="${m.strMeal}" style="width:100%;height:60px;object-fit:cover;border-radius:6px;margin-bottom:0.2rem;">
+                  <div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${m.strMeal}">${m.strMeal}</div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        } else {
+          suggestionsBox.innerHTML = '<div style="color:#c0392b;font-size:0.8rem;padding:0.5rem;">No matching recipes found for these ingredients.</div>';
+        }
+      } catch (err) {
+        suggestionsBox.innerHTML = '';
+      }
+    }, 600);
+  }
+
+  // ── District Mapping & Travel Distance Validation ──────────────────
+  const districtCitiesMap = {
+    "Colombo": ["colombo", "dehiwala", "mount lavinia", "moratuwa", "kotte", "kaduwela", "maharagama", "kesbewa", "kolonnawa", "homagama", "hanwella", "nugegoda", "rajagiriya", "battaramulla", "piliyandala"],
+    "Gampaha": ["gampaha", "negombo", "kelaniya", "kadawatha", "kiribathgoda", "wattala", "ja-ela", "minuwangoda", "divulapitiya", "mirigama", "ragama", "biyagama"],
+    "Kalutara": ["kalutara", "panadura", "horana", "beruwala", "aluthgama", "bandaragama", "wadduwa", "matugama"],
+    "Kandy": ["kandy", "gampola", "peradeniya", "katugastota", "kundasale", "nawalapitiya", "akurana", "digana", "gelioya"],
+    "Matale": ["matale", "dambulla", "sigiriya", "galewela", "ukuwela"],
+    "Nuwara Eliya": ["nuwara eliya", "hatton", "ginigathena", "talawakele", "lindula", "ragala", "maskeliya"],
+    "Galle": ["galle", "hikkaduwa", "karapitiya", "ambalangoda", "elpiitiya", "bentota", "unawatuna", "baddegama"],
+    "Matara": ["matara", "weligama", "akuressa", "deniyaya", "dikwella", "kamburupitiya"],
+    "Hambantota": ["hambantota", "tangalle", "beliatta", "tissamaharama", "ambalantota"],
+    "Jaffna": ["jaffna", "chavakachcheri", "point pedro", "karainagar", "nallur", "valvettithurai", "chunnakam", "kopay", "manipay", "tellippalai"],
+    "Kilinochchi": ["kilinochchi", "pooneryn", "pallai"],
+    "Mannar": ["mannar", "murunkan", "madhu", "pesalai", "thalaimannar"],
+    "Vavuniya": ["vavuniya", "nedunkeni", "cheddikulam"],
+    "Mullaitivu": ["mullaitivu", "puthukudiyiruppu", "oddusuddan"],
+    "Batticaloa": ["batticaloa", "kattankudy", "eravur", "valachchenai", "kaluwanchikudy"],
+    "Ampara": ["ampara", "kalmunai", "sainthamaruthu", "akkaraipattu", "pottuvil", "samanthurai"],
+    "Trincomalee": ["trincomalee", "mutur", "kinniya", "kuchchaveli", "kantale"],
+    "Kurunegala": ["kurunegala", "kuliyapitiya", "narammala", "wariyapola", "pannala", "ibbagamuwa", "polgahawela", "alawwa"],
+    "Puttalam": ["puttalam", "chilaw", "wennappuwa", "marawila", "dankotuwa", "kalpitiya", "nattandiya"],
+    "Anuradhapura": ["anuradhapura", "mihintale", "kekirawa", "medawachchiya", "eppawala", "galgamuwa", "tambuttegama"],
+    "Polonnaruwa": ["polonnaruwa", "kaduruwela", "hingurakgoda", "medirigiriya"],
+    "Badulla": ["badulla", "bandarawela", "haputale", "ella", "welimada", "mahiyanganaya", "diyatalawa"],
+    "Moneragala": ["moneragala", "wellawaya", "buttala", "kataragama", "bibile"],
+    "Ratnapura": ["ratnapura", "balangoda", "embilipitiya", "pelmadulla", "eheliyagoda", "kuruwita"],
+    "Kegalle": ["kegalle", "mawanella", "ruwanwella", "warakapola", "dehiowita", "yatiyantota"]
+  };
+
+  function resolveDistrict(text) {
+    if (!text) return '';
+    const clean = text.trim().toLowerCase();
+    for (const d of Object.keys(districtCitiesMap)) {
+      if (d.toLowerCase() === clean) return d;
+    }
+    for (const d of Object.keys(districtCitiesMap)) {
+      const reg = new RegExp('\\b' + d.toLowerCase() + '\\b', 'i');
+      if (reg.test(clean)) return d;
+    }
+    for (const [d, cities] of Object.entries(districtCitiesMap)) {
+      for (const c of cities) {
+        const reg = new RegExp('\\b' + c.toLowerCase() + '\\b', 'i');
+        if (reg.test(clean)) return d;
+      }
+    }
+    return '';
+  }
+
+  const CHEF_DISTRICT_RAW = "<%= chef.district || chef.city || '' %>";
+  const CHEF_CITY_RAW = "<%= chef.city || '' %>";
+  const CHEF_DISTRICT = resolveDistrict(CHEF_DISTRICT_RAW) || resolveDistrict(CHEF_CITY_RAW) || CHEF_DISTRICT_RAW || CHEF_CITY_RAW;
+  const USER_PROFILE_DISTRICT_RAW = "<%= (typeof user !== 'undefined' && user) ? (user.district || user.city || '') : '' %>";
+  const USER_PROFILE_DISTRICT = resolveDistrict(USER_PROFILE_DISTRICT_RAW) || USER_PROFILE_DISTRICT_RAW;
+
+  function checkDistrictMatch() {
+    const warnBox = document.getElementById('districtMismatchWarningBox');
+    if (!warnBox) return { isMismatch: false };
+
+    const locInput = document.getElementById('bookingLocationInput');
+    const locVal = locInput ? locInput.value.trim() : '';
+
+    const detectedUserDistrict = resolveDistrict(locVal) || USER_PROFILE_DISTRICT;
+
+    if (detectedUserDistrict && CHEF_DISTRICT && detectedUserDistrict.toLowerCase() !== CHEF_DISTRICT.toLowerCase()) {
+      warnBox.style.display = 'block';
+      warnBox.innerHTML = `
+        <div style="display:flex; gap:0.6rem; align-items:flex-start;">
+          <span style="font-size:1.3rem; line-height:1.2;">⚠️</span>
+          <div>
+            <strong style="color:#d46b08; font-size:0.9rem; display:block; margin-bottom:0.25rem;">Different District Notice</strong>
+            <div style="font-size:0.84rem; color:#612500; margin-bottom:0.3rem;">
+              Chef <strong><%= chef.firstName %></strong> is based in <strong>${CHEF_DISTRICT} District</strong>, while your booking location is in <strong>${detectedUserDistrict} District</strong>.
+            </div>
+            <div style="font-size:0.8rem; color:#873800; line-height:1.4; background:rgba(255,255,255,0.7); padding:0.4rem 0.6rem; border-radius:6px; border:1px solid #ffd591;">
+              ⚠️ <em>Notice: Because the chef is located in a different district, travel distances are significant and this booking is <strong>likely to be cancelled or declined</strong> by the chef. (Chefs usually accept bookings across different towns within the same district).</em>
+            </div>
+          </div>
+        </div>
+      `;
+      return { isMismatch: true, userDist: detectedUserDistrict, chefDist: CHEF_DISTRICT };
+    } else {
+      warnBox.style.display = 'none';
+      warnBox.innerHTML = '';
+      return { isMismatch: false, userDist: detectedUserDistrict, chefDist: CHEF_DISTRICT };
+    }
+  }
+
+  // Handle form submission confirmation
+  const bookingFormEl = document.getElementById('bookingForm');
+  if (bookingFormEl) {
+    bookingFormEl.addEventListener('submit', function(e) {
+      const distCheck = checkDistrictMatch();
+      if (distCheck.isMismatch) {
+        const proceed = confirm(`⚠️ Different District Warning:\n\nChef <%= chef.firstName %> is located in ${distCheck.chefDist} District, but your booking location is in ${distCheck.userDist} District.\n\nDue to significant travel distance across districts, this booking is likely to be cancelled or declined by the chef.\n\nDo you still wish to proceed?`);
+        if (!proceed) {
+          e.preventDefault();
+          return false;
+        }
+      }
+    });
+  }
+
+  // Initial calculation & district check
+  calculatePrices();
+  checkDistrictMatch();
+</script>

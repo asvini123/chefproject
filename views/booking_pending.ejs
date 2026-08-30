@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Submitted — ChefNest</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, #f4f7f3 0%, #fdfff4 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Top Bar ─── */
+    .pending-topbar {
+      background: white;
+      border-bottom: 1px solid #e0ead0;
+      padding: 1rem 5%;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .pending-topbar .logo {
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: #2C5F2D;
+      text-decoration: none;
+    }
+
+    .pending-topbar .logo span {
+      color: #D97A2B;
+    }
+
+    /* ── Main Card ─── */
+    .pending-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 5%;
+    }
+
+    .pending-card {
+      background: white;
+      border-radius: 20px;
+      border: 1.5px solid #e0ead0;
+      box-shadow: 0 12px 40px rgba(44, 95, 45, 0.12);
+      max-width: 620px;
+      width: 100%;
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+
+    /* ── Animated Icon ─── */
+    .pending-icon {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f0f7f0, #e0f0e0);
+      border: 3px solid #2C5F2D;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.6rem;
+      margin: 0 auto 1.5rem;
+      animation: pulse-green 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-green {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(44, 95, 45, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 0 0 12px rgba(44, 95, 45, 0);
+      }
+    }
+
+    .pending-card h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #1E2E1E;
+      margin-bottom: 0.5rem;
+    }
+
+    .pending-card .sub {
+      font-size: 0.95rem;
+      color: #6B7B6B;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    /* ── Summary Grid ─── */
+    .pending-summary {
+      background: #f8fbf8;
+      border: 1.5px solid #e0ead0;
+      border-radius: 14px;
+      padding: 1.2rem 1.5rem;
+      text-align: left;
+      margin-bottom: 1.8rem;
+    }
+
+    .pending-summary h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #2C5F2D;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 1rem;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    .summary-item label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #9aab9a;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 0.2rem;
+    }
+
+    .summary-item span {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1E2E1E;
+    }
+
+    .summary-item.full-w {
+      grid-column: 1/-1;
+    }
+
+    /* ── Status Bar ─── */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #FFF8E7;
+      border: 1.5px solid #f0c98a;
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1.8rem;
+      font-size: 0.88rem;
+      color: #7a5520;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #D97A2B;
+      animation: blink 1.4s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.2;
+      }
+    }
+
+    /* ── Actions ─── */
+    .pending-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-home {
+      background: #2C5F2D;
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(44, 95, 45, 0.25);
+    }
+
+    .btn-home:hover {
+      background: #1E4620;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #2C5F2D;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 2px solid #2C5F2D;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: #f0f7f0;
+    }
+
+    /* ── Chef Mini Profile ─── */
+    .chef-mini {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: white;
+      border: 1.5px solid #e0ead0;
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .chef-mini img,
+    .chef-avatar-mini {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #2C5F2D;
+      flex-shrink: 0;
+    }
+
+    .chef-avatar-mini {
+      background: linear-gradient(135deg, #2C5F2D, #D97A2B);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .chef-mini-info strong {
+      display: block;
+      font-size: 0.95rem;
+      color: #1E2E1E;
+    }
+
+    .chef-mini-info span {
+      font-size: 0.8rem;
+      color: #6B7B6B;
+    }
+
+    @media (max-width: 600px) {
+      .pending-card {
+        padding: 1.5rem 1.2rem;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="pending-topbar">
+    <a href="/" class="logo">Chef<span>Nest</span></a>
+  </nav>
+
+  <div class="pending-wrapper">
+    <div class="pending-card">
+
+      <div class="pending-icon">📋</div>
+      <h1>Booking Request Sent!</h1>
+      <p class="sub">
+        Your booking has been submitted successfully.<br>
+        The chef will review your request and respond shortly.
+      </p>
+
+      <!-- Chef Mini Profile -->
+      <div class="chef-mini">
+        <% if (booking.chefId && booking.chefId.profilePhoto) { %>
+          <img src="<%= booking.chefId.profilePhoto %>" alt="Chef Photo">
+          <% } else { %>
+            <div class="chef-avatar-mini">
+              <%= booking.chefId ? booking.chefId.firstName.charAt(0) : 'C' %>
+            </div>
+            <% } %>
+              <div class="chef-mini-info">
+                <strong>
+                  <%= booking.chefId ? `${booking.chefId.firstName} ${booking.chefId.lastName}` : 'Chef' %>
+                </strong>
+                <span>
+                  <%= booking.chefId && booking.chefId.cuisines ? booking.chefId.cuisines.join(', ') : ' Experienced
+                    Chef' %>
+                </span>
+              </div>
+      </div>
+
+      <!-- Status Pulse -->
+      <div class="status-bar">
+        <div class="status-dot"></div>
+        <span>Awaiting chef confirmation — you'll be notified once the chef responds.</span>
+      </div>
+
+      <!-- Booking Summary -->
+      <div class="pending-summary">
+        <h3>📝 Booking Summary</h3>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <label>Booking Type</label>
+            <span>
+              <%= booking.bookingType %>
+            </span>
+          </div>
+          <div class="summary-item">
+            <label>Date</label>
+            <span>
+              <%= new Date(booking.date).toDateString() %>
+            </span>
+          </div>
+          <div class="summary-item">
+            <label>Time</label>
+            <span>
+              <%= booking.time %>
+            </span>
+          </div>
+          <div class="summary-item">
+            <label>Duration</label>
+            <span>
+              <%= booking.duration %> hrs
+            </span>
+          </div>
+          <% if (booking.cuisine) { %>
+            <div class="summary-item">
+              <label>Cuisine</label>
+              <span>
+                <%= booking.cuisine %>
+              </span>
+            </div>
+            <% } %>
+              <div class="summary-item">
+                <label>Guests</label>
+                <span>
+                  <%= booking.guests.adults %> Adult(s)<% if (booking.guests.children> 0) { %>, <%=
+                        booking.guests.children %> Child(ren)<% } %>
+                </span>
+              </div>
+              <div class="summary-item">
+                <label>Grocery Support</label>
+                <span>
+                  <%= booking.grocerySupport ? '✅ Yes (Pending Approval)' : '❌ No' %>
+                </span>
+              </div>
+              <div class="summary-item">
+                <label>Payment Method</label>
+                <span>
+                  <%= booking.paymentMethod %>
+                </span>
+              </div>
+              <div class="summary-item">
+                <label>Payment Status</label>
+                <span style="color:<%= booking.paymentStatus === 'Completed' ? '#16a34a' : '#d97706' %>; font-weight:700;">
+                  <%= booking.paymentStatus === 'Completed' ? '✅ Paid (Verified)' : '⏳ Pending' %>
+                </span>
+              </div>
+              <% const memberIdStr = (booking.userId && booking.userId.memberId) ? booking.userId.memberId : ((typeof user !== 'undefined' && user && user.memberId) ? user.memberId : ('CN-USR-' + (booking.userId ? booking.userId._id.toString().slice(-4).toUpperCase() : '2968'))); %>
+              <% const memberNum = memberIdStr.replace('CN-USR-', ''); %>
+              <div class="summary-item full-w">
+                <label>Total Amount</label>
+                <span style="font-size:1.1rem; color:#2C5F2D; font-weight:800;">LKR <%= (booking.totalAmount && booking.totalAmount > 0) ? booking.totalAmount.toLocaleString() : (((booking.chefId && booking.chefId.hourlyRate ? booking.chefId.hourlyRate : 1500) * (booking.duration || 2)) + (booking.grocerySupport ? 500 : 0)).toLocaleString() %></span>
+              </div>
+              <div class="summary-item full-w">
+                <label>Booking Reference &amp; Member</label>
+                <span style="font-family: monospace; background:#f0f7f0; padding:0.3rem 0.6rem; border-radius:6px; font-weight:700; color:#1a5c2a;">
+                  #BK-<%= memberNum %>-<%= booking._id.toString().slice(-4).toUpperCase() %> (<%= memberIdStr %>)
+                </span>
+              </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="pending-actions">
+        <a href="/user/dashboard" class="btn-home">🏠 Go to Dashboard</a>
+        <a href="/chefs" class="btn-secondary">Browse Chefs</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

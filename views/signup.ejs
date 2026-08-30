@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — ChefNest</title>
+  <meta name="description" content="Create your ChefNest account to start booking chefs or provide cooking services.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/signup.css">
+</head>
+<body>
+
+<div class="bg-blob blob-1"></div>
+<div class="bg-blob blob-2"></div>
+
+<div class="signup-wrapper">
+
+  <!-- ── TOP HEADER ────────────────────────────────── -->
+  <div class="signup-top">
+    <a href="/" class="back-home">← Back to Home</a>
+    <div class="signup-brand">
+      <span class="brand-name">ChefNest</span>
+    </div>
+  </div>
+
+  <!-- ── MAIN CARD ──────────────────────────────────── -->
+  <div class="signup-card">
+
+    <div class="card-header">
+      <h1 class="card-title">Create Account</h1>
+      <p class="card-subtitle">Create your account to start booking chefs or provide cooking services.</p>
+    </div>
+
+    <!-- ROLE SELECTION (User / Chef only — No Admin) -->
+    <div class="field-group">
+      <label class="field-label required">I want to join as</label>
+      <div class="role-selector">
+        <button type="button" class="role-btn" id="signRoleUser" onclick="selectSignupRole('user')">
+          <span class="role-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span>
+          <div>
+            <strong>User</strong>
+            <small>Book chef services</small>
+          </div>
+        </button>
+        <button type="button" class="role-btn" id="signRoleChef" onclick="selectSignupRole('chef')">
+          <span class="role-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C8 2 5.5 4 5.5 7c0 1.25.7 2.45 1.5 3.25V13c0 2 1.5 3.5 3 4 0 1-1 2-1 2H5c-1.1 0-2 .9-2 2v1h18v-1c0-1.1-.9-2-2-2h-4s-1-1-1-2c1.5-.5 3-2 3-4v-2.75c.8-.8 1.5-2 1.5-3.25 0-3-2.5-5-6.5-5zm-2 13h4v1h-4v-1z"/></svg></span>
+          <div>
+            <strong>Chef</strong>
+            <small>Provide cooking services</small>
+          </div>
+        </button>
+      </div>
+      <span class="field-error hidden" id="signRoleError">Please select a role.</span>
+    </div>
+
+    <!-- ADMIN REGISTER BLOCKED NOTICE -->
+    <div class="admin-block-notice hidden" id="adminBlockNotice">
+      <span><svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span>
+      <p><strong>Admin accounts cannot self-register.</strong> Contact your system administrator to create an admin account.</p>
+    </div>
+
+    <!-- ─── SIGNUP FORM ────────────────────────────── -->
+    <form id="signupForm" novalidate enctype="multipart/form-data">
+      <input type="hidden" name="role" id="roleInput">
+
+      <!-- PROGRESS BAR -->
+      <div class="progress-bar-wrap hidden" id="progressWrap">
+        <div class="progress-steps">
+          <div class="progress-step active" id="pstep1">
+            <div class="step-dot">1</div>
+            <span>Personal Info</span>
+          </div>
+          <div class="progress-line" id="pline1"></div>
+          <div class="progress-step" id="pstep2">
+            <div class="step-dot">2</div>
+            <span>Account</span>
+          </div>
+          <div class="progress-line" id="pline2"></div>
+          <div class="progress-step" id="pstep3">
+            <div class="step-dot">3</div>
+            <span>Details</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 1: Personal Info ═════════════════ -->
+      <div class="form-step active" id="step1">
+        <h3 class="step-title">Personal Information</h3>
+
+        <div class="form-grid-2">
+          <!-- First Name -->
+          <div class="field-group">
+            <label class="field-label required" for="firstName">First Name</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span>
+              <input type="text" id="firstName" name="firstName" placeholder="Amal" required>
+            </div>
+            <span class="field-error hidden" id="firstNameError">First name is required.</span>
+          </div>
+
+          <!-- Last Name -->
+          <div class="field-group">
+            <label class="field-label required" for="lastName">Last Name</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span>
+              <input type="text" id="lastName" name="lastName" placeholder="Fernando" required>
+            </div>
+            <span class="field-error hidden" id="lastNameError">Last name is required.</span>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="field-group">
+          <label class="field-label required" for="signEmail">Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></span>
+            <input type="email" id="signEmail" name="email" placeholder="you@gmail.com" required>
+            <span class="input-status" id="emailStatus"></span>
+          </div>
+          <span class="field-error hidden" id="signEmailError">Please enter a valid email address.</span>
+          <span class="field-hint">e.g. user@gmail.com, chef@yahoo.com</span>
+        </div>
+
+        <!-- Sri Lankan Phone -->
+        <div class="field-group">
+          <label class="field-label required" for="phone">Mobile Number</label>
+          <div class="input-wrap phone-wrap">
+            <div class="country-code">🇱🇰 +94</div>
+            <input type="tel" id="phone" name="phone" placeholder="0771234567" maxlength="10" required>
+            <span class="input-status" id="phoneStatus"></span>
+          </div>
+          <span class="field-error hidden" id="phoneError">Please enter a valid Sri Lankan mobile number (e.g. 0771234567).</span>
+          <span class="field-hint">Accepted: 070, 071, 072, 074, 075, 076, 077, 078 — exactly 10 digits</span>
+        </div>
+
+        <!-- Address -->
+        <div class="field-group">
+          <label class="field-label required" for="address">Address</label>
+          <div class="input-wrap">
+            <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></span>
+            <input type="text" id="address" name="address" placeholder="123 Main Street" required>
+          </div>
+          <span class="field-error hidden" id="addressError">Address is required.</span>
+          <span class="field-warning hidden" id="addressLocationWarning">⚠️ Please enter an address within your selected district / city. The location you typed doesn't match your selected area.</span>
+        </div>
+
+        <!-- District + City -->
+        <div class="form-grid-2">
+          <div class="field-group">
+            <label class="field-label required" for="signupDistrictSelect">District</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></span>
+              <select id="signupDistrictSelect" required>
+                <option value="" disabled selected>Select District</option>
+                <option value="Colombo">Colombo</option>
+                <option value="Gampaha">Gampaha</option>
+                <option value="Kalutara">Kalutara</option>
+                <option value="Kandy">Kandy</option>
+                <option value="Matale">Matale</option>
+                <option value="Nuwara Eliya">Nuwara Eliya</option>
+                <option value="Galle">Galle</option>
+                <option value="Matara">Matara</option>
+                <option value="Hambantota">Hambantota</option>
+                <option value="Jaffna">Jaffna</option>
+                <option value="Kilinochchi">Kilinochchi</option>
+                <option value="Mannar">Mannar</option>
+                <option value="Vavuniya">Vavuniya</option>
+                <option value="Mullaitivu">Mullaitivu</option>
+                <option value="Batticaloa">Batticaloa</option>
+                <option value="Ampara">Ampara</option>
+                <option value="Trincomalee">Trincomalee</option>
+                <option value="Kurunegala">Kurunegala</option>
+                <option value="Puttalam">Puttalam</option>
+                <option value="Anuradhapura">Anuradhapura</option>
+                <option value="Polonnaruwa">Polonnaruwa</option>
+                <option value="Badulla">Badulla</option>
+                <option value="Moneragala">Moneragala</option>
+                <option value="Ratnapura">Ratnapura</option>
+                <option value="Kegalle">Kegalle</option>
+              </select>
+            </div>
+            <span class="field-error hidden" id="districtError">District is required.</span>
+          </div>
+          <div class="field-group">
+            <label class="field-label required" for="city">City / Town</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M15 11V5l-3-3-3 3v2H3v14h18V11h-6zm-8 8H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm6 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm6 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg></span>
+              <select id="city" name="city" required disabled>
+                <option value="" disabled selected>Select City/Town</option>
+              </select>
+            </div>
+            <span class="field-error hidden" id="cityError">City/Town is required.</span>
+          </div>
+        </div>
+
+        <!-- Profile Photo -->
+        <div class="field-group">
+          <label class="field-label" for="profilePhoto">Profile Photo <span class="optional-badge">Optional</span></label>
+          <div class="file-upload-area" id="photoUploadArea" onclick="document.getElementById('profilePhoto').click()">
+            <div class="file-upload-inner" id="photoPreviewArea">
+              <span class="upload-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3z"/></svg></span>
+              <p>Click to upload profile photo</p>
+              <small>JPG, PNG — Max 5MB</small>
+            </div>
+            <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" class="hidden-file" onchange="previewPhoto(this)">
+          </div>
+        </div>
+
+        <div class="step-actions">
+          <button type="button" class="btn-next" onclick="goToStep(2)">Continue <span>→</span></button>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 2: Account Security ══════════════ -->
+      <div class="form-step" id="step2">
+        <h3 class="step-title">Account Security</h3>
+
+        <!-- Password -->
+        <div class="field-group">
+          <label class="field-label required" for="signPassword">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span>
+            <input type="password" id="signPassword" name="password" placeholder="Min. 8 characters" oninput="checkPassword()" required>
+            <button type="button" class="toggle-pw" onclick="togglePassword('signPassword', 'toggleSignPw')" id="toggleSignPw" aria-label="Toggle password"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button>
+          </div>
+          <!-- Password Strength Meter -->
+          <div class="pw-strength-bar">
+            <div class="pw-strength-fill" id="pwStrengthFill"></div>
+          </div>
+          <div class="pw-rules" id="pwRules">
+            <div class="pw-rule" id="rule-len">✗ At least 8 characters</div>
+            <div class="pw-rule" id="rule-upper">✗ At least one uppercase letter</div>
+            <div class="pw-rule" id="rule-lower">✗ At least one lowercase letter</div>
+            <div class="pw-rule" id="rule-num">✗ At least one number</div>
+            <div class="pw-rule" id="rule-special">✗ At least one special character (!@#$%...)</div>
+          </div>
+          <span class="field-error hidden" id="signPasswordError">Password does not meet requirements.</span>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="field-group">
+          <label class="field-label required" for="confirmPassword">Confirm Password</label>
+          <div class="input-wrap">
+            <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></span>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" oninput="checkConfirmPw()" required>
+            <button type="button" class="toggle-pw" onclick="togglePassword('confirmPassword', 'toggleConfirmPw')" id="toggleConfirmPw" aria-label="Toggle password"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button>
+            <span class="input-status" id="confirmStatus"></span>
+          </div>
+          <span class="field-error hidden" id="confirmPasswordError">Passwords do not match.</span>
+        </div>
+
+        <div class="step-actions two-btn">
+          <button type="button" class="btn-back" onclick="goToStep(1)">← Back</button>
+          <button type="button" class="btn-next" onclick="goToStep(3)">Continue <span>→</span></button>
+        </div>
+      </div>
+
+      <!-- ═══ STEP 3: Role-Specific Details ════════ -->
+      <div class="form-step" id="step3">
+        <h3 class="step-title" id="step3Title">Additional Details</h3>
+
+        <!-- ─ USER FIELDS ─ -->
+        <div id="userFields" class="hidden">
+          <div class="role-info-banner user-banner">
+            <span><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span>
+            <p>These fields are optional and help chefs understand your dietary needs.</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="healthCondition">Health Condition <span class="optional-badge">Optional</span></label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z"/></svg></span>
+              <input type="text" id="healthCondition" name="healthCondition" placeholder="e.g. Diabetes, Hypertension">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="allergies">Food Allergies <span class="optional-badge">Optional</span></label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg></span>
+              <input type="text" id="allergies" name="allergies" placeholder="e.g. Nuts, Gluten, Dairy">
+            </div>
+            <span class="field-hint">Separate multiple allergies with commas</span>
+          </div>
+
+          <!-- User Joining Purpose -->
+          <div class="field-group">
+            <label class="field-label required" for="userPurpose">Purpose of Joining</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></span>
+              <select id="userPurpose" name="userPurpose" required>
+                <option value="" disabled selected>Select your primary purpose</option>
+                <option value="Booking Chef">Booking Chef</option>
+                <option value="Enroll Course">Enroll Course</option>
+                <option value="Both">Both (Booking Chef & Enroll Course)</option>
+              </select>
+            </div>
+            <span class="field-error hidden" id="userPurposeError">Please select your purpose of joining.</span>
+          </div>
+        </div>
+
+        <!-- ─ CHEF FIELDS ─ -->
+        <div id="chefFields" class="hidden">
+          <div class="role-info-banner chef-banner">
+            <span><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C8 2 5.5 4 5.5 7c0 1.25.7 2.45 1.5 3.25V13c0 2 1.5 3.5 3 4 0 1-1 2-1 2H5c-1.1 0-2 .9-2 2v1h18v-1c0-1.1-.9-2-2-2h-4s-1-1-1-2c1.5-.5 3-2 3-4v-2.75c.8-.8 1.5-2 1.5-3.25 0-3-2.5-5-6.5-5zm-2 13h4v1h-4v-1z"/></svg></span>
+            <p>Complete your chef profile. Your application will be reviewed by admin before approval.</p>
+          </div>
+
+          <!-- Chef Type -->
+          <div class="field-group">
+            <label class="field-label required" for="chefType">Chef Type</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg></span>
+              <select id="chefType" name="chefType">
+                <option value="">Select chef type...</option>
+                <option value="home_cook">Home Cook</option>
+                <option value="professional">Professional Chef</option>
+              </select>
+            </div>
+            <span class="field-error hidden" id="chefTypeError">Please select chef type.</span>
+          </div>
+
+          <!-- Experience -->
+          <div class="field-group">
+            <label class="field-label required" for="experience">Years of Experience</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg></span>
+              <input type="number" id="experience" name="experience" placeholder="e.g. 5" min="0" max="50">
+            </div>
+            <span class="field-error hidden" id="experienceError">Please enter years of experience.</span>
+          </div>
+
+          <!-- Cuisine Specialization (Multi-select) -->
+          <div class="field-group">
+            <label class="field-label required">Cuisine Specialization</label>
+            <p class="field-hint" style="margin-bottom:0.5rem;">Select all that apply</p>
+            <div class="multi-select-grid" id="cuisineGrid">
+              <label class="multi-chip"><input type="checkbox" name="cuisines" value="sri_lankan"><span>🇱🇰 Sri Lankan</span></label>
+              <label class="multi-chip"><input type="checkbox" name="cuisines" value="italian"><span>🇮🇹 Italian</span></label>
+              <label class="multi-chip"><input type="checkbox" name="cuisines" value="indian"><span>🇮🇳 Indian</span></label>
+              <label class="multi-chip"><input type="checkbox" name="cuisines" value="chinese"><span>🇨🇳 Chinese</span></label>
+              <label class="multi-chip"><input type="checkbox" name="cuisines" value="malaysian"><span>🇲🇾 Malaysian</span></label>
+              <label class="multi-chip"><input type="checkbox" name="cuisines" value="japanese"><span>🇯🇵 Japanese</span></label>
+              <label class="multi-chip"><input type="checkbox" name="cuisines" value="french"><span>🇫🇷 French</span></label>
+              <label class="multi-chip"><input type="checkbox" name="cuisines" value="mexican"><span>🇲🇽 Mexican</span></label>
+              <label class="multi-chip"><input type="checkbox" name="cuisines" value="portuguese"><span>🇵🇹 Portuguese</span></label>
+            </div>
+            <span class="field-error hidden" id="cuisineError">Please select at least one cuisine.</span>
+          </div>
+
+          <!-- Hourly Rate -->
+          <div class="field-group">
+            <label class="field-label required" for="hourlyRate">Hourly Rate (LKR)</label>
+            <div class="input-wrap">
+              <span class="input-icon" style="font-weight: 700; font-size: 0.85rem; color: var(--green-dark, #2C5F2D); opacity: 0.85; user-select: none;">Rs</span>
+              <input type="number" id="hourlyRate" name="hourlyRate" placeholder="e.g. 2500" min="0">
+            </div>
+            <span class="field-error hidden" id="hourlyRateError">Please enter your hourly rate.</span>
+          </div>
+
+          <!-- Short Bio -->
+          <div class="field-group">
+            <label class="field-label required" for="bio">Short Bio</label>
+            <div class="textarea-wrap">
+              <textarea id="bio" name="bio" rows="3" placeholder="Tell us about your culinary journey, specialties, and what makes your cooking unique..." maxlength="300"></textarea>
+            </div>
+            <div class="char-counter"><span id="bioCount">0</span>/300</div>
+            <span class="field-error hidden" id="bioError">Please write a short bio.</span>
+          </div>
+
+          <!-- Chef Purpose (Multi-select) -->
+          <div class="field-group">
+            <label class="field-label required">Why are you entering this system?</label>
+            <p class="field-hint" style="margin-bottom:0.5rem;">Select all that apply</p>
+            <div class="purpose-check-list" id="purposeGrid">
+              <label class="purpose-check-item">
+                <input type="radio" name="chefPurpose" value="teach" id="purposeTeach" class="purpose-radio">
+                <span class="custom-checkbox"></span>
+                <span class="purpose-label-text">I want to teach</span>
+              </label>
+              <label class="purpose-check-item">
+                <input type="radio" name="chefPurpose" value="cook" id="purposeCook" class="purpose-radio">
+                <span class="custom-checkbox"></span>
+                <span class="purpose-label-text">I want to cook at home</span>
+              </label>
+              <label class="purpose-check-item">
+                <input type="radio" name="chefPurpose" value="both" id="purposeBoth" class="purpose-radio">
+                <span class="custom-checkbox"></span>
+                <span class="purpose-label-text">Both (teach & cook at home)</span>
+              </label>
+            </div>
+            <span class="field-error hidden" id="purposeError">Please select at least one purpose.</span>
+          </div>
+
+          <h4 class="upload-section-title" style="margin-top: 1.5rem;">🏦 Bank Account Details</h4>
+          <div class="role-info-banner" style="margin-bottom: 1rem; background: #fff8e1; border: 1.5px solid #f9a825; color: #6d4c00; border-radius: 10px; padding: 0.85rem 1rem; display:flex; gap:0.6rem; align-items:flex-start;">
+            <span style="font-size:1.3rem;">🔒</span>
+            <div>
+              <strong style="display:block; margin-bottom:0.2rem;">Your bank details are 100% secure.</strong>
+              <p style="font-size: 0.83rem; margin:0;">We never share your account details with anyone. This is only used to send you advance payments when a client books you. Payments are transferred directly to your account after the client uploads a bank receipt.</p>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label required" for="bankName">Bank Name</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 10v7h3v-7H4zm6 0v7h3v-7h-3zM2 22h19v-3H2v3zm14-12v7h3v-7h-3zm-4.5-9L2 6v2h19V6l-9.5-5z"/></svg></span>
+              <input type="text" id="bankName" name="bankName" placeholder="e.g. Commercial Bank">
+            </div>
+            <span class="field-error hidden" id="bankNameError">Please enter your bank name.</span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label required" for="accountHolderName">Account Holder Name</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span>
+              <input type="text" id="accountHolderName" name="accountHolderName" placeholder="e.g. A. Fernando">
+            </div>
+            <span class="field-error hidden" id="accountHolderNameError">Please enter the account holder's name.</span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label required" for="accountNumber">Account Number</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M16 4l-1 4H10.5l1-4h-2l-1 4H4v2h4l-1.5 6H2v2h4l-1 4h2l1-4h4.5l-1 4h2l1-4h4v-2h-3.5l1.5-6H22v-2h-4l1-4h-3zM14 16h-4l1.5-6h4l-1.5 6z"/></svg></span>
+              <input type="text" id="accountNumber" name="accountNumber" placeholder="e.g. 1234567890">
+            </div>
+            <span class="field-error hidden" id="accountNumberError">Please enter your account number.</span>
+          </div>
+
+          <!-- Document Uploads -->
+          <h4 class="upload-section-title" style="margin-top: 1.5rem;">📄 Required Documents</h4>
+
+          <!-- NIC Front & Back (2 Photos Required) -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="field-group">
+              <label class="field-label required" for="nicFrontUpload">🪪 NIC Front Side Photo</label>
+              <div class="file-upload-area sm-upload" onclick="document.getElementById('nicFrontUpload').click()" style="padding:1rem 0.8rem; text-align:center;">
+                <span class="upload-icon" style="margin-bottom:0.3rem;"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm16 14H5V5h14v14zM8 12c1.65 0 3-1.35 3-3s-1.35-3-3-3-3 1.35-3 3 1.35 3 3 3zm6 3c-2 0-6 1-6 3v1h12v-1c0-2-4-3-6-3z"/></svg></span>
+                <div>
+                  <p id="nicFrontLabel" style="font-weight:700; font-size:0.85rem; margin:0 0 0.2rem;">Upload Front Photo</p>
+                  <small style="color:#777; font-size:0.72rem;">JPG, PNG, PDF &bull; Max 5MB</small>
+                </div>
+                <input type="file" id="nicFrontUpload" name="nicFront" accept="image/*,.pdf" class="hidden-file" onchange="updateFileLabel(this, 'nicFrontLabel')">
+              </div>
+              <span class="field-error hidden" id="nicFrontError">NIC front side photo is required.</span>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label required" for="nicBackUpload">🪪 NIC Back Side Photo</label>
+              <div class="file-upload-area sm-upload" onclick="document.getElementById('nicBackUpload').click()" style="padding:1rem 0.8rem; text-align:center;">
+                <span class="upload-icon" style="margin-bottom:0.3rem;"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm16 14H5V5h14v14zM8 12c1.65 0 3-1.35 3-3s-1.35-3-3-3-3 1.35-3 3 1.35 3 3 3zm6 3c-2 0-6 1-6 3v1h12v-1c0-2-4-3-6-3z"/></svg></span>
+                <div>
+                  <p id="nicBackLabel" style="font-weight:700; font-size:0.85rem; margin:0 0 0.2rem;">Upload Back Photo</p>
+                  <small style="color:#777; font-size:0.72rem;">JPG, PNG, PDF &bull; Max 5MB</small>
+                </div>
+                <input type="file" id="nicBackUpload" name="nicBack" accept="image/*,.pdf" class="hidden-file" onchange="updateFileLabel(this, 'nicBackLabel')">
+              </div>
+              <span class="field-error hidden" id="nicBackError">NIC back side photo is required.</span>
+            </div>
+          </div>
+
+          <!-- Police Clearance -->
+          <div class="field-group">
+            <label class="field-label required" for="policeUpload">Police Clearance Certificate</label>
+            <div class="file-upload-area sm-upload" onclick="document.getElementById('policeUpload').click()">
+              <span class="upload-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></span>
+              <div>
+                <p id="policeLabel">Click to upload Police Clearance</p>
+                <small>JPG, PNG, PDF — Max 5MB</small>
+              </div>
+              <input type="file" id="policeUpload" name="policeClearance" accept="image/*,.pdf" class="hidden-file" onchange="updateFileLabel(this, 'policeLabel')">
+            </div>
+            <span class="field-error hidden" id="policeError">Police Clearance is required.</span>
+          </div>
+
+          <!-- Certificates (Optional) -->
+          <div class="field-group">
+            <label class="field-label" for="certUpload">Culinary Certificates <span class="optional-badge">Optional</span></label>
+            <div class="file-upload-area sm-upload" onclick="document.getElementById('certUpload').click()">
+              <span class="upload-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
+              <div>
+                <p id="certLabel">Click to upload Certificates</p>
+                <small>PDF, JPG, PNG — Multiple files allowed</small>
+              </div>
+              <input type="file" id="certUpload" name="certificates" accept="image/*,.pdf" class="hidden-file" multiple onchange="updateFileLabel(this, 'certLabel')">
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ TERMS & CONDITIONS ─ -->
+        <div class="terms-wrap" id="termsWrap">
+          <label class="checkbox-label terms-label">
+            <input type="checkbox" id="termsCheck" name="terms" onchange="checkTerms()">
+            <span class="checkmark"></span>
+            <span>I agree to the <a href="/terms" onclick="openTermsModal(event)" class="terms-link">Terms &amp; Conditions</a> and <a href="/terms" onclick="openTermsModal(event)" class="terms-link">Privacy Policy</a></span>
+          </label>
+          <span class="field-error hidden" id="termsError">You must accept the Terms &amp; Conditions.</span>
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <button type="submit" class="btn-submit" id="signupBtn" disabled onclick="handleSignup(event)">
+          <span class="btn-text">Create Account</span>
+          <span class="btn-arrow">→</span>
+        </button>
+        <p class="disabled-hint" id="disabledHint">Complete all required fields and accept terms to enable this button.</p>
+
+        <div class="step-actions two-btn" style="margin-top:1rem;">
+          <button type="button" class="btn-back" onclick="goToStep(2)">← Back</button>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- ── SUCCESS MODAL ──────────────────────────── -->
+    <div class="success-overlay hidden" id="successOverlay">
+      <div class="success-card">
+        <div class="success-icon">🎉</div>
+        <h2 class="success-title">Registration Successful!</h2>
+        <p class="success-msg" id="successMsg"></p>
+        <a href="/login" class="btn-submit" style="text-decoration:none; display:inline-flex;">Go to Login →</a>
+      </div>
+    </div>
+
+    <!-- Switch to Login -->
+    <p class="switch-link">
+      Already have an account? <a href="/login">Login</a>
+    </p>
+  </div>
+</div>
+
+<!-- ── TERMS & CONDITIONS MODAL ────────────────── -->
+<div class="terms-modal-overlay hidden" id="termsModalOverlay" onclick="if(event.target===this) closeTermsModal()">
+  <div class="terms-modal-card">
+    <div class="terms-modal-header">
+      <div class="terms-modal-brand">
+        <img src="/images/logo2.png" alt="ChefNest Logo" style="height:36px; width:auto; object-fit:contain;">
+        <h3 style="font-size:1.15rem; margin:0; color:#1E293B; font-weight:700;">Terms &amp; Conditions</h3>
+      </div>
+      <button type="button" class="modal-close-btn" onclick="closeTermsModal()" aria-label="Close modal">✕</button>
+    </div>
+    <div class="terms-modal-body">
+      <iframe src="/terms" style="width:100%; height:100%; border:none;" id="termsIframe"></iframe>
+    </div>
+    <div class="terms-modal-footer">
+      <a href="/terms" target="_blank" class="terms-full-link">Open full page in new tab ↗</a>
+      <button type="button" class="btn-agree-modal" onclick="acceptTermsModal()">I Agree &amp; Accept ✓</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Chef Purpose Toggle Radio ─────────────────────────────
+function initPurposeCheckboxes() {
+  const items = document.querySelectorAll('.purpose-check-item');
+  items.forEach(item => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault(); // prevent native radio double-toggle
+      const radio = this.querySelector('.purpose-radio');
+      if (!radio) return;
+      const wasSelected = this.classList.contains('selected');
+      // Deselect all
+      items.forEach(i => {
+        i.classList.remove('selected');
+        i.querySelector('.purpose-radio').checked = false;
+      });
+      // Toggle: select only if it was NOT already selected
+      if (!wasSelected) {
+        this.classList.add('selected');
+        radio.checked = true;
+      }
+    });
+  });
+}
+// Call directly — DOM is already ready when scripts at bottom of page run
+initPurposeCheckboxes();
+
+// ── State ─────────────────────────────────────────────────
+let signupRole = null;
+let pwStrong   = false;
+let pwMatch    = false;
+
+// ── Role Selection ────────────────────────────────────────
+function selectSignupRole(role) {
+  signupRole = role;
+  document.getElementById('roleInput').value = role;
+
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('signRole' + (role === 'user' ? 'User' : 'Chef')).classList.add('active');
+  document.getElementById('signRoleError').classList.add('hidden');
+
+  // Show progress + form
+  document.getElementById('progressWrap').classList.remove('hidden');
+  document.getElementById('step1').classList.add('active');
+
+  // Set step 3 title
+  document.getElementById('step3Title').textContent =
+    role === 'chef' ? 'Chef Profile Details' : 'Health Preferences (Optional)';
+}
+
+// ── Step Navigation ───────────────────────────────────────
+function goToStep(stepNum) {
+  if (!signupRole) {
+    document.getElementById('signRoleError').classList.remove('hidden');
+    return;
+  }
+
+  // Validate before moving forward
+  if (stepNum === 2 && !validateStep1()) return;
+  if (stepNum === 3 && !validateStep2()) return;
+
+  // Show role-specific fields on step 3
+  if (stepNum === 3) {
+    document.getElementById('userFields').classList.toggle('hidden', signupRole !== 'user');
+    document.getElementById('chefFields').classList.toggle('hidden', signupRole !== 'chef');
+    document.getElementById('termsWrap').classList.remove('hidden');
+  }
+
+  document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + stepNum).classList.add('active');
+
+  // Update progress steps
+  for (let i = 1; i <= 3; i++) {
+    const stepEl = document.getElementById('pstep' + i);
+    stepEl.classList.toggle('active', i === stepNum);
+    stepEl.classList.toggle('done', i < stepNum);
+    if (i < 3) {
+      const lineEl = document.getElementById('pline' + i);
+      if (lineEl) lineEl.classList.toggle('done', i < stepNum);
+    }
+  }
+
+  // Scroll to top of card
+  document.querySelector('.signup-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Step 1 Validation ─────────────────────────────────────
+function validateStep1() {
+  let ok = true;
+
+  const firstName = document.getElementById('firstName').value.trim();
+  setError('firstNameError', !firstName, 'First name is required.');
+  if (!firstName) ok = false;
+
+  const lastName = document.getElementById('lastName').value.trim();
+  setError('lastNameError', !lastName, 'Last name is required.');
+  if (!lastName) ok = false;
+
+  const email = document.getElementById('signEmail').value.trim();
+  const emailOk = isValidEmail(email);
+  setError('signEmailError', !emailOk, 'Please enter a valid email address.');
+  if (!emailOk) ok = false;
+
+  const phone = document.getElementById('phone').value.trim();
+  const phoneOk = isValidSLPhone(phone);
+  setError('phoneError', !phoneOk, 'Please enter a valid Sri Lankan mobile number.');
+  if (!phoneOk) ok = false;
+
+  const address = document.getElementById('address').value.trim();
+  setError('addressError', !address, 'Address is required.');
+  if (!address) ok = false;
+
+  const district = document.getElementById('signupDistrictSelect').value.trim();
+  setError('districtError', !district, 'District is required.');
+  if (!district) ok = false;
+
+  const city = document.getElementById('city').value.trim();
+  setError('cityError', !city, 'City/Town is required.');
+  if (!city) ok = false;
+
+  return ok;
+}
+
+// ── Step 2 Validation ─────────────────────────────────────
+function validateStep2() {
+  let ok = true;
+  if (!pwStrong) {
+    document.getElementById('signPasswordError').classList.remove('hidden');
+    ok = false;
+  } else {
+    document.getElementById('signPasswordError').classList.add('hidden');
+  }
+  if (!pwMatch) {
+    document.getElementById('confirmPasswordError').classList.remove('hidden');
+    ok = false;
+  } else {
+    document.getElementById('confirmPasswordError').classList.add('hidden');
+  }
+  return ok;
+}
+
+// ── Email Validation ──────────────────────────────────────
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// ── Sri Lankan Phone Validation ───────────────────────────
+function isValidSLPhone(phone) {
+  return /^0(70|71|72|74|75|76|77|78)\d{7}$/.test(phone);
+}
+
+// ── Password Strength Check ───────────────────────────────
+function checkPassword() {
+  const pw = document.getElementById('signPassword').value;
+  const rules = {
+    len:     pw.length >= 8,
+    upper:   /[A-Z]/.test(pw),
+    lower:   /[a-z]/.test(pw),
+    num:     /[0-9]/.test(pw),
+    special: /[!@#$%^&*(),.?":{}|<>_\-]/.test(pw)
+  };
+
+  let score = 0;
+  for (const [key, passed] of Object.entries(rules)) {
+    const el = document.getElementById('rule-' + key);
+    if (el) {
+      el.classList.toggle('passed', passed);
+      el.textContent = (passed ? '✓ ' : '✗ ') + el.textContent.slice(2);
+    }
+    if (passed) score++;
+  }
+
+  pwStrong = score === 5;
+  const fill = document.getElementById('pwStrengthFill');
+  fill.style.width = (score / 5 * 100) + '%';
+  fill.className = 'pw-strength-fill ' + ['','weak','weak','medium','good','strong'][score];
+
+  if (document.getElementById('confirmPassword').value) checkConfirmPw();
+  checkEnableSubmit();
+}
+
+// ── Confirm Password ──────────────────────────────────────
+function checkConfirmPw() {
+  const pw  = document.getElementById('signPassword').value;
+  const cpw = document.getElementById('confirmPassword').value;
+  pwMatch = pw === cpw && pw.length > 0;
+  const status = document.getElementById('confirmStatus');
+  const err    = document.getElementById('confirmPasswordError');
+  status.textContent = pwMatch ? '✅' : (cpw ? '❌' : '');
+  err.classList.toggle('hidden', pwMatch || !cpw);
+  checkEnableSubmit();
+}
+
+// ── Terms Modal Controls ──────────────────────────────────
+function openTermsModal(e) {
+  if (e) e.preventDefault();
+  document.getElementById('termsModalOverlay').classList.remove('hidden');
+}
+
+function closeTermsModal() {
+  document.getElementById('termsModalOverlay').classList.add('hidden');
+}
+
+function acceptTermsModal() {
+  document.getElementById('termsCheck').checked = true;
+  document.getElementById('termsError').classList.add('hidden');
+  checkTerms();
+  closeTermsModal();
+  saveSignupFormState();
+}
+
+// ── Form Draft Auto-Save & Restore ────────────────────────
+function saveSignupFormState() {
+  const data = {
+    signupRole: signupRole,
+    firstName: document.getElementById('firstName') ? document.getElementById('firstName').value : '',
+    lastName: document.getElementById('lastName') ? document.getElementById('lastName').value : '',
+    email: document.getElementById('signEmail') ? document.getElementById('signEmail').value : '',
+    phone: document.getElementById('phone') ? document.getElementById('phone').value : '',
+    address: document.getElementById('address') ? document.getElementById('address').value : '',
+    district: document.getElementById('signupDistrictSelect') ? document.getElementById('signupDistrictSelect').value : '',
+    city: document.getElementById('city') ? document.getElementById('city').value : '',
+    healthCondition: document.getElementById('healthCondition') ? document.getElementById('healthCondition').value : '',
+    allergies: document.getElementById('allergies') ? document.getElementById('allergies').value : '',
+    chefType: document.getElementById('chefType') ? document.getElementById('chefType').value : '',
+    experience: document.getElementById('experience') ? document.getElementById('experience').value : '',
+    hourlyRate: document.getElementById('hourlyRate') ? document.getElementById('hourlyRate').value : '',
+    bio: document.getElementById('bio') ? document.getElementById('bio').value : '',
+    bankName: document.getElementById('bankName') ? document.getElementById('bankName').value : '',
+    accountHolderName: document.getElementById('accountHolderName') ? document.getElementById('accountHolderName').value : '',
+    accountNumber: document.getElementById('accountNumber') ? document.getElementById('accountNumber').value : '',
+    termsChecked: document.getElementById('termsCheck') ? document.getElementById('termsCheck').checked : false
+  };
+  
+  // Save purpose checkboxes
+  const purposeChecked = [];
+  document.querySelectorAll('input[name="chefPurpose"]:checked').forEach(cb => purposeChecked.push(cb.value));
+  data.chefPurpose = purposeChecked;
+  sessionStorage.setItem('chefnest_signup_draft', JSON.stringify(data));
+}
+
+function restoreSignupFormState() {
+  const saved = sessionStorage.getItem('chefnest_signup_draft');
+  if (!saved) return;
+  try {
+    const data = JSON.parse(saved);
+    if (data.signupRole) selectSignupRole(data.signupRole);
+    if (data.firstName) document.getElementById('firstName').value = data.firstName;
+    if (data.lastName) document.getElementById('lastName').value = data.lastName;
+    if (data.email) {
+      document.getElementById('signEmail').value = data.email;
+      const event = new Event('input');
+      document.getElementById('signEmail').dispatchEvent(event);
+    }
+    if (data.phone) {
+      document.getElementById('phone').value = data.phone;
+      const event = new Event('input');
+      document.getElementById('phone').dispatchEvent(event);
+    }
+    if (data.address) document.getElementById('address').value = data.address;
+    if (data.district) {
+      document.getElementById('signupDistrictSelect').value = data.district;
+      const event = new Event('change');
+      document.getElementById('signupDistrictSelect').dispatchEvent(event);
+      if (data.city) document.getElementById('city').value = data.city;
+    }
+    if (data.healthCondition) document.getElementById('healthCondition').value = data.healthCondition;
+    if (data.allergies) document.getElementById('allergies').value = data.allergies;
+    if (data.chefType) document.getElementById('chefType').value = data.chefType;
+    if (data.experience) document.getElementById('experience').value = data.experience;
+    if (data.hourlyRate) document.getElementById('hourlyRate').value = data.hourlyRate;
+    if (data.bio) document.getElementById('bio').value = data.bio;
+    if (data.bankName) document.getElementById('bankName').value = data.bankName;
+    if (data.accountHolderName) document.getElementById('accountHolderName').value = data.accountHolderName;
+    if (data.accountNumber) document.getElementById('accountNumber').value = data.accountNumber;
+    if (data.chefPurpose && Array.isArray(data.chefPurpose)) {
+      data.chefPurpose.forEach(val => {
+        const cb = document.querySelector(`input[name="chefPurpose"][value="${val}"]`);
+        if (cb) cb.checked = true;
+      });
+    }
+    if (data.termsChecked) {
+      document.getElementById('termsCheck').checked = true;
+      checkTerms();
+    }
+  } catch (e) { console.error('Error restoring form draft:', e); }
+}
+
+// ── Terms Check ───────────────────────────────────────────
+function checkTerms() {
+  saveSignupFormState();
+  checkEnableSubmit();
+}
+
+// ── Enable Submit Button ──────────────────────────────────
+function checkEnableSubmit() {
+  const terms   = document.getElementById('termsCheck').checked;
+  const enabled = pwStrong && pwMatch && terms;
+  const btn     = document.getElementById('signupBtn');
+  const hint    = document.getElementById('disabledHint');
+  btn.disabled  = !enabled;
+  hint.classList.toggle('hidden', enabled);
+}
+
+// ── Toggle Password ───────────────────────────────────────
+function togglePassword(inputId, btnId) {
+  const inp = document.getElementById(inputId);
+  const btn = document.getElementById(btnId);
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  if (inp.type === 'text') {
+    btn.innerHTML = '<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>';
+  } else {
+    btn.innerHTML = '<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>';
+  }
+}
+
+// ── Handle Signup ─────────────────────────────────────────
+function handleSignup(e) {
+  e.preventDefault();
+  if (!document.getElementById('termsCheck').checked) {
+    document.getElementById('termsError').classList.remove('hidden');
+    return;
+  }
+
+  // User-specific validation
+  if (signupRole === 'user') {
+    let ok = true;
+    const userPurposeVal = document.getElementById('userPurpose').value;
+    if (!userPurposeVal) {
+      document.getElementById('userPurposeError').classList.remove('hidden');
+      ok = false;
+    } else {
+      document.getElementById('userPurposeError').classList.add('hidden');
+    }
+    if (!ok) return;
+  }
+
+  // Chef-specific validation
+  if (signupRole === 'chef') {
+    let ok = true;
+    if (!document.getElementById('chefType').value) {
+      document.getElementById('chefTypeError').classList.remove('hidden'); ok = false;
+    } else document.getElementById('chefTypeError').classList.add('hidden');
+
+    if (!document.getElementById('experience').value) {
+      document.getElementById('experienceError').classList.remove('hidden'); ok = false;
+    } else document.getElementById('experienceError').classList.add('hidden');
+
+    const checkedCuisines = document.querySelectorAll('input[name="cuisines"]:checked');
+    if (checkedCuisines.length === 0) {
+      document.getElementById('cuisineError').classList.remove('hidden'); ok = false;
+    } else document.getElementById('cuisineError').classList.add('hidden');
+
+    if (!document.getElementById('hourlyRate').value) {
+      document.getElementById('hourlyRateError').classList.remove('hidden'); ok = false;
+    } else document.getElementById('hourlyRateError').classList.add('hidden');
+
+    if (!document.getElementById('bio').value.trim()) {
+      document.getElementById('bioError').classList.remove('hidden'); ok = false;
+    } else document.getElementById('bioError').classList.add('hidden');
+
+    const checkedPurpose = document.querySelectorAll('input[name="chefPurpose"]:checked');
+    if (checkedPurpose.length === 0) {
+      document.getElementById('purposeError').classList.remove('hidden'); ok = false;
+    } else document.getElementById('purposeError').classList.add('hidden');
+
+    if (!document.getElementById('bankName').value.trim()) {
+      document.getElementById('bankNameError').classList.remove('hidden'); ok = false;
+    } else document.getElementById('bankNameError').classList.add('hidden');
+
+    if (!document.getElementById('accountHolderName').value.trim()) {
+      document.getElementById('accountHolderNameError').classList.remove('hidden'); ok = false;
+    } else document.getElementById('accountHolderNameError').classList.add('hidden');
+
+    if (!document.getElementById('accountNumber').value.trim()) {
+      document.getElementById('accountNumberError').classList.remove('hidden'); ok = false;
+    } else document.getElementById('accountNumberError').classList.add('hidden');
+
+    if (!document.getElementById('nicFrontUpload').files.length) {
+      document.getElementById('nicFrontError').classList.remove('hidden'); ok = false;
+    } else document.getElementById('nicFrontError').classList.add('hidden');
+
+    if (!document.getElementById('nicBackUpload').files.length) {
+      document.getElementById('nicBackError').classList.remove('hidden'); ok = false;
+    } else document.getElementById('nicBackError').classList.add('hidden');
+
+    if (!document.getElementById('policeUpload').files.length) {
+      document.getElementById('policeError').classList.remove('hidden'); ok = false;
+    } else document.getElementById('policeError').classList.add('hidden');
+
+    if (!ok) return;
+  }
+
+  // Animate button
+  const btn = document.getElementById('signupBtn');
+  btn.innerHTML = '<span class="spinner"></span> Creating account...';
+  btn.disabled  = true;
+
+  // Send request to server using Fetch API with FormData
+  const formElement = document.getElementById('signupForm');
+  const formData = new FormData(formElement);
+
+  fetch('/signup', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById('successOverlay').classList.remove('hidden');
+      const msg = document.getElementById('successMsg');
+      if (signupRole === 'chef') {
+        msg.innerHTML = '<strong>Your account has been submitted for admin verification.</strong><br>You can login only after your account is approved by the administrator.';
+      } else {
+        msg.innerHTML = 'Your account has been created successfully.<br>You can now login to book chef services.';
+      }
+    } else {
+      alert('Error during registration: ' + (data.message || 'Unknown error'));
+      btn.innerHTML = '<span class="btn-text">Create Account</span><span class="btn-arrow">→</span>';
+      btn.disabled = false;
+    }
+  })
+  .catch(err => {
+    console.error('Signup Error:', err);
+    alert('Server error. Please try again.');
+    btn.innerHTML = '<span class="btn-text">Create Account</span><span class="btn-arrow">→</span>';
+    btn.disabled = false;
+  });
+}
+
+// ── Helpers ───────────────────────────────────────────────
+function setError(id, show, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('hidden', !show);
+  if (msg) el.textContent = msg;
+}
+
+function previewPhoto(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('photoPreviewArea').innerHTML =
+        `<img src="${e.target.result}" alt="Preview" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">
+         <p style="margin-top:0.4rem;font-size:0.8rem;">${input.files[0].name}</p>`;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+function updateFileLabel(input, labelId) {
+  const label = document.getElementById(labelId);
+  if (input.files.length > 1) {
+    label.textContent = input.files.length + ' files selected';
+  } else if (input.files.length === 1) {
+    label.textContent = input.files[0].name;
+  }
+}
+
+// ── Live Validations ──────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Handle URL role parameter (e.g. /signup?role=chef)
+  const urlParams = new URLSearchParams(window.location.search);
+  const roleParam = urlParams.get('role');
+  if (roleParam === 'chef' || roleParam === 'user') {
+    selectSignupRole(roleParam);
+  } else {
+    // Restore form draft if saved in sessionStorage
+    restoreSignupFormState();
+  }
+
+  // Attach live auto-save on input changes
+  document.querySelectorAll('#signupForm input, #signupForm select, #signupForm textarea').forEach(input => {
+    input.addEventListener('input', saveSignupFormState);
+    input.addEventListener('change', saveSignupFormState);
+  });
+
+  // Email live
+  document.getElementById('signEmail').addEventListener('input', function () {
+    const ok = isValidEmail(this.value);
+    document.getElementById('emailStatus').textContent = this.value ? (ok ? '✅' : '❌') : '';
+    setError('signEmailError', this.value && !ok);
+  });
+
+  // Phone live
+  document.getElementById('phone').addEventListener('input', function () {
+    const ok = isValidSLPhone(this.value);
+    document.getElementById('phoneStatus').textContent = this.value.length >= 10 ? (ok ? '✅' : '❌') : '';
+    setError('phoneError', this.value.length >= 10 && !ok);
+  });
+
+  // Bio char counter
+  document.getElementById('bio').addEventListener('input', function () {
+    document.getElementById('bioCount').textContent = this.value.length;
+  });
+
+  // Cuisine checkbox style update
+  document.querySelectorAll('.multi-chip input').forEach(cb => {
+    cb.addEventListener('change', function () {
+      this.closest('.multi-chip').classList.toggle('selected', this.checked);
+    });
+  });
+
+  // District and City Dropdowns Logic
+  const districtCities = {
+    "Colombo": ["Colombo", "Dehiwala-Mount Lavinia", "Moratuwa", "Sri Jayawardenepura Kotte", "Kaduwela", "Maharagama", "Kesbewa", "Kolonnawa", "Homagama", "Hanwella"],
+    "Gampaha": ["Gampaha", "Negombo", "Kelaniya", "Kadawatha", "Kiribathgoda", "Wattala", "Ja-Ela", "Minuwangoda", "Divulapitiya", "Mirigama"],
+    "Kalutara": ["Kalutara", "Panadura", "Horana", "Beruwala", "Aluthgama", "Bandaragama", "Wadduwa"],
+    "Kandy": ["Kandy", "Gampola", "Peradeniya", "Katugastota", "Kundasale", "Nawalapitiya", "Akurana"],
+    "Matale": ["Matale", "Dambulla", "Sigiriya", "Galewela", "Ukuwela"],
+    "Nuwara Eliya": ["Nuwara Eliya", "Hatton", "Ginigathena", "Talawakele", "Lindula"],
+    "Galle": ["Galle", "Hikkaduwa", "Karapitiya", "Ambalangoda", "Elpitiya", "Bentota", "Unawatuna"],
+    "Matara": ["Matara", "Weligama", "Akuressa", "Deniyaya", "Dikwella"],
+    "Hambantota": ["Hambantota", "Tangalle", "Beliatta", "Tissamaharama", "Ambalantota"],
+    "Jaffna": ["Jaffna", "Chavakachcheri", "Point Pedro", "Karainagar", "Nallur", "Valvettithurai"],
+    "Kilinochchi": ["Kilinochchi", "Pooneryn", "Pallai"],
+    "Mannar": ["Mannar", "Murunkan", "Madhu"],
+    "Vavuniya": ["Vavuniya", "Nedunkeni", "Cheddikulam"],
+    "Mullaitivu": ["Mullaitivu", "Puthukudiyiruppu", "Oddusuddan"],
+    "Batticaloa": ["Batticaloa", "Kattankudy", "Eravur", "Valachchenai", "Kaluwanchikudy"],
+    "Ampara": ["Ampara", "Kalmunai", "Sainthamaruthu", "Akkaraipattu", "Pottuvil"],
+    "Trincomalee": ["Trincomalee", "Mutur", "Kinniya", "Kuchchaveli"],
+    "Kurunegala": ["Kurunegala", "Kuliyapitiya", "Narammala", "Wariyapola", "Pannala", "Ibbagamuwa"],
+    "Puttalam": ["Puttalam", "Chilaw", "Wennappuwa", "Marawila", "Dankotuwa", "Kalpitiya"],
+    "Anuradhapura": ["Anuradhapura", "Mihintale", "Kekirawa", "Medawachchiya", "Eppawala", "Galgamuwa"],
+    "Polonnaruwa": ["Polonnaruwa", "Kaduruwela", "Hingurakgoda", "Medirigiriya"],
+    "Badulla": ["Badulla", "Bandarawela", "Haputale", "Ella", "Welimada", "Mahiyanganaya"],
+    "Moneragala": ["Moneragala", "Wellawaya", "Buttala", "Kataragama", "Bibile"],
+    "Ratnapura": ["Ratnapura", "Balangoda", "Embilipitiya", "Pelmadulla", "Eheliyagoda"],
+    "Kegalle": ["Kegalle", "Mawanella", "Ruwanwella", "Warakapola", "Dehiowita"]
+  };
+
+  const districtSelect = document.getElementById('signupDistrictSelect');
+  const citySelect = document.getElementById('city');
+
+  if (districtSelect && citySelect) {
+    districtSelect.addEventListener('change', function() {
+      const selectedDistrict = this.value;
+      
+      // Reset and clear city select
+      citySelect.innerHTML = '<option value="" disabled selected>Select City/Town</option>';
+      
+      if (selectedDistrict && districtCities[selectedDistrict]) {
+        const cities = districtCities[selectedDistrict];
+        cities.forEach(function(city) {
+          const option = document.createElement('option');
+          option.value = city;
+          option.textContent = city;
+          citySelect.appendChild(option);
+        });
+        citySelect.disabled = false;
+      } else {
+        citySelect.disabled = true;
+      }
+    });
+  }
+  // ── Address Location Mismatch Validation ────────────────
+  const addressInput = document.getElementById('address');
+  const districtSelectEl = document.getElementById('signupDistrictSelect');
+  const citySelectEl = document.getElementById('city');
+
+  function validateAddressLocation() {
+    const addressVal = addressInput.value.trim().toLowerCase();
+    const selectedDistrict = districtSelectEl.value;
+    const selectedCity = citySelectEl.value;
+    const warningEl = document.getElementById('addressLocationWarning');
+
+    // Only check if address has been typed AND a district is selected
+    if (!addressVal || !selectedDistrict) {
+      warningEl.classList.add('hidden');
+      return;
+    }
+
+    // Build a list of all other district/city names (not selected)
+    const allOtherLocations = [];
+    for (const [dist, cities] of Object.entries(districtCities)) {
+      if (dist.toLowerCase() !== selectedDistrict.toLowerCase()) {
+        allOtherLocations.push(dist.toLowerCase());
+        cities.forEach(c => allOtherLocations.push(c.toLowerCase()));
+      } else {
+        // From the selected district, exclude selected city — add other cities in same district
+        cities.forEach(c => {
+          if (selectedCity && c.toLowerCase() !== selectedCity.toLowerCase()) {
+            // Cities in same district are still valid — don't block
+          }
+        });
+      }
+    }
+
+    // Check if address contains any name from a different district
+    const mismatch = allOtherLocations.some(loc => {
+      // Match whole word only to avoid false positives (e.g. "ella" in "hello")
+      const regex = new RegExp('\\b' + loc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+      return regex.test(addressVal);
+    });
+
+    warningEl.classList.toggle('hidden', !mismatch);
+  }
+
+  if (addressInput) {
+    addressInput.addEventListener('input', validateAddressLocation);
+  }
+  if (districtSelectEl) {
+    districtSelectEl.addEventListener('change', validateAddressLocation);
+  }
+  if (citySelectEl) {
+    citySelectEl.addEventListener('change', validateAddressLocation);
+  }
+});
+</script>
+</body>
+</html>

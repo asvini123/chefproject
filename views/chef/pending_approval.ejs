@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pending Approval — ChefNest</title>
+  <meta name="description" content="Your ChefNest chef account is currently pending administrator verification.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #0B132B;
+      color: #F8FAFC;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .bg-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      z-index: 0;
+      opacity: 0.3;
+    }
+
+    .blob-1 {
+      width: 450px;
+      height: 450px;
+      background: #D97A2B;
+      top: -100px;
+      left: -100px;
+    }
+
+    .blob-2 {
+      width: 500px;
+      height: 500px;
+      background: #2C5F2D;
+      bottom: -100px;
+      right: -100px;
+    }
+
+    .pending-card {
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      max-width: 580px;
+      width: 100%;
+      text-align: center;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+      position: relative;
+      z-index: 10;
+    }
+
+    .status-badge-icon {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 1.5rem;
+      border-radius: 50%;
+      background: rgba(217, 122, 43, 0.2);
+      border: 2px solid #D97A2B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      box-shadow: 0 0 30px rgba(217, 122, 43, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(217, 122, 43, 0.3);
+      }
+
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 35px rgba(217, 122, 43, 0.6);
+      }
+
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(217, 122, 43, 0.3);
+      }
+    }
+
+    .pending-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: #FFF;
+    }
+
+    .pending-sub {
+      color: #94A3B8;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .status-timeline {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+
+    .timeline-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .timeline-step:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      font-weight: bold;
+    }
+
+    .step-done {
+      background: #2C5F2D;
+      color: #6EE7B7;
+    }
+
+    .step-current {
+      background: #D97A2B;
+      color: #FFF;
+    }
+
+    .step-next {
+      background: rgba(255, 255, 255, 0.1);
+      color: #94A3B8;
+    }
+
+    .step-info h4 {
+      font-size: 0.95rem;
+      color: #F8FAFC;
+      margin-bottom: 0.2rem;
+    }
+
+    .step-info p {
+      font-size: 0.85rem;
+      color: #94A3B8;
+    }
+
+    .action-btn-wrap {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-action {
+      padding: 0.75rem 1.5rem;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: #D97A2B;
+      color: #FFF;
+    }
+
+    .btn-primary:hover {
+      background: #B85F18;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #F8FAFC;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+
+  <div class="pending-card">
+    <div class="status-badge-icon">👨‍🍳</div>
+    <h1 class="pending-title">Account Pending Approval</h1>
+    <p class="pending-sub">
+      Welcome, <strong>
+        <%= chef ? chef.firstName : 'Chef' %>
+      </strong>! Your chef profile application has been received and is currently being reviewed by the ChefNest Admin
+      team.
+    </p>
+
+    <div class="status-timeline">
+      <div class="timeline-step">
+        <div class="step-icon step-done">✓</div>
+        <div class="step-info">
+          <h4>1. Registration &amp; Documents Uploaded</h4>
+          <p>Your details, NIC, and Police Clearance have been saved securely.</p>
+        </div>
+      </div>
+
+      <div class="timeline-step">
+        <div class="step-icon step-current">⏳</div>
+        <div class="step-info">
+          <h4>2. Admin Verification (In Progress)</h4>
+          <p>Admin is verifying your identification and background clearance.</p>
+        </div>
+      </div>
+
+      <div class="timeline-step">
+        <div class="step-icon step-next">3</div>
+        <div class="step-info">
+          <h4>3. Full Dashboard &amp; Booking Access</h4>
+          <p>Once approved, your profile will be active for customer bookings.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <a href="/logout" class="btn-action btn-secondary">🚪 Logout</a>
+      <a href="/contact" class="btn-action btn-primary">💬 Contact Support</a>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,510 @@
+/* ============================================================
+   ChefNest — Premium Booking Flow Styles
+   booking.css
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --green:        #2C5F2D;
+  --green-dark:   #1E4620;
+  --green-light:  #4A804D;
+  --orange:       #D97A2B;
+  --orange-light: #EC9A52;
+  --cream:        #FFF8E7;
+  --white:        #ffffff;
+  --bg-light:     #f4f7f3;
+  --text-dark:    #1E2E1E;
+  --text-muted:   #6B7B6B;
+  --border:       #e0ead0;
+  --border-light: #eef2ee;
+  --shadow-sm:    0 2px 8px rgba(44,95,45,0.07);
+  --shadow-md:    0 8px 28px rgba(44,95,45,0.12);
+  --radius-sm:    8px;
+  --radius-md:    14px;
+  --radius-lg:    20px;
+  --font:         'Outfit', sans-serif;
+  --transition:   all 0.22s cubic-bezier(0.25,0.8,0.25,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { font-family: var(--font); }
+
+/* ── Page Layout ──────────────────────────────────────────── */
+.booking-page {
+  background: linear-gradient(135deg, #f4f7f3 0%, #fdfff4 100%);
+  min-height: calc(100vh - 80px);
+  padding: 2.5rem 5%;
+}
+
+.booking-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+/* ── Left: Form Column ────────────────────────────────────── */
+.booking-form-col {
+  flex: 2;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 2.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Steps Indicator ──────────────────────────────────────── */
+.booking-steps-indicator {
+  display: flex;
+  gap: 0;
+  margin-bottom: 2rem;
+  background: #f4f7f3;
+  border-radius: var(--radius-md);
+  padding: 0.4rem;
+  border: 1.5px solid var(--border);
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  transition: var(--transition);
+  cursor: default;
+}
+.step.active {
+  background: var(--green);
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(44,95,45,0.2);
+}
+
+/* ── Step Panels ──────────────────────────────────────────── */
+.booking-step-panel {
+  display: none;
+}
+.booking-step-panel.active {
+  display: block;
+}
+
+/* ── Section Headings ─────────────────────────────────────── */
+.booking-section {
+  margin-bottom: 2rem;
+}
+.booking-section h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.mt-2 { margin-top: 1.5rem; }
+
+/* ── Booking Type Cards ───────────────────────────────────── */
+.type-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.type-card {
+  cursor: pointer;
+}
+.type-card input[type=radio] {
+  display: none;
+}
+.card-content {
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem 0.8rem;
+  text-align: center;
+  transition: var(--transition);
+  background: var(--white);
+  position: relative;
+}
+.type-card input:checked + .card-content {
+  border-color: var(--green);
+  background: #f0f7f0;
+  box-shadow: 0 0 0 3px rgba(44,95,45,0.1);
+}
+.card-content:hover {
+  border-color: var(--green-light);
+  background: #f8fbf8;
+}
+.type-icon { font-size: 1.5rem; display: block; margin-bottom: 0.4rem; }
+.card-content strong { display: block; font-size: 0.9rem; color: var(--text-dark); font-weight: 700; }
+.card-content small { display: block; font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+/* ── Form Grid ────────────────────────────────────────────── */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.input-group.full-width { grid-column: 1 / -1; }
+
+.input-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+  width: 100%;
+  padding: 0.72rem 0.95rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 0.92rem;
+  color: var(--text-dark);
+  background: #fafcfa;
+  transition: var(--transition);
+  outline: none;
+}
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+  border-color: var(--green);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(44,95,45,0.08);
+}
+
+/* ── Guest Counter ────────────────────────────────────────── */
+.guest-counter {
+  background: #f8fbf8;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.counter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--border-light);
+}
+.counter-row:last-child { border-bottom: none; }
+.counter-row span { font-size: 0.92rem; font-weight: 500; color: var(--text-dark); }
+.controls { display: flex; align-items: center; gap: 0.6rem; }
+.controls button {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--green);
+  background: white;
+  color: var(--green);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: var(--transition);
+  line-height: 1;
+}
+.controls button:hover { background: var(--green); color: white; }
+.controls input {
+  width: 44px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  color: var(--green-dark);
+}
+
+/* ── Meal Session Checkboxes ──────────────────────────────── */
+.meal-session-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.4rem;
+}
+.meal-session-checkboxes label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #f4f7f4;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.meal-session-checkboxes label:hover {
+  border-color: var(--green-light);
+}
+.meal-session-checkboxes input:checked + span {
+  color: var(--green-dark);
+  font-weight: 700;
+}
+.meal-session-checkboxes input[type=checkbox]:checked {
+  accent-color: var(--green);
+}
+
+/* ── Ingredients & Dish Suggestions ──────────────────────── */
+.ingredients-section { }
+.ingredients-section textarea {
+  width: 100%;
+  padding: 0.72rem 0.95rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 0.92rem;
+  resize: vertical;
+  outline: none;
+  transition: var(--transition);
+}
+.ingredients-section textarea:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(44,95,45,0.08);
+}
+.dish-suggestions-container {
+  margin-top: 0.6rem;
+  min-height: 20px;
+}
+
+/* ── Grocery Support Card ─────────────────────────────────── */
+.grocery-card-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #fff8ee, #fff3dd);
+  border: 1.5px solid #f0c98a;
+  border-radius: var(--radius-md);
+  padding: 1rem 1.2rem;
+  gap: 1rem;
+}
+.grocery-details {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  flex: 1;
+}
+.grocery-icon { font-size: 1.6rem; }
+.grocery-details strong { display: block; font-size: 0.9rem; color: var(--text-dark); }
+.grocery-details p { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem; }
+.grocery-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  cursor: pointer;
+}
+.grocery-toggle input[type=checkbox] {
+  accent-color: var(--orange);
+  width: 16px; height: 16px;
+}
+
+/* ── Dietary & Allergy ────────────────────────────────────── */
+.checkbox-label {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.checkbox-label input[type=checkbox] {
+  accent-color: var(--green);
+  width: 16px; height: 16px;
+}
+
+/* ── Payment Grid ─────────────────────────────────────────── */
+.payment-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+.payment-card { cursor: pointer; }
+.payment-card input[type=radio] { display: none; }
+.pay-card-content {
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  transition: var(--transition);
+  background: white;
+}
+.payment-card input:checked + .pay-card-content {
+  border-color: var(--green);
+  background: #f0f7f0;
+  color: var(--green-dark);
+  box-shadow: 0 0 0 3px rgba(44,95,45,0.1);
+}
+.pay-card-content:hover { border-color: var(--green-light); }
+
+/* ── Promo Code ───────────────────────────────────────────── */
+.promo-input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+.promo-input-group input {
+  flex: 1;
+  padding: 0.72rem 0.95rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  outline: none;
+  transition: var(--transition);
+}
+.promo-input-group input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(44,95,45,0.08);
+}
+
+/* ── Step Navigation Buttons ──────────────────────────────── */
+.step-nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  border-top: 1.5px solid var(--border-light);
+  margin-top: 1.5rem;
+}
+.btn-primary-sm {
+  background: var(--green);
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 3px 10px rgba(44,95,45,0.25);
+}
+.btn-primary-sm:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+.btn-outline-sm {
+  background: white;
+  color: var(--text-muted);
+  border: 1.5px solid var(--border);
+  padding: 0.7rem 1.2rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.btn-outline-sm:hover { border-color: var(--green); color: var(--green); }
+
+/* ── Right: Summary Column ────────────────────────────────── */
+.booking-summary-col { flex: 1; }
+
+.summary-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  position: sticky;
+  top: 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+.summary-card h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.chef-mini-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.2rem;
+  padding: 0.8rem;
+  background: #f4f9f4;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+}
+.chef-mini-profile img, .mini-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--green);
+}
+.mini-avatar {
+  background: linear-gradient(135deg, var(--green), var(--orange));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+.chef-mini-meta strong { display: block; font-size: 0.9rem; color: var(--text-dark); }
+.chef-mini-meta span  { font-size: 0.78rem; color: var(--text-muted); }
+
+.cost-breakdown {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.cost-breakdown li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.cost-breakdown li strong {
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  background: linear-gradient(135deg, #f0f7f0, #f9fff0);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1rem;
+  margin-top: 0.8rem;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .booking-container { flex-direction: column; }
+  .booking-summary-col { width: 100%; }
+  .summary-card { position: static; }
+  .type-options { grid-template-columns: 1fr 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .input-group.full-width { grid-column: 1 / -1; }
+  .payment-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .booking-form-col { padding: 1.2rem; }
+  .type-options { grid-template-columns: 1fr 1fr; }
+  .payment-grid { grid-template-columns: 1fr; }
+}

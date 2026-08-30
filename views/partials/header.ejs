@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'ChefNest' %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <% if (typeof pageCss !== 'undefined' && pageCss) { %>
+    <link rel="stylesheet" href="/css/<%= pageCss %>">
+    <% } %>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!--  HEADER                                                       -->
+    <!-- ============================================================ -->
+    <header class="site-header">
+        <div class="header-inner">
+
+            <!-- LOGO -->
+            <a href="/" class="header-logo">
+                <img src="/images/logo2.png" alt="ChefNest Logo">
+            </a>
+
+            <!-- SEARCH BAR (hidden on mobile, shown on desktop) -->
+            <div class="header-search-wrap">
+                <form action="/courses" method="get" class="header-search-form" id="headerCourseForm">
+                    <div class="search-course-select">
+                        <select name="cat" aria-label="Select Course" id="headerCourseSelect" onchange="navigateToCourse(this)">
+                            <option value="">All Courses</option>
+                            <optgroup label="🌍 Cuisine-Based">
+                                <option value="cuisine#sri-lankan">Sri Lankan Home Cooking Basics</option>
+                                <option value="cuisine#south-indian">South Indian – Chettinad &amp; Kerala Style</option>
+                                <option value="cuisine#north-indian">North Indian – Punjabi &amp; Mughlai</option>
+                                <option value="cuisine#chinese">Chinese Cooking Essentials</option>
+                                <option value="cuisine#continental">Continental / Western Basics</option>
+                            </optgroup>
+                            <optgroup label="🎯 Skill Level">
+                                <option value="skill#beginner">Beginner – Knife Skills &amp; Rice/Curry</option>
+                                <option value="skill#intermediate">Intermediate – Meal Planning &amp; Spice Balancing</option>
+                                <option value="skill#advanced">Advanced – Hotel Plating &amp; Event Cooking</option>
+                            </optgroup>
+                            <optgroup label="🥗 Health &amp; Diet">
+                                <option value="health#diabetic">Diabetic-Friendly Cooking</option>
+                                <option value="health#allergy">Allergy-Safe – Nut-Free &amp; Gluten-Free</option>
+                                <option value="health#weight">Weight Management Meal Prep</option>
+                            </optgroup>
+                            <optgroup label="🎉 Occasion">
+                                <option value="occasion#event">Party &amp; Event Catering Basics</option>
+                                <option value="occasion#festival">Festival Special – Pongal, Deepavali &amp; New Year</option>
+                                <option value="occasion#quick">Quick 30-Min Weeknight Meals</option>
+                            </optgroup>
+                            <optgroup label="🏅 Certification">
+                                <option value="certification#full">Home Cook to Pro Chef – Full Certification</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <input type="text" name="q" placeholder="search menu / chef..." aria-label="Search">
+                    <button type="submit" class="btn-search">Search</button>
+                </form>
+            </div>
+
+            <!-- DESKTOP NAV + AUTH -->
+            <nav class="desktop-nav" aria-label="Main Navigation">
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/chefs">Book a Chef</a></li>
+                    <li><a href="/cuisines">Cuisines</a></li>
+                    <li><a href="/courses">Courses</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+                <div class="header-auth-btns">
+                    <% if (typeof user !== 'undefined' && user && (user._id || user.id)) { %>
+                        <% let dashUrl = '/user/dashboard'; %>
+                        <% if (user.role === 'admin') dashUrl = '/admin/dashboard'; %>
+                        <% if (user.role === 'chef') dashUrl = '/chef/dashboard'; %>
+                        <a href="<%= dashUrl %>" class="btn-login" style="display:inline-flex; align-items:center; gap:0.35rem; padding: 0.5rem 1rem;">
+                            <span>👤</span> <%= user.firstName || 'Dashboard' %>
+                        </a>
+                        <a href="/logout" class="btn-signup" style="background:#dc2626; border-color:#dc2626; color:#ffffff; padding: 0.5rem 1rem;">Logout</a>
+                    <% } else { %>
+                        <a href="/login" class="btn-login">Login</a>
+                        <a href="/signup" class="btn-signup">Sign up</a>
+                    <% } %>
+                </div>
+            </nav>
+
+            <!-- HAMBURGER BUTTON (mobile only) -->
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!--  MOBILE DRAWER OVERLAY                                        -->
+    <!-- ============================================================ -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- ============================================================ -->
+    <!--  MOBILE SLIDE-IN DRAWER                                       -->
+    <!-- ============================================================ -->
+    <aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+        <!-- Drawer Header -->
+        <div class="drawer-header">
+            <img src="/images/logo2.png" alt="ChefNest" class="drawer-logo">
+            <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close navigation menu">&times;</button>
+        </div>
+
+        <!-- Mobile Search -->
+        <div class="drawer-search">
+            <form action="/courses" method="get" class="drawer-search-form">
+                <input type="text" name="q" placeholder="search menu / chef...">
+                <select name="cat" class="drawer-course-select" aria-label="Select Course" onchange="navigateToCourse(this)">
+                    <option value="">All Courses</option>
+                    <optgroup label="🌍 Cuisine-Based">
+                        <option value="cuisine#sri-lankan">Sri Lankan Home Cooking</option>
+                        <option value="cuisine#south-indian">South Indian Cooking</option>
+                        <option value="cuisine#north-indian">North Indian Cooking</option>
+                        <option value="cuisine#chinese">Chinese Cooking</option>
+                        <option value="cuisine#continental">Continental / Western</option>
+                    </optgroup>
+                    <optgroup label="🎯 Skill Level">
+                        <option value="skill#beginner">Beginner – Knife Skills</option>
+                        <option value="skill#intermediate">Intermediate – Spice Balancing</option>
+                        <option value="skill#advanced">Advanced – Hotel Plating</option>
+                    </optgroup>
+                    <optgroup label="🥗 Health &amp; Diet">
+                        <option value="health#diabetic">Diabetic-Friendly Cooking</option>
+                        <option value="health#allergy">Allergy-Safe Cooking</option>
+                        <option value="health#weight">Weight Management Meals</option>
+                    </optgroup>
+                    <optgroup label="🎉 Occasion">
+                        <option value="occasion#event">Party &amp; Event Catering</option>
+                        <option value="occasion#festival">Festival Special Cooking</option>
+                        <option value="occasion#quick">Quick 30-Min Meals</option>
+                    </optgroup>
+                    <optgroup label="🏅 Certification">
+                        <option value="certification#full">Home Cook to Pro Chef</option>
+                    </optgroup>
+                </select>
+                <button type="submit">🔍</button>
+            </form>
+        </div>
+
+        <!-- Drawer Nav Links -->
+        <nav aria-label="Mobile Navigation">
+            <ul class="drawer-nav-links">
+                <li><a href="/">🏠 Home</a></li>
+                <li><a href="/chefs">👨‍🍳 Book a Chef</a></li>
+                <li><a href="/cuisines">🌍 Cuisines</a></li>
+                <li><a href="/courses">🎓 Courses</a></li>
+                <li><a href="/about">ℹ️ About Us</a></li>
+                <li><a href="/contact">✉️ Contact</a></li>
+            </ul>
+        </nav>
+
+        <!-- Drawer Auth Buttons -->
+        <div class="drawer-auth">
+            <% if (typeof user !== 'undefined' && user && (user._id || user.id)) { %>
+                <% let dashUrl = '/user/dashboard'; %>
+                <% if (user.role === 'admin') dashUrl = '/admin/dashboard'; %>
+                <% if (user.role === 'chef') dashUrl = '/chef/dashboard'; %>
+                <a href="<%= dashUrl %>" class="drawer-btn-login">👤 <%= user.firstName || 'Dashboard' %></a>
+                <a href="/logout" class="drawer-btn-signup" style="background:#dc2626;">Logout</a>
+            <% } else { %>
+                <a href="/login" class="drawer-btn-login">Login</a>
+                <a href="/signup" class="drawer-btn-signup">Sign up Free</a>
+            <% } %>
+        </div>
+    </aside>
+
+    <!-- ============================================================ -->
+    <!--  MOBILE STICKY BOTTOM BAR                                     -->
+    <!-- ============================================================ -->
+    <nav class="mobile-bottom-bar" aria-label="Quick Navigation">
+        <a href="/" class="bottom-bar-item">
+            <span class="bottom-bar-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </span>
+            <span class="bottom-bar-label">Home</span>
+        </a>
+        <a href="/chefs" class="bottom-bar-item">
+            <span class="bottom-bar-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </span>
+            <span class="bottom-bar-label">Book Chef</span>
+        </a>
+        <a href="/cuisines" class="bottom-bar-item">
+            <span class="bottom-bar-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+            </span>
+            <span class="bottom-bar-label">Cuisines</span>
+        </a>
+        <a href="/courses" class="bottom-bar-item">
+            <span class="bottom-bar-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                    <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+                </svg>
+            </span>
+            <span class="bottom-bar-label">Courses</span>
+        </a>
+        <a href="/contact" class="bottom-bar-item">
+            <span class="bottom-bar-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </span>
+            <span class="bottom-bar-label">Contact</span>
+        </a>
+    </nav>
+
+    <script>
+    // Navigate to courses page with category filter when a course is selected
+    function navigateToCourse(selectEl) {
+        const val = selectEl.value;
+        if (!val) return;
+        // val is like "cuisine#sri-lankan" — split into cat and anchor
+        const parts = val.split('#');
+        const cat = parts[0];
+        const anchor = parts[1] ? '#' + parts[1] : '';
+        window.location.href = '/courses?cat=' + cat + anchor;
+        // reset select back to default so it doesn't look "stuck"
+        setTimeout(() => { selectEl.value = ''; }, 100);
+    }
+
+    (function() {
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+
+        function openDrawer() {
+            if (mobileDrawer) mobileDrawer.classList.add('open');
+            if (mobileOverlay) mobileOverlay.classList.add('active');
+            if (hamburgerBtn) hamburgerBtn.classList.add('active');
+            if (hamburgerBtn) hamburgerBtn.setAttribute('aria-expanded', 'true');
+            if (mobileDrawer) mobileDrawer.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDrawer() {
+            if (mobileDrawer) mobileDrawer.classList.remove('open');
+            if (mobileOverlay) mobileOverlay.classList.remove('active');
+            if (hamburgerBtn) hamburgerBtn.classList.remove('active');
+            if (hamburgerBtn) hamburgerBtn.setAttribute('aria-expanded', 'false');
+            if (mobileDrawer) mobileDrawer.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        function toggleDrawer(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            if (mobileDrawer && mobileDrawer.classList.contains('open')) {
+                closeDrawer();
+            } else {
+                openDrawer();
+            }
+        }
+
+        if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleDrawer);
+        if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeDrawer);
+        if (mobileOverlay) mobileOverlay.addEventListener('click', closeDrawer);
+
+        // Active link highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+
+            // Desktop nav active
+            document.querySelectorAll('.desktop-nav .nav-links a').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === '/' && currentPath === '/') link.classList.add('active');
+                else if (href !== '/' && (currentPath === href || currentPath.startsWith(href))) link.classList.add('active');
+            });
+
+            // Drawer nav active
+            document.querySelectorAll('.drawer-nav-links a').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === '/' && currentPath === '/') link.classList.add('active');
+                else if (href !== '/' && (currentPath === href || currentPath.startsWith(href))) link.classList.add('active');
+            });
+
+            // Bottom bar active
+            document.querySelectorAll('.mobile-bottom-bar .bottom-bar-item').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === '/' && currentPath === '/') link.classList.add('active');
+                else if (href !== '/' && currentPath.startsWith(href)) link.classList.add('active');
+            });
+
+            // Restore course select to default on courses page load
+            const courseSelects = document.querySelectorAll('#headerCourseSelect, .drawer-course-select');
+            courseSelects.forEach(sel => { sel.value = ''; });
+        });
+    })();
+    </script>

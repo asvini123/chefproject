@@ -1,0 +1,3064 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chef Dashboard — ChefNest</title>
+  <meta name="description" content="Manage your private dining requests, menus, calendar, earnings, and courses.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/css/chefdashboard.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <!-- Socket.io -->
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body class="chef-body">
+
+  <!-- ============================================================ -->
+  <!--  SIDEBAR                                                      -->
+  <!-- ============================================================ -->
+  <aside class="chef-sidebar" id="chefSidebar">
+    <div class="sidebar-brand">
+      <img src="/images/logo2.png" alt="ChefNest Logo" style="height:44px; width:auto; margin-right:8px;">
+      <div class="brand-text">
+        <span class="brand-name">ChefNest</span>
+        <span class="brand-sub">Chef Console</span>
+      </div>
+      <button class="sidebar-toggle-close" id="sidebarClose" aria-label="Close sidebar">✕</button>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Chef Navigation">
+      <ul class="nav-list">
+        <li class="nav-item active" data-section="dashboard">
+          <a href="#" class="nav-link" onclick="return showSection('dashboard', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg></span>
+            <span class="nav-label">Dashboard</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="/chef/chat" class="nav-link">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></span>
+            <span class="nav-label">Global Chat</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="profile">
+          <a href="#" class="nav-link" onclick="return showSection('profile', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></span>
+            <span class="nav-label">Profile</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="verification">
+          <a href="#" class="nav-link" onclick="return showSection('verification', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></span>
+            <span class="nav-label">Verification</span>
+            <span class="nav-badge <%= chef.isApproved ? '' : 'pending' %>" style="<%= chef.isApproved ? 'background:#2C5F2D;' : '' %>">
+              <%= chef.isApproved ? 'Approved' : 'Pending' %>
+            </span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="calendar">
+          <a href="#" class="nav-link" onclick="return showSection('calendar', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg></span>
+            <span class="nav-label">Availability Calendar</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="bookings">
+          <a href="#" class="nav-link" onclick="return showSection('bookings', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg></span>
+            <span class="nav-label">Bookings</span>
+            <% const _pendingCount = bookings.filter(b => b.status === 'Pending').length; %>
+            <% if (_pendingCount > 0) { %>
+              <span class="nav-badge warn"><%= _pendingCount %></span>
+            <% } %>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="services">
+          <a href="#" class="nav-link" onclick="return showSection('services', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg></span>
+            <span class="nav-label">Services</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="pricing">
+          <a href="#" class="nav-link" onclick="return showSection('pricing', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></span>
+            <span class="nav-label">Pricing</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="courses">
+          <a href="#" class="nav-link" onclick="return showSection('courses', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2.12-1.15V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg></span>
+            <span class="nav-label">Courses</span>
+            <span class="nav-badge"><%= typeof courses !== 'undefined' ? courses.length : 0 %></span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="reviews">
+          <a href="#" class="nav-link" onclick="return showSection('reviews', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
+            <span class="nav-label">Reviews</span>
+            <span class="nav-badge"><%= typeof reviews !== 'undefined' ? reviews.length : 0 %></span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="earnings">
+          <a href="#" class="nav-link" onclick="return showSection('earnings', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg></span>
+            <span class="nav-label">Earnings</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="discounts">
+          <a href="#" class="nav-link" onclick="return showSection('discounts', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/></svg></span>
+            <span class="nav-label">Discounts & Offers</span>
+            <span class="nav-badge" style="background:#D97A2B; color:#fff; font-size:0.65rem; padding:0.15rem 0.45rem; border-radius:10px; font-weight:800;">PROMO</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="chat">
+          <a href="#" class="nav-link" onclick="return showSection('chat', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></span>
+            <span class="nav-label">Chat</span>
+            <span class="nav-badge" id="chefChatNavBadge" style="display:none; background:#e74c3c; color:#fff; font-weight:800; border-radius:10px; padding:0.15rem 0.5rem; font-size:0.75rem;">0</span>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="notifications">
+          <a href="#" class="nav-link" onclick="return showSection('notifications', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg></span>
+            <span class="nav-label">Notifications</span>
+            <% const _unreadCount = (typeof notifications !== 'undefined' ? notifications.filter(n => !n.isRead).length : 0); %>
+            <% if (_unreadCount > 0) { %>
+              <span class="nav-badge warn"><%= _unreadCount %></span>
+            <% } %>
+          </a>
+        </li>
+
+        <li class="nav-item" data-section="settings">
+          <a href="#" class="nav-link" onclick="return showSection('settings', this)">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .43-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.49-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></span>
+            <span class="nav-label">Settings</span>
+          </a>
+        </li>
+
+        <li class="nav-divider"></li>
+
+        <li class="nav-item">
+          <a href="/" class="nav-link home-nav-link" style="color:#D97A2B !important; font-weight:700;">
+            <span class="nav-icon" style="color:#D97A2B !important;"><svg class="svg-icon" style="fill:#D97A2B !important;" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></span>
+            <span class="nav-label" style="color:#D97A2B !important; font-weight:700;">Back to Home</span>
+          </a>
+        </li>
+
+        <li class="nav-item logout-item">
+          <a href="#" class="nav-link logout-link" onclick="openLogoutModal()">
+            <span class="nav-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></span>
+            <span class="nav-label">Logout</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- ============================================================ -->
+  <!--  MAIN CONTENT                                                 -->
+  <!-- ============================================================ -->
+  <div class="chef-main" id="chefMain">
+
+    <!-- TOP BAR -->
+    <header class="chef-topbar">
+      <div class="topbar-left">
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Sidebar">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="topbar-breadcrumb">
+          <span class="breadcrumb-root">Chef</span>
+          <span class="breadcrumb-sep">›</span>
+          <span class="breadcrumb-current" id="breadcrumbCurrent">Dashboard</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <a href="/" style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.78rem; font-weight:700; padding:0.35rem 0.75rem; border-radius:20px; background:#edf5ed; color:#2C5F2D; text-decoration:none; border:1px solid #c8e2c8; transition:all 0.2s; margin-right:0.4rem;" title="Back to ChefNest Home">
+          <svg style="width:14px; height:14px; fill:#2C5F2D;" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          <span>Home</span>
+        </a>
+        <button class="topbar-notif" aria-label="Notifications"
+          onclick="showSection('notifications', document.querySelector('[data-section=notifications] a'))">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg> <span class="notif-dot"></span>
+        </button>
+        <div class="topbar-chef">
+          <% const initials=(chef.firstName.charAt(0) + chef.lastName.charAt(0)).toUpperCase(); %>
+            <% if (chef.profilePhoto) { %>
+              <img src="<%= chef.profilePhoto %>" alt="Avatar" class="chef-avatar-img"
+                style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:10px;">
+              <% } else { %>
+                <div class="chef-avatar">
+                  <%= initials %>
+                </div>
+                <% } %>
+                  <div class="chef-meta">
+                    <span class="chef-name">Chef <%= chef.firstName %>
+                        <%= chef.lastName %></span>
+                    <span class="chef-role">
+                      <%= chef.chefType ? chef.chefType.replace('_', ' ' ).toUpperCase() : 'Professional Chef' %>
+                    </span>
+                  </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: DASHBOARD                                           -->
+    <!-- ============================================================ -->
+    <section class="chef-section active" id="section-dashboard">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">Chef Dashboard</h1>
+          <p class="section-subtitle">A quick overview of your today's culinary activities and stats.</p>
+        </div>
+      </div>
+
+      <!-- Active Platform Discounts & Promo Offers -->
+      <% if (typeof discounts !== 'undefined' && discounts && discounts.length > 0) { %>
+        <div style="background:linear-gradient(135deg, #f7faf7, #edf5ed); border:1.5px solid #cce2cc; border-radius:16px; padding:1.2rem 1.4rem; margin-bottom:1.5rem; box-shadow:0 4px 14px rgba(44,95,45,0.06);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.9rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+              <span style="font-size:1.3rem;">🏷️</span>
+              <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:#1E2E1E;">Active Platform Discounts &amp; Client Promo Offers</h3>
+            </div>
+            <span style="font-size:0.75rem; background:#2C5F2D; color:#fff; font-weight:700; padding:0.2rem 0.6rem; border-radius:20px;">Live On Platform</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1rem;">
+            <% discounts.forEach(d => { %>
+              <div style="background:#fff; border:1px solid #d8ebd8; border-radius:12px; padding:1rem 1.1rem; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+                <div style="position:absolute; top:0; left:0; width:4px; height:100%; background:#2C5F2D;"></div>
+                <div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+                    <strong style="color:#1E2E1E; font-size:0.95rem;"><%= d.title %></strong>
+                    <span style="background:#fff3e6; color:#D97A2B; font-weight:800; font-size:0.82rem; padding:0.15rem 0.5rem; border-radius:6px;"><%= d.discountPercentage %>% OFF</span>
+                  </div>
+                  <p style="margin:0 0 0.6rem; font-size:0.8rem; color:#666; line-height:1.35;"><%= d.description || `Special ${d.type} offer applicable across client bookings.` %></p>
+                </div>
+                <div style="border-top:1px dashed #e8eee8; padding-top:0.6rem; font-size:0.76rem; display:flex; flex-direction:column; gap:0.25rem;">
+                  <div style="display:flex; justify-content:space-between;">
+                    <span style="color:#777;">Promo Code:</span>
+                    <strong style="color:#2C5F2D; font-size:0.85rem; letter-spacing:0.5px;"><%= d.code %></strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; color:#888;">
+                    <span>Min. Order: LKR <%= (d.minOrderAmount || 0).toLocaleString() %></span>
+                    <span>Valid Till: <%= new Date(d.validTill).toLocaleDateString() %></span>
+                  </div>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- KPI CARDS (Real Database Metrics) -->
+      <%
+        const now = new Date();
+        const todayStr = now.toDateString();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        // 1. Today's and Active Bookings
+        const todayBookingsList = bookings.filter(b => b.date && new Date(b.date).toDateString() === todayStr);
+        const activeBookingsList = bookings.filter(b => b.status === 'Accepted' || b.status === 'Confirmed' || b.status === 'Cooking');
+        
+        // 2. Earnings Calculations
+        const isBookingPaid = (b) => b.status === 'Completed' || b.paymentStatus === 'Completed' || b.paymentStatus === 'Deposit Paid' || b.paymentStatus === 'Paid';
+        const todayEarnings = bookings
+          .filter(b => isBookingPaid(b) && new Date(b.createdAt || b.date).toDateString() === todayStr)
+          .reduce((sum, b) => sum + (Number(b.totalAmount) || 0), 0);
+        
+        const monthEarnings = bookings
+          .filter(b => isBookingPaid(b) && new Date(b.createdAt || b.date).getMonth() === currentMonth && new Date(b.createdAt || b.date).getFullYear() === currentYear)
+          .reduce((sum, b) => sum + (Number(b.totalAmount) || 0), 0);
+        
+        const totalChefEarnings = bookings
+          .filter(isBookingPaid)
+          .reduce((sum, b) => sum + (Number(b.totalAmount) || 0), 0);
+
+        // 3. Pending Requests
+        const pendingBookingsList = bookings.filter(b => b.status === 'Pending' || b.status === 'Requested');
+      %>
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-bookings">
+          <div class="kpi-icon-wrap"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg></div>
+          <div class="kpi-body">
+            <span class="kpi-label">Active / Today's Bookings</span>
+            <span class="kpi-value"><%= todayBookingsList.length > 0 ? todayBookingsList.length + ' Today' : activeBookingsList.length + ' Active' %></span>
+            <div class="mini-schedule-list">
+              <% if (todayBookingsList.length > 0) { %>
+                <% todayBookingsList.slice(0, 3).forEach(b => { %>
+                  <div><span><%= b.time || '12:00 PM' %></span> — <%= b.userId ? (b.userId.firstName + ' ' + b.userId.lastName) : 'Guest' %></div>
+                <% }) %>
+              <% } else if (activeBookingsList.length > 0) { %>
+                <% activeBookingsList.slice(0, 3).forEach(b => { %>
+                  <div><span><%= b.date ? new Date(b.date).toLocaleDateString(undefined, {month:'short', day:'numeric'}) : 'Upcoming' %></span> — <%= b.userId ? (b.userId.firstName + ' ' + b.userId.lastName) : 'Client' %></div>
+                <% }) %>
+              <% } else { %>
+                <div style="color:var(--text-muted); font-size:0.78rem;">No active schedules today</div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+
+        <div class="kpi-card kpi-earnings">
+          <div class="kpi-icon-wrap" style="font-weight:800; font-size:1.05rem; color:#2C5F2D; display:flex; align-items:center; justify-content:center;">Rs</div>
+          <div class="kpi-body">
+            <span class="kpi-label">Earnings Overview</span>
+            <div class="mini-earnings-grid">
+              <div><span class="sub-lbl">This Month:</span> <strong>LKR <%= monthEarnings > 0 ? monthEarnings.toLocaleString() : (totalChefEarnings > 0 ? totalChefEarnings.toLocaleString() : '0') %></strong></div>
+              <div><span class="sub-lbl">Total Earned:</span> <strong>LKR <%= totalChefEarnings.toLocaleString() %></strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kpi-card kpi-pending">
+          <div class="kpi-icon-wrap"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 2v6h.01L6 8.01 10 12l-4 4 .01.01H6V22h12v-5.99h-.01L18 16l-4-4 4-3.99-.01-.01H18V2H6z"/></svg></div>
+          <div class="kpi-body">
+            <span class="kpi-label">Pending Requests</span>
+            <span class="kpi-value"><%= pendingBookingsList.length %> <%= pendingBookingsList.length === 1 ? 'Request' : 'Requests' %></span>
+            <div class="action-quick-buttons">
+              <button class="btn-primary-sm green-btn" onclick="showSection('bookings')">Review Queue</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="kpi-card kpi-rating">
+          <div class="kpi-icon-wrap"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+          <div class="kpi-body">
+            <span class="kpi-label">Average Rating</span>
+            <% const realAvg = (typeof reviews !== 'undefined' && reviews.length > 0) ? (Math.round((reviews.reduce((acc, r) => acc + (Number(r.rating) || 5), 0) / reviews.length) * 10) / 10).toFixed(1) : (user.rating ? Number(user.rating).toFixed(1) : '5.0'); %>
+            <span class="kpi-value"><%= realAvg %> ★</span>
+            <span class="kpi-change">Based on <%= (typeof reviews !== 'undefined') ? reviews.length : 0 %> verified reviews</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- WIDGETS ROW -->
+      <div class="widgets-grid">
+        <!-- Income Chart -->
+        <div class="widget-card widget-wide">
+          <div class="widget-header">
+            <h3>Income Progress Chart</h3>
+          </div>
+          <canvas id="chefIncomeChart" height="110"></canvas>
+        </div>
+
+        <!-- Recent Reviews -->
+        <div class="widget-card">
+          <div class="widget-header">
+            <h3>Recent Reviews</h3>
+          </div>
+          <div class="mini-review-list">
+            <div class="mini-review-item">
+              <div class="review-stars"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+              <p>"Amazing cooking, very friendly chef!"</p>
+              <span class="review-author">- Nimal (2 days ago)</span>
+            </div>
+            <div class="mini-review-item">
+              <div class="review-stars"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
+              <p>"Traditional Sri Lankan curries were outstanding."</p>
+              <span class="review-author">- Sarah (1 week ago)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="widgets-grid">
+        <!-- Upcoming Schedule -->
+        <div class="widget-card">
+          <div class="widget-header">
+            <h3>Upcoming Schedule</h3>
+          </div>
+          <ul class="mini-schedule-ul">
+            <li>
+              <div class="date-badge">10 Jul</div>
+              <div>
+                <strong>Birthday Dinner Service</strong>
+                <p>Colombo 03 · 12 Guests</p>
+              </div>
+            </li>
+            <li>
+              <div class="date-badge">12 Jul</div>
+              <div>
+                <strong>Anniversary BBQ Service</strong>
+                <p>Mount Lavinia · 8 Guests</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Recent Bookings Table -->
+        <div class="widget-card widget-wide">
+          <div class="widget-header">
+            <h3>Recent Bookings</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="chef-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Cuisine</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#215</td>
+                  <td>John Silva</td>
+                  <td>10 Jul 2026</td>
+                  <td>Sri Lankan</td>
+                  <td>LKR 15,000</td>
+                  <td><span class="status-badge pending">Pending</span></td>
+                </tr>
+                <tr>
+                  <td>#214</td>
+                  <td>Saman Perera</td>
+                  <td>5 Jul 2026</td>
+                  <td>Indian</td>
+                  <td>LKR 12,000</td>
+                  <td><span class="status-badge confirmed">Accepted</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: PROFILE                                             -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-profile">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">My Profile</h1>
+          <p class="section-subtitle">Manage your personal details, specialties, bio, and gallery.</p>
+        </div>
+      </div>
+
+      <div class="profile-layout-grid">
+        <!-- Left side: Personal info form -->
+        <div class="profile-card">
+          <h3>Personal Information</h3>
+          <form class="profile-form" id="chefProfileForm" onsubmit="updateChefProfile(event)">
+            <div class="form-grid-2">
+              <div class="field-group">
+                <label class="field-label">First Name</label>
+                <input type="text" name="firstName" class="form-input" value="<%= chef.firstName %>" required>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Last Name</label>
+                <input type="text" name="lastName" class="form-input" value="<%= chef.lastName %>" required>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="field-group">
+                <label class="field-label">Email</label>
+                <input type="email" class="form-input" value="<%= chef.email %>" disabled>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Phone</label>
+                <input type="text" name="phone" class="form-input" value="<%= chef.phone %>" required>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="field-group">
+                <label class="field-label">Address</label>
+                <input type="text" name="address" class="form-input" value="<%= chef.address %>" required>
+              </div>
+              <div class="field-group">
+                <label class="field-label">City</label>
+                <input type="text" name="city" class="form-input" value="<%= chef.city %>" required>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Chef Bio</label>
+              <textarea name="bio" class="form-textarea" rows="3" required><%= chef.bio || '' %></textarea>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="field-group">
+                <label class="field-label">Years of Experience</label>
+                <input type="number" name="experience" class="form-input" value="<%= chef.experience %>" required>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Hourly Rate (LKR)</label>
+                <input type="number" name="hourlyRate" class="form-input" value="<%= chef.hourlyRate %>" required>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="field-group">
+                <label class="field-label">Chef Type</label>
+                <select name="chefType" class="form-input" style="padding:0.4rem;">
+                  <option value="home_cook" <%= chef.chefType === 'home_cook' ? 'selected' : '' %>>Home Cook</option>
+                  <option value="professional" <%= chef.chefType === 'professional' ? 'selected' : '' %>>Professional</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Cuisine Specialty Checkboxes -->
+            <div class="field-group">
+              <label class="field-label">Cuisine Specialization</label>
+              <div class="checkbox-grid">
+                <% const specialties=['sri_lankan', 'indian' , 'chinese' , 'italian' , 'malaysian' , 'thai' , 'pastry'
+                  , 'vegan' , 'middle_eastern' ]; %>
+                  <% specialties.forEach(specialty=> { %>
+                    <label class="check-item">
+                       <input type="checkbox" name="cuisines" value="<%= specialty %>" <%=chef.cuisines.includes(specialty) ? 'checked' : '' %>>
+                      <%= specialty.replace('_', ' ' ).replace(/\b\w/g, c=> c.toUpperCase()) %>
+                    </label>
+                    <% }) %>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary-sm">Save Changes</button>
+          </form>
+        </div>
+
+        <!-- Right side: Profile photo, Gallery, and Certificates -->
+        <div class="profile-card">
+          <h3>Gallery &amp; Documents</h3>
+
+          <!-- Profile Picture Preview -->
+          <div class="profile-photo-area">
+            <% if (chef.profilePhoto) { %>
+              <img src="<%= chef.profilePhoto %>" alt="Profile"
+                style="width:80px;height:80px;border-radius:50%;object-fit:cover;">
+              <% } else { %>
+                <div class="chef-avatar large">
+                  <%= initials %>
+                </div>
+                <% } %>
+                  <div>
+                    <p style="margin:0; font-weight:600;">
+                      <%= chef.firstName %>
+                        <%= chef.lastName %>
+                    </p>
+                    <p class="field-hint" style="margin:0.2rem 0 0;">
+                      <%= chef.email %>
+                    </p>
+                  </div>
+          </div>
+
+          <hr class="profile-divider">
+
+          <!-- Food photos gallery -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+            <h4 style="margin:0;">Signature Dishes Gallery</h4>
+            <button class="btn-primary-sm" onclick="openDishUploadModal()" style="font-size:0.75rem; padding:0.3rem 0.7rem;">+ Add Dish</button>
+          </div>
+          <div class="gallery-grid-chef" style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom:1rem;">
+            <% if (typeof foods !== 'undefined' && foods.length > 0) { %>
+              <% foods.forEach(food => { %>
+                <div class="gallery-item-chef" style="position:relative; aspect-ratio:1; overflow:hidden; border-radius:8px; border:1.5px solid var(--border);">
+                  <% if (food.images && food.images.length > 0) { %>
+                    <img src="<%= food.images[0] %>" alt="<%= food.name %>" style="width:100%; height:100%; object-fit:cover;">
+                  <% } else { %>
+                    <span style="font-size:1.5rem;">🍽️</span>
+                  <% } %>
+                  <button onclick="deleteDish('<%= food._id %>')" style="position:absolute; top:4px; right:4px; background:rgba(224,82,82,0.9); border:none; color:white; border-radius:50%; width:18px; height:18px; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; z-index:2;">✕</button>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div style="grid-column: 1 / -1; text-align:center; padding:1.5rem; color:var(--text-muted); font-size:0.8rem; background:var(--border-light); border-radius:8px;">
+                No dishes uploaded yet. Click "+ Add Dish" above to showcase your culinary art!
+              </div>
+            <% } %>
+          </div>
+
+          <hr class="profile-divider">
+
+          <!-- Certificates upload -->
+          <h4>Cooking Certificates</h4>
+          <div class="certificate-upload-row">
+            <button class="btn-outline-sm"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg> Upload PDF/Images</button>
+            <span class="file-status">
+              <%= chef.certificates ? chef.certificates.length : 0 %> files uploaded
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: VERIFICATION                                        -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-verification">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">Verification &amp; Documents</h1>
+          <p class="section-subtitle">Track your platform verification status and upload identity papers.</p>
+        </div>
+      </div>
+
+      <!-- Verification status banner -->
+      <% if (chef.isApproved) { %>
+        <div class="verification-status-banner verified"
+          style="background:#e8f5e9; border-left:4px solid #4caf50; color:#2e7d32; display:flex; gap:1rem; padding:1rem; border-radius:4px; margin-bottom:1.5rem;">
+          <span class="icon"><svg class="svg-icon-stroke" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
+          <div>
+            <h4>Verification Status: Approved & Active</h4>
+            <p>Your culinary profile is verified. You are visible to customers and ready to accept bookings!</p>
+          </div>
+        </div>
+        <% } else { %>
+          <div class="verification-status-banner pending">
+            <span class="icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 2v6h.01L6 8.01 10 12l-4 4 .01.01H6V22h12v-5.99h-.01L18 16l-4-4 4-3.99-.01-.01H18V2H6z"/></svg></span>
+            <div>
+              <h4>Verification Status: Pending Approval</h4>
+              <p>Admin is currently reviewing your documents. The process usually takes 24–48 hours.</p>
+            </div>
+          </div>
+          <% } %>
+
+            <div class="verification-grid">
+              <!-- Card 1: Official Identity & Police Clearance (Locked / Read-Only) -->
+              <div class="verification-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
+                  <h3 style="margin:0;">Official Identity &amp; Verification</h3>
+                  <span style="font-size:0.75rem; font-weight:700; color:#2C5F2D; background:rgba(44,95,45,0.1); padding:0.2rem 0.6rem; border-radius:4px;">🔒 Locked (Admin Verified)</span>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1rem;">
+                  National Identity and Police Clearance documents are verified and locked by platform administrators.
+                </p>
+
+                <!-- NIC Front Side -->
+                <div class="doc-upload-item" style="margin-bottom:0.75rem;">
+                  <div class="doc-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm16 14H5V5h14v14zM8 12c1.65 0 3-1.35 3-3s-1.35-3-3-3-3 1.35-3 3 1.35 3 3 3zm6 3c-2 0-6 1-6 3v1h12v-1c0-2-4-3-6-3z"/></svg></div>
+                  <div style="flex-grow:1;">
+                    <strong>National Identity Card (NIC - Front Side)</strong>
+                    <p class="file-name">
+                      <%= (chef.nicFront || chef.nic) ? (chef.nicFront || chef.nic).split('/').pop() : 'No front document uploaded' %>
+                    </p>
+                  </div>
+                  <% if (chef.nicFront || chef.nic) { %>
+                    <a href="<%= chef.nicFront || chef.nic %>" target="_blank" class="btn-outline-sm" style="padding:0.35rem 0.8rem; font-size:0.78rem; font-weight:700; text-decoration:none;">View Front</a>
+                  <% } else { %>
+                    <span class="doc-badge red">Missing</span>
+                  <% } %>
+                </div>
+
+                <!-- NIC Back Side -->
+                <div class="doc-upload-item" style="margin-bottom:0.75rem;">
+                  <div class="doc-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm16 14H5V5h14v14zM8 12c1.65 0 3-1.35 3-3s-1.35-3-3-3-3 1.35-3 3 1.35 3 3 3zm6 3c-2 0-6 1-6 3v1h12v-1c0-2-4-3-6-3z"/></svg></div>
+                  <div style="flex-grow:1;">
+                    <strong>National Identity Card (NIC - Back Side)</strong>
+                    <p class="file-name">
+                      <%= chef.nicBack ? chef.nicBack.split('/').pop() : (chef.nic ? 'Combined in front upload' : 'No back document uploaded') %>
+                    </p>
+                  </div>
+                  <% if (chef.nicBack) { %>
+                    <a href="<%= chef.nicBack %>" target="_blank" class="btn-outline-sm" style="padding:0.35rem 0.8rem; font-size:0.78rem; font-weight:700; text-decoration:none;">View Back</a>
+                  <% } else if (chef.nic) { %>
+                    <a href="<%= chef.nic %>" target="_blank" class="btn-outline-sm" style="padding:0.35rem 0.8rem; font-size:0.78rem; font-weight:700; text-decoration:none;">View</a>
+                  <% } else { %>
+                    <span class="doc-badge red">Missing</span>
+                  <% } %>
+                </div>
+
+                <!-- Police Clearance Report -->
+                <div class="doc-upload-item">
+                  <div class="doc-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
+                  <div style="flex-grow:1;">
+                    <strong>Police Clearance Report</strong>
+                    <p class="file-name">
+                      <%= chef.policeClearance ? chef.policeClearance.split('/').pop() : 'No document uploaded' %>
+                    </p>
+                  </div>
+                  <% if (chef.policeClearance) { %>
+                    <a href="<%= chef.policeClearance %>" target="_blank" class="btn-outline-sm" style="padding:0.35rem 0.8rem; font-size:0.78rem; font-weight:700; text-decoration:none;">View Report</a>
+                  <% } else { %>
+                    <span class="doc-badge red">Missing</span>
+                  <% } %>
+                </div>
+              </div>
+
+              <!-- Card 2: Culinary Certificates & Qualifications (Upload & Manage) -->
+              <div class="verification-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
+                  <h3 style="margin:0;">Culinary Certificates &amp; Diplomas</h3>
+                  <span style="font-size:0.75rem; font-weight:700; color:#D97A2B; background:rgba(217,122,43,0.1); padding:0.2rem 0.6rem; border-radius:4px;">✨ Manage &amp; Upload</span>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1rem;">
+                  Upload your professional culinary certificates, hygiene diplomas, and awards to showcase on your profile.
+                </p>
+
+                <!-- Upload Form -->
+                <form id="chefCertUploadForm" onsubmit="handleChefCertUpload(event)" style="background:#fafdf8; border:1px dashed #2C5F2D; border-radius:8px; padding:0.9rem; margin-bottom:1.2rem; display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
+                  <input type="file" id="chefCertFileInput" name="certificateFile" accept=".pdf,image/*" required style="font-size:0.8rem; flex:1; min-width:180px;">
+                  <button type="submit" class="btn-primary-sm" id="chefCertUploadBtn" style="padding:0.45rem 1rem;">Upload Certificate 📤</button>
+                </form>
+
+                <!-- Certificate Gallery List -->
+                <div id="chefCertificatesList" style="display:flex; flex-direction:column; gap:0.6rem;">
+                  <% if (chef.certificates && chef.certificates.length > 0) { %>
+                    <% chef.certificates.forEach((cert, idx) => { %>
+                      <div class="doc-upload-item" id="cert-item-<%= idx %>" style="display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0.8rem; background:#fff; border:1px solid #e0ead0; border-radius:6px;">
+                        <div style="display:flex; align-items:center; gap:0.6rem; overflow:hidden;">
+                          <span style="font-size:1.2rem;">📜</span>
+                          <div style="overflow:hidden;">
+                            <strong style="font-size:0.82rem; display:block; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;"><%= cert.split('/').pop() %></strong>
+                            <span style="font-size:0.7rem; color:#888;">Professional Certificate</span>
+                          </div>
+                        </div>
+                        <div style="display:flex; gap:0.4rem; align-items:center;">
+                          <a href="<%= cert %>" target="_blank" class="btn-outline-sm" style="padding:0.25rem 0.6rem; font-size:0.75rem; text-decoration:none;">View 📄</a>
+                          <button type="button" onclick="deleteChefCertificate(<%= idx %>)" class="btn-outline-sm" style="padding:0.25rem 0.6rem; font-size:0.75rem; color:#e74c3c; border-color:#e74c3c;">🗑️ Delete</button>
+                        </div>
+                      </div>
+                    <% }) %>
+                  <% } else { %>
+                    <div id="emptyCertMsg" style="text-align:center; padding:1.2rem; color:var(--text-muted); font-size:0.82rem;">
+                      No certificates uploaded yet. Use the upload box above to add your credentials!
+                    </div>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: CALENDAR                                            -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-calendar">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">Availability Calendar</h1>
+          <p class="section-subtitle">Manage your weekly working days, standard hours, and vacation periods.</p>
+        </div>
+      </div>
+
+      <%
+        const avail = (chef && chef.availability) ? chef.availability : {};
+        const wk = avail.weekdays || { mon: 'available', tue: 'available', wed: 'available', thu: 'available', fri: 'available', sat: 'available', sun: 'available' };
+        const wh = avail.workingHours || { start: '08:00', end: '19:00' };
+        const vacations = avail.vacations || [];
+      %>
+
+      <div class="calendar-layout-grid">
+        <!-- Calendar Setup -->
+        <div class="calendar-card">
+          <h3>Weekly Availability Schedule</h3>
+          <p class="field-hint" style="margin-bottom:1rem;">Click each day to cycle status (Available / Unavailable / Leave):</p>
+          
+          <div class="weekday-grid" id="chefWeekdayGrid">
+            <% 
+              const dayList = [
+                { key: 'mon', label: 'Mon' },
+                { key: 'tue', label: 'Tue' },
+                { key: 'wed', label: 'Wed' },
+                { key: 'thu', label: 'Thu' },
+                { key: 'fri', label: 'Fri' },
+                { key: 'sat', label: 'Sat' },
+                { key: 'sun', label: 'Sun' }
+              ];
+            %>
+            <% dayList.forEach(d => { %>
+              <% const status = wk[d.key] || 'available'; %>
+              <div class="weekday-day <%= status %>" data-day="<%= d.key %>" data-status="<%= status %>" onclick="toggleWeekdayStatus(this)">
+                <%= d.label %>
+                <span><%= status.charAt(0).toUpperCase() + status.slice(1) %></span>
+              </div>
+            <% }) %>
+          </div>
+
+          <hr class="profile-divider" style="margin:1.5rem 0;">
+
+          <!-- Working hours -->
+          <h3>Standard Working Hours</h3>
+          <div class="form-grid-2" style="margin-top:1rem; margin-bottom:1.2rem;">
+            <div class="field-group">
+              <label class="field-label">Start Time</label>
+              <input type="time" class="form-input" id="availStartHour" value="<%= wh.start || '08:00' %>">
+            </div>
+            <div class="field-group">
+              <label class="field-label">End Time</label>
+              <input type="time" class="form-input" id="availEndHour" value="<%= wh.end || '19:00' %>">
+            </div>
+          </div>
+          <button type="button" class="btn-primary-sm" onclick="saveChefAvailability()" id="btnSaveSchedule">Save Schedule</button>
+        </div>
+
+        <!-- Vacation Leave -->
+        <div class="calendar-card">
+          <h3>Vacation / Leave Days</h3>
+          <p class="field-hint" style="margin-bottom:1rem;">Set specific date ranges when you will be out of service:</p>
+          
+          <form id="chefVacationForm" onsubmit="addChefVacation(event)">
+            <div class="form-grid-2" style="margin-bottom:0.8rem;">
+              <div class="field-group">
+                <label class="field-label">Start Date</label>
+                <input type="date" class="form-input" id="vacationStartDate" required min="<%= new Date().toISOString().split('T')[0] %>">
+              </div>
+              <div class="field-group">
+                <label class="field-label">End Date</label>
+                <input type="date" class="form-input" id="vacationEndDate" required min="<%= new Date().toISOString().split('T')[0] %>">
+              </div>
+            </div>
+            <div class="field-group" style="margin-bottom:1rem;">
+              <label class="field-label">Reason / Note (Optional)</label>
+              <input type="text" class="form-input" id="vacationNote" placeholder="e.g. Family Trip, Rest Period">
+            </div>
+            <button type="submit" class="btn-primary-sm" id="btnAddVacation">+ Add Vacation Period</button>
+          </form>
+
+          <hr class="profile-divider" style="margin:1.5rem 0;">
+
+          <!-- List of active vacations -->
+          <h4 style="font-size:0.88rem; margin-bottom:0.6rem;">Active Leave Periods (<%= vacations.length %>)</h4>
+          <div class="vacation-list" id="chefVacationList">
+            <% if (vacations.length === 0) { %>
+              <div style="font-size:0.8rem; color:var(--text-muted); font-style:italic; padding:0.5rem 0;">No active vacations or leaves scheduled.</div>
+            <% } else { %>
+              <% vacations.forEach((v, idx) => { %>
+                <div class="vacation-item" id="vacation-item-<%= idx %>">
+                  <div>
+                    <strong>🗓️ <%= new Date(v.startDate).toLocaleDateString() %> — <%= new Date(v.endDate).toLocaleDateString() %></strong>
+                    <div style="font-size:0.75rem; color:var(--text-muted);"><%= v.note || 'Vacation' %></div>
+                  </div>
+                  <button type="button" class="btn-del-vacation" onclick="deleteChefVacation(<%= idx %>)" title="Remove Leave">✕</button>
+                </div>
+              <% }) %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: BOOKINGS                                            -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-bookings">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">Bookings Dashboard</h1>
+          <p class="section-subtitle">Review, accept, or decline incoming booking requests from clients.</p>
+        </div>
+      </div>
+
+      <!-- Tabs row -->
+      <div class="bookings-tabs-row">
+        <button class="bookings-tab active" onclick="switchBookingTab(this, 'pending')"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M6 2v6h.01L6 8.01 10 12l-4 4 .01.01H6V22h12v-5.99h-.01L18 16l-4-4 4-3.99-.01-.01H18V2H6z"/></svg> Pending (<%=
+            bookings.filter(b=> b.status === 'Pending' || b.status === 'Requested').length %>)</button>
+        <button class="bookings-tab" onclick="switchBookingTab(this, 'accepted')"><svg class="svg-icon-stroke" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Accepted &amp; Cooking (<%= bookings.filter(b=>
+            b.status === 'Accepted' || b.status === 'Cooking' || b.status === 'Processing' || b.status === 'Deposit Paid' || b.status === 'Confirmed' || b.paymentStatus === 'Deposit Paid').length %>)</button>
+        <button class="bookings-tab" onclick="switchBookingTab(this, 'completed')"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg> Completed (<%= bookings.filter(b=>
+            b.status === 'Completed' || b.paymentStatus === 'Completed' || b.paymentStatus === 'Paid').length %>)</button>
+        <button class="bookings-tab" onclick="switchBookingTab(this, 'cancelled')"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.83 13.41L15.41 16.83 12 13.41 8.59 16.83 7.17 15.41 10.59 12 7.17 8.59 8.59 7.17 12 10.59 15.41 7.17 16.83 8.59 13.41 12l3.42 3.41z"/></svg> Cancelled (<%= bookings.filter(b=>
+            b.status === 'Cancelled' || b.status === 'Rejected').length %>)</button>
+      </div>
+
+      <!-- PENDING BOOKINGS -->
+      <div class="booking-panel active" id="bookingpanel-pending">
+        <% const pendingBookings=bookings.filter(b=> b.status === 'Pending' || b.status === 'Requested'); %>
+          <% if (pendingBookings.length===0) { %>
+            <div style="text-align:center;padding:3rem;color:var(--text-muted);">
+              <div style="font-size:2.5rem;margin-bottom:0.8rem;"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zM4 18V8l8 5 8-5v10H4z"/></svg></div>
+              <p>No pending booking requests.</p>
+            </div>
+            <% } else { %>
+              <% pendingBookings.forEach(b=> { %>
+                <div class="booking-card-item" id="bcard-<%= b._id %>">
+                  <div class="booking-card-header">
+                    <div>
+                      <span class="booking-id-tag">#<%= b._id.toString().slice(-6).toUpperCase() %></span>
+                      <strong>
+                        <%= b.userId ? `${b.userId.firstName} ${b.userId.lastName}` : 'Guest User' %>
+                      </strong>
+                    </div>
+                    <div class="booking-card-time">
+                      <%= new Date(b.date).toDateString() %> at <%= b.time %>
+                    </div>
+                  </div>
+                  <div class="booking-card-body">
+                    <!-- Dish to Cook Highlight -->
+                    <div style="background:#e8f5e9; border:1px solid #c8e6c9; border-radius:8px; padding:0.6rem 0.9rem; margin-bottom:0.75rem; display:flex; align-items:center; gap:0.6rem;">
+                      <span style="font-size:1.3rem;">👨‍🍳</span>
+                      <div>
+                        <strong style="color:#1b5e20; font-size:0.9rem;">Dish to Cook:</strong>
+                        <span style="color:#2C5F2D; font-weight:700; font-size:0.92rem; margin-left:0.3rem;"><%= b.foodName || (b.menu && b.menu.length > 0 ? b.menu.join(', ') : 'Special Order') %></span>
+                      </div>
+                    </div>
+
+                    <% if (b.bookingType === 'Event' || b.eventName) { %>
+                      <div style="background:#fff3e0; border:1px solid #ffe0b2; border-radius:8px; padding:0.6rem 0.9rem; margin-bottom:0.75rem;">
+                        <strong style="color:#e65100; font-size:0.85rem;">🎉 Event: <%= b.eventName || 'Special Party' %></strong>
+                        <div style="font-size:0.8rem; color:#bf360c; margin-top:0.2rem;">
+                          <span>Venue: <%= b.eventVenue || b.locationType || 'Venue' %></span> &middot;
+                          <span>Start: <%= b.eventStartTime || b.time %></span>
+                          <% if (b.eventEndTime) { %> &middot; <span>End: <%= b.eventEndTime %></span><% } %>
+                        </div>
+                      </div>
+                    <% } %>
+
+                    <div class="detail-grid">
+                      <div><span>Type:</span> <%= b.bookingType %></div>
+                      <div><span>Duration:</span> <%= b.duration %> hrs</div>
+                      <div><span>Guests:</span> <%= b.guests.adults %> Adult(s)<% if (b.guests.children > 0) { %>, <%= b.guests.children %> Child<% } %></div>
+                      <% if (b.cuisine) { %>
+                        <div><span>Cuisine:</span> <%= b.cuisine %></div>
+                      <% } %>
+                      <% if (b.mealSession && b.mealSession.length > 0) { %>
+                        <div><span>Meals:</span> <%= b.mealSession.join(', ') %></div>
+                      <% } %>
+                      <div><span>Location:</span> <%= b.location %></div>
+                      <% if (b.dietaryPreference && b.dietaryPreference !== 'None') { %>
+                        <div><span>Dietary:</span> <%= b.dietaryPreference %></div>
+                      <% } %>
+                      <div><span>Grocery Support:</span> <%= b.grocerySupport ? '🛒 Yes' : 'No' %></div>
+                      <div><span>Total:</span> <strong>LKR <%= b.totalAmount.toLocaleString() %></strong></div>
+                      <div><span>Payment:</span> <%= b.paymentMethod %></div>
+                    </div>
+
+                    <% if (b.locationMapUrl || b.landmarkNotes) { %>
+                      <div style="margin-top:0.6rem; font-size:0.82rem; background:#f0f9f0; padding:0.5rem 0.8rem; border-radius:6px; border:1px dashed #b2dfdb;">
+                        <strong>📍 Navigation & Landmark:</strong>
+                        <% if (b.locationMapUrl) { %>
+                          <a href="<%= b.locationMapUrl %>" target="_blank" style="color:#2C5F2D; font-weight:700; text-decoration:underline; margin-left:0.4rem;">🗺️ Open Google Maps Location</a>
+                        <% } %>
+                        <% if (b.landmarkNotes) { %><br><small style="color:#555;">📌 <%= b.landmarkNotes %></small><% } %>
+                      </div>
+                    <% } %>
+
+                    <% if (b.grocerySupport && b.groceryItemsNeeded) { %>
+                      <p class="special-notes" style="background:#fffbea; border-left:4px solid #f39c12; padding:0.6rem 0.8rem; border-radius:6px; margin-top:0.5rem;">
+                        🛒 <strong>User's Grocery List:</strong> <%= b.groceryItemsNeeded %>
+                      </p>
+                    <% } %>
+                    <% if (b.allergyDetails) { %>
+                      <p class="special-notes" style="color:#c0392b;"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>️ Allergies: <%= b.allergyDetails %></p>
+                    <% } %>
+                  </div>
+                  <div class="booking-card-actions">
+                    <button class="btn-action approve" onclick="openAcceptModal('<%= b._id %>')"><svg class="svg-icon-stroke" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Accept Request</button>
+                    <button class="btn-action reject" onclick="respondBooking('<%= b._id %>', 'reject')"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> Decline</button>
+                  </div>
+                </div>
+                <% }) %>
+              <% } %>
+          </div>
+
+          <!-- ACCEPTED & COOKING IN PROGRESS BOOKINGS -->
+          <div class="booking-panel" id="bookingpanel-accepted">
+            <% const acceptedBookings=bookings.filter(b=> b.status === 'Accepted' || b.status === 'Cooking' || b.status === 'Processing' || b.status === 'Deposit Paid' || b.status === 'Confirmed' || b.paymentStatus === 'Deposit Paid'); %>
+              <% if (acceptedBookings.length===0) { %>
+                <div style="text-align:center;padding:3rem;color:var(--text-muted);">
+                  <div style="font-size:2.5rem;margin-bottom:0.8rem;"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+                  <p>No active or cooking bookings at the moment.</p>
+                </div>
+              <% } else { %>
+                <% acceptedBookings.forEach(b=> { %>
+                  <% const isCooking = (b.status === 'Cooking' || b.status === 'Processing'); %>
+                  <% const custDisplayName = b.userId ? `${b.userId.firstName} ${b.userId.lastName}` : 'Guest Customer'; %>
+                  <div class="booking-card-item" id="bcard-<%= b._id %>" style="border-left: 4px solid <%= isCooking ? '#f39c12' : '#2C5F2D' %>;">
+                    <div class="booking-card-header">
+                      <div>
+                        <span class="booking-id-tag">#<%= b._id.toString().slice(-6).toUpperCase() %></span>
+                        <strong><%= custDisplayName %></strong>
+                        <% if (isCooking) { %>
+                          <span style="background:#fff3e0; color:#e65100; font-size:0.75rem; font-weight:800; padding:0.2rem 0.6rem; border-radius:12px; border:1px solid #ffe0b2; margin-left:0.4rem;">🍳 Cooking in Progress</span>
+                        <% } else if (b.status === 'Deposit Paid' || b.paymentStatus === 'Deposit Paid') { %>
+                          <span style="background:#e8f5e9; color:#2e7d32; font-size:0.75rem; font-weight:800; padding:0.2rem 0.6rem; border-radius:12px; border:1px solid #c8e6c9; margin-left:0.4rem;">💳 50% Deposit Confirmed</span>
+                        <% } else { %>
+                          <span style="background:#e8f5e9; color:#2e7d32; font-size:0.75rem; font-weight:800; padding:0.2rem 0.6rem; border-radius:12px; border:1px solid #c8e6c9; margin-left:0.4rem;">✓ Accepted</span>
+                        <% } %>
+                      </div>
+                      <div class="booking-card-time">
+                        <%= new Date(b.date).toDateString() %> at <%= b.time %>
+                      </div>
+                    </div>
+                    <div class="booking-card-body">
+                      <!-- Dish to Cook Highlight -->
+                      <div style="background:#e8f5e9; border:1px solid #c8e6c9; border-radius:8px; padding:0.6rem 0.9rem; margin-bottom:0.75rem; display:flex; align-items:center; gap:0.6rem;">
+                        <span style="font-size:1.3rem;">👨‍🍳</span>
+                        <div>
+                          <strong style="color:#1b5e20; font-size:0.9rem;">Dish to Cook:</strong>
+                          <span style="color:#2C5F2D; font-weight:700; font-size:0.92rem; margin-left:0.3rem;"><%= b.foodName || (b.menu && b.menu.length > 0 ? b.menu.join(', ') : 'Special Order') %></span>
+                        </div>
+                      </div>
+
+                      <% if (b.bookingType === 'Event' || b.eventName) { %>
+                        <div style="background:#fff3e0; border:1px solid #ffe0b2; border-radius:8px; padding:0.6rem 0.9rem; margin-bottom:0.75rem;">
+                          <strong style="color:#e65100; font-size:0.85rem;">🎉 Event: <%= b.eventName || 'Special Party' %></strong>
+                          <div style="font-size:0.8rem; color:#bf360c; margin-top:0.2rem;">
+                            <span>Venue: <%= b.eventVenue || b.locationType || 'Venue' %></span> &middot;
+                            <span>Start: <%= b.eventStartTime || b.time %></span>
+                            <% if (b.eventEndTime) { %> &middot; <span>End: <%= b.eventEndTime %></span><% } %>
+                          </div>
+                        </div>
+                      <% } %>
+
+                      <div class="detail-grid">
+                        <div><span>Type:</span> <%= b.bookingType %></div>
+                        <div><span>Duration:</span> <%= b.duration %> hrs</div>
+                        <div><span>Guests:</span> <%= b.guests.adults %> Adult(s)</div>
+                        <% if (b.cuisine) { %>
+                          <div><span>Cuisine:</span> <%= b.cuisine %></div>
+                        <% } %>
+                        <div><span>Location:</span> <%= b.location %></div>
+                        <div><span>Total Bill:</span> <strong>LKR <%= b.totalAmount.toLocaleString() %></strong></div>
+                        <div><span>Payment:</span> <span class="status-badge <%= b.paymentStatus === 'Completed' ? 'confirmed' : 'pending' %>"><%= b.paymentStatus %></span></div>
+                      </div>
+
+                      <% if (b.locationMapUrl || b.landmarkNotes) { %>
+                        <div style="margin-top:0.6rem; font-size:0.82rem; background:#f0f9f0; padding:0.5rem 0.8rem; border-radius:6px; border:1px dashed #b2dfdb;">
+                          <strong>📍 Navigation & Landmark:</strong>
+                          <% if (b.locationMapUrl) { %>
+                            <a href="<%= b.locationMapUrl %>" target="_blank" style="color:#2C5F2D; font-weight:700; text-decoration:underline; margin-left:0.4rem;">🗺️ Open Google Maps Location</a>
+                          <% } %>
+                          <% if (b.landmarkNotes) { %><br><small style="color:#555;">📌 <%= b.landmarkNotes %></small><% } %>
+                        </div>
+                      <% } %>
+                    </div>
+                    <div class="booking-card-actions" style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.8rem;">
+                      <button class="btn-action view" onclick="window.open('<%= b.locationMapUrl || ('https://maps.google.com/?q=' + encodeURIComponent(b.location)) %>', '_blank')">
+                        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.11 14.12l-6.84 3.19c-.31.14-.65-.17-.5-.48l3.19-6.84c.1-.22.28-.4.5-.5l6.84-3.19c.31-.14.65.17.5.48l-3.19 6.84c-.1.22-.28.4-.5.5zM12 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/></svg> 🗺️ Navigate
+                      </button>
+
+                      <% if (!isCooking) { %>
+                        <button type="button" class="btn-action" style="background:#e67e22; color:#fff; border:none; padding:0.5rem 1rem; border-radius:6px; font-weight:700; font-size:0.83rem; cursor:pointer;" onclick="startCookingProcess('<%= b._id %>')">
+                          🍳 Start Cooking / Processing
+                        </button>
+                      <% } %>
+
+                      <button type="button" class="btn-action approve" style="background:#2C5F2D; color:#fff; border:none; padding:0.5rem 1.1rem; border-radius:6px; font-weight:800; font-size:0.83rem; cursor:pointer;" onclick="openCompleteBookingModal('<%= b._id %>', '<%= b.totalAmount %>', '<%= custDisplayName %>')">
+                        ✅ <%= isCooking ? 'Finished / Complete & Collect Cash' : 'Mark Completed & Collect Cash' %>
+                      </button>
+                    </div>
+                  </div>
+                <% }) %>
+              <% } %>
+          </div>
+
+          <!-- COMPLETED BOOKINGS -->
+          <div class="booking-panel" id="bookingpanel-completed">
+            <% const completedBookings=bookings.filter(b=> b.status === 'Completed'); %>
+              <% if (completedBookings.length===0) { %>
+                <div style="text-align:center;padding:3rem;color:var(--text-muted);">
+                  <div style="font-size:2.5rem;margin-bottom:0.8rem;"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+                  <p>No completed bookings yet.</p>
+                </div>
+              <% } else { %>
+                <% completedBookings.forEach(b=> { %>
+                  <div class="booking-card-item">
+                    <div class="booking-card-header">
+                      <div>
+                        <span class="booking-id-tag">#<%= b._id.toString().slice(-6).toUpperCase() %></span>
+                        <strong>
+                          <%= b.customerName || (b.userId ? `${b.userId.firstName} ${b.userId.lastName}` : 'Customer') %>
+                        </strong>
+                      </div>
+                      <div class="booking-card-time">
+                        <%= new Date(b.date).toDateString() %>
+                      </div>
+                    </div>
+                    <div class="booking-card-body">
+                      <!-- Dish to Cook Highlight -->
+                      <div style="background:#f4fbf4; border:1px solid #c8e6c9; border-radius:8px; padding:0.55rem 0.85rem; margin-bottom:0.65rem;">
+                        <strong>🍽️ Dish Prepared:</strong> <span style="color:#2C5F2D; font-weight:700;"><%= b.foodName || (b.menu && b.menu.length > 0 ? b.menu.join(', ') : 'Special Dish') %></span>
+                      </div>
+
+                      <div class="detail-grid">
+                        <div><span>Cuisine:</span> <%= b.cuisine || 'General' %></div>
+                        <div><span>Total Billed:</span> <strong>LKR <%= (b.totalAmount || 0).toLocaleString() %></strong></div>
+                        <div><span>Cash Received:</span> <strong style="color:#2C5F2D; font-size:0.95rem;">💵 LKR <%= (b.cashCollectedAmount || b.totalAmount || 0).toLocaleString() %></strong></div>
+                        <div><span>Collected By:</span> <%= b.collectedByChefName || 'Chef' %></div>
+                        <div><span>Status:</span> <span class="status-badge confirmed"><svg class="svg-icon-stroke" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Completed</span></div>
+                      </div>
+                    </div>
+                  </div>
+                <% }) %>
+              <% } %>
+          </div>
+
+                <!-- CANCELLED -->
+                <div class="booking-panel" id="bookingpanel-cancelled">
+                  <% const cancelledBookings=bookings.filter(b=> b.status === 'Cancelled'); %>
+                    <% if (cancelledBookings.length===0) { %>
+                      <div style="text-align:center;padding:3rem;color:var(--text-muted);">
+                        <div style="font-size:2.5rem;margin-bottom:0.8rem;"><svg class="svg-icon-stroke" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                        <p>No cancelled bookings.</p>
+                      </div>
+                      <% } else { %>
+                        <% cancelledBookings.forEach(b=> { %>
+                          <div class="booking-card-item" style="opacity:0.7;">
+                            <div class="booking-card-header">
+                              <div>
+                                <span class="booking-id-tag">#<%= b._id.toString().slice(-6).toUpperCase() %></span>
+                                <strong>
+                                  <%= b.userId ? `${b.userId.firstName} ${b.userId.lastName}` : 'Guest' %>
+                                </strong>
+                              </div>
+                              <div class="booking-card-time">
+                                <%= new Date(b.date).toDateString() %>
+                              </div>
+                            </div>
+                            <div class="booking-card-body">
+                              <p style="color:#c0392b;">Booking was cancelled or declined.</p>
+                            </div>
+                          </div>
+                          <% }) %>
+                            <% } %>
+                </div>
+    </section>
+
+    <!-- ── Accept Booking Modal ──────────────────────────────── -->
+    <div id="acceptBookingModal"
+      style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;"
+      onclick="if(event.target===this) this.style.display='none'">
+      <div
+        style="background:white;border-radius:18px;padding:2rem;max-width:480px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.2);position:relative;">
+        <button onclick="document.getElementById('acceptBookingModal').style.display='none'"
+          style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#888;line-height:1;">✕</button>
+        <h3 style="font-size:1.1rem;margin-bottom:1.2rem;color:#1E2E1E;"><svg class="svg-icon-stroke" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Accept Booking Request</h3>
+        <div style="margin-bottom:1rem;">
+          <label
+            style="font-size:0.78rem;font-weight:700;text-transform:uppercase;color:#6B7B6B;display:block;margin-bottom:0.4rem;">Estimated
+            Cooking Time</label>
+          <input id="cookingTimeInput" type="text" placeholder="e.g. 2 hours 30 minutes"
+            style="width:100%;padding:0.7rem;border:1.5px solid #e0ead0;border-radius:8px;font-size:0.9rem;outline:none;">
+        </div>
+        <div style="margin-bottom:1.5rem;">
+          <label
+            style="font-size:0.78rem;font-weight:700;text-transform:uppercase;color:#6B7B6B;display:block;margin-bottom:0.4rem;">Extra
+            Ingredients to Buy (Optional)</label>
+          <input id="extraIngredientsInput" type="text" placeholder="e.g. Coconut milk, Cinnamon, Cardamom"
+            style="width:100%;padding:0.7rem;border:1.5px solid #e0ead0;border-radius:8px;font-size:0.9rem;outline:none;">
+        </div>
+        <div style="display:flex;gap:0.8rem;">
+          <button onclick="respondBookingWithDetails()"
+            style="flex:1;background:#2C5F2D;color:white;border:none;padding:0.8rem;border-radius:10px;font-weight:700;cursor:pointer;font-size:0.92rem;"><svg class="svg-icon-stroke" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Confirm Accept</button>
+          <button onclick="document.getElementById('acceptBookingModal').style.display='none'"
+            style="flex:0 0 auto;background:white;border:1.5px solid #e0ead0;padding:0.8rem 1.2rem;border-radius:10px;cursor:pointer;color:#6B7B6B;">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- ============================================================ -->
+    <!--  SECTION: SERVICES                                            -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-services">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">Services &amp; Packages</h1>
+          <p class="section-subtitle">Manage the packages and menus you offer to clients.</p>
+        </div>
+        <div class="section-actions">
+          <button class="btn-primary-sm">+ Add Package</button>
+        </div>
+      </div>
+
+      <div class="packages-grid">
+        <div class="package-card">
+          <h4>Daily Cooking Package</h4>
+          <p class="desc">Standard family meal preparation for breakfast, lunch, or dinner.</p>
+          <div class="rate-price">LKR 3,500/meal</div>
+          <div class="actions-row">
+            <button class="btn-outline-sm">Edit</button>
+            <button class="btn-outline-sm delete-btn">Delete</button>
+          </div>
+        </div>
+
+        <div class="package-card">
+          <h4>Event Services (Anniversary/Birthday)</h4>
+          <p class="desc">Exclusive multi-course menus served for birthdays and anniversaries.</p>
+          <div class="rate-price">LKR 12,000/event</div>
+          <div class="actions-row">
+            <button class="btn-outline-sm">Edit</button>
+            <button class="btn-outline-sm delete-btn">Delete</button>
+          </div>
+        </div>
+
+        <div class="package-card">
+          <h4>Healthy/Diabetic Special Menu</h4>
+          <p class="desc">Custom nutritional meals designed for diabetic or keto preferences.</p>
+          <div class="rate-price">LKR 5,000/meal</div>
+          <div class="actions-row">
+            <button class="btn-outline-sm">Edit</button>
+            <button class="btn-outline-sm delete-btn">Delete</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: PRICING                                             -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-pricing">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">Pricing Settings</h1>
+          <p class="section-subtitle">Set your hourly rates, extra guest pricing tiers, and event surcharges.</p>
+        </div>
+      </div>
+
+      <%
+        const ps = (chef && chef.pricingSettings) ? chef.pricingSettings : {};
+      %>
+
+      <form id="chefPricingForm" onsubmit="saveChefPricing(event)">
+        <div class="pricing-layouts-grid">
+          <!-- General Pricing Form -->
+          <div class="pricing-card">
+            <h3>Standard Rates</h3>
+            <div class="pricing-form">
+              <div class="field-group" style="margin-bottom:1.2rem;">
+                <label class="field-label">Hourly Rate (LKR)</label>
+                <input type="number" class="form-input" id="pricingHourlyRate" value="<%= chef.hourlyRate || 2500 %>" min="500" required>
+              </div>
+
+              <h4 style="margin-bottom:0.8rem; font-size:0.88rem;">Guest Tier Surcharge (LKR)</h4>
+              <div class="form-grid-2" style="margin-bottom:0.8rem;">
+                <div class="field-group">
+                  <label class="field-label">1–5 Guests Surcharge</label>
+                  <input type="number" class="form-input" id="guestTier1to5" value="<%= ps.guestTier1to5 || 3000 %>" min="0">
+                </div>
+                <div class="field-group">
+                  <label class="field-label">6–10 Guests Surcharge</label>
+                  <input type="number" class="form-input" id="guestTier6to10" value="<%= ps.guestTier6to10 || 5000 %>" min="0">
+                </div>
+              </div>
+              <div class="form-grid-2">
+                <div class="field-group">
+                  <label class="field-label">11–20 Guests Surcharge</label>
+                  <input type="number" class="form-input" id="guestTier11to20" value="<%= ps.guestTier11to20 || 8000 %>" min="0">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fees & Holiday Pricing -->
+          <div class="pricing-card">
+            <h3>Special Booking Surcharges (%)</h3>
+            <div class="pricing-form">
+              <div class="field-group" style="margin-bottom:1.2rem;">
+                <label class="field-label">Urgent Booking Surcharge (%)</label>
+                <input type="number" class="form-input" id="urgentMarkup" value="<%= ps.urgentMarkup || 25 %>" min="0">
+                <span class="field-hint">Applied to bookings requested within 24 hours</span>
+              </div>
+
+              <h4 style="margin-bottom:0.8rem; font-size:0.88rem;">Festival/Holiday Markup (%)</h4>
+              <div class="form-grid-2" style="margin-bottom:1.5rem;">
+                <div class="field-group">
+                  <label class="field-label">Christmas Markup (%)</label>
+                  <input type="number" class="form-input" id="christmasMarkup" value="<%= ps.christmasMarkup || 15 %>" min="0">
+                </div>
+                <div class="field-group">
+                  <label class="field-label">New Year Markup (%)</label>
+                  <input type="number" class="form-input" id="newYearMarkup" value="<%= ps.newYearMarkup || 20 %>" min="0">
+                </div>
+              </div>
+
+              <button type="submit" class="btn-primary-sm" id="btnSavePricing">💾 Save Pricing Settings</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: COURSES                                             -->
+    <!-- ============================================================ -->
+    <!-- ============================================================ -->
+    <!--  SECTION: COURSES & TEACHING SPECIALIZATION                   -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-courses">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">Cooking Courses &amp; Teaching Preferences</h1>
+          <p class="section-subtitle">Select which courses you want to teach. Only selected courses will list you as an instructor in student enrollment forms.</p>
+        </div>
+        <div class="section-actions" style="display:flex; gap:0.6rem;">
+          <button class="btn-primary-sm" onclick="saveTeachingCourses()" id="btnSaveTeachingCourses" style="display:inline-flex; align-items:center; gap:0.4rem;">
+            <span>💾</span> Save Teaching Preferences
+          </button>
+        </div>
+      </div>
+
+      <!-- TEACHING PREFERENCES FORM -->
+      <form id="teachingCoursesForm" onsubmit="event.preventDefault(); saveTeachingCourses();">
+        <div class="teaching-courses-container">
+
+          <!-- 1. Cuisine Courses -->
+          <div class="course-group-card">
+            <div class="course-group-title">
+              <span>🍛</span> Cuisine Masterclasses
+              <span style="font-size:0.75rem; font-weight:500; color:var(--text-muted); margin-left:auto;">Select all that you are expert in</span>
+            </div>
+            <div class="teaching-cards-grid">
+              
+              <!-- Sri Lankan -->
+              <label class="teaching-card <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_srilankan')) ? 'selected' : '' %>">
+                <input type="checkbox" name="teachingCourses" value="custom_srilankan" <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_srilankan')) ? 'checked' : '' %> onchange="toggleCardSelected(this)">
+                <div class="teaching-card-info">
+                  <div class="teaching-card-title">Mastering Sri Lankan Curries</div>
+                  <div class="teaching-card-meta">
+                    <span class="pill-badge">Cuisine</span>
+                    <span>⏱️ 3 Hours</span>
+                    <span class="pill-badge price">LKR 5,000</span>
+                  </div>
+                </div>
+              </label>
+
+              <!-- Italian Pasta -->
+              <label class="teaching-card <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_pasta')) ? 'selected' : '' %>">
+                <input type="checkbox" name="teachingCourses" value="custom_pasta" <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_pasta')) ? 'checked' : '' %> onchange="toggleCardSelected(this)">
+                <div class="teaching-card-info">
+                  <div class="teaching-card-title">Italian Fresh Pasta &amp; Sauces</div>
+                  <div class="teaching-card-meta">
+                    <span class="pill-badge">Cuisine</span>
+                    <span>⏱️ 2.5 Hours</span>
+                    <span class="pill-badge price">LKR 6,500</span>
+                  </div>
+                </div>
+              </label>
+
+              <!-- Indian -->
+              <label class="teaching-card <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_indian')) ? 'selected' : '' %>">
+                <input type="checkbox" name="teachingCourses" value="custom_indian" <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_indian')) ? 'checked' : '' %> onchange="toggleCardSelected(this)">
+                <div class="teaching-card-info">
+                  <div class="teaching-card-title">North &amp; South Indian Flavours</div>
+                  <div class="teaching-card-meta">
+                    <span class="pill-badge">Cuisine</span>
+                    <span>⏱️ 3 Hours</span>
+                    <span class="pill-badge price">LKR 4,500</span>
+                  </div>
+                </div>
+              </label>
+
+              <!-- Asian Fusion -->
+              <label class="teaching-card <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_asian')) ? 'selected' : '' %>">
+                <input type="checkbox" name="teachingCourses" value="custom_asian" <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_asian')) ? 'checked' : '' %> onchange="toggleCardSelected(this)">
+                <div class="teaching-card-info">
+                  <div class="teaching-card-title">Asian Fusion &amp; Wok Masterclass</div>
+                  <div class="teaching-card-meta">
+                    <span class="pill-badge">Cuisine</span>
+                    <span>⏱️ 3 Hours</span>
+                    <span class="pill-badge price">LKR 5,500</span>
+                  </div>
+                </div>
+              </label>
+
+            </div>
+          </div>
+
+          <!-- 2. Skills & Techniques -->
+          <div class="course-group-card">
+            <div class="course-group-title">
+              <span>🔪</span> Skill-Level &amp; Technique Tracks
+              <span style="font-size:0.75rem; font-weight:500; color:var(--text-muted); margin-left:auto;">Culinary techniques &amp; arts</span>
+            </div>
+            <div class="teaching-cards-grid">
+              
+              <!-- Knife Skills -->
+              <label class="teaching-card <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_knife')) ? 'selected' : '' %>">
+                <input type="checkbox" name="teachingCourses" value="custom_knife" <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_knife')) ? 'checked' : '' %> onchange="toggleCardSelected(this)">
+                <div class="teaching-card-info">
+                  <div class="teaching-card-title">Professional Knife Skills &amp; Prep</div>
+                  <div class="teaching-card-meta">
+                    <span class="pill-badge">Skill</span>
+                    <span>⏱️ 2 Hours</span>
+                    <span class="pill-badge price">LKR 4,000</span>
+                  </div>
+                </div>
+              </label>
+
+              <!-- Plating -->
+              <label class="teaching-card <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_plating')) ? 'selected' : '' %>">
+                <input type="checkbox" name="teachingCourses" value="custom_plating" <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_plating')) ? 'checked' : '' %> onchange="toggleCardSelected(this)">
+                <div class="teaching-card-info">
+                  <div class="teaching-card-title">Fine Dining Plating &amp; Aesthetics</div>
+                  <div class="teaching-card-meta">
+                    <span class="pill-badge">Skill</span>
+                    <span>⏱️ 2.5 Hours</span>
+                    <span class="pill-badge price">LKR 6,000</span>
+                  </div>
+                </div>
+              </label>
+
+              <!-- Baking & Pastry -->
+              <label class="teaching-card <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_baking')) ? 'selected' : '' %>">
+                <input type="checkbox" name="teachingCourses" value="custom_baking" <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_baking')) ? 'checked' : '' %> onchange="toggleCardSelected(this)">
+                <div class="teaching-card-info">
+                  <div class="teaching-card-title">Artisan Bread &amp; French Pastry</div>
+                  <div class="teaching-card-meta">
+                    <span class="pill-badge">Skill</span>
+                    <span>⏱️ 4 Hours</span>
+                    <span class="pill-badge price">LKR 7,500</span>
+                  </div>
+                </div>
+              </label>
+
+            </div>
+          </div>
+
+          <!-- 3. Health & Occasion -->
+          <div class="course-group-card">
+            <div class="course-group-title">
+              <span>🌱</span> Health, Diet &amp; Special Occasions
+              <span style="font-size:0.75rem; font-weight:500; color:var(--text-muted); margin-left:auto;">Specialized dietary knowledge</span>
+            </div>
+            <div class="teaching-cards-grid">
+              
+              <!-- Vegan -->
+              <label class="teaching-card <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_vegan')) ? 'selected' : '' %>">
+                <input type="checkbox" name="teachingCourses" value="custom_vegan" <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_vegan')) ? 'checked' : '' %> onchange="toggleCardSelected(this)">
+                <div class="teaching-card-info">
+                  <div class="teaching-card-title">Plant-Based &amp; Vegan Gourmet</div>
+                  <div class="teaching-card-meta">
+                    <span class="pill-badge">Health</span>
+                    <span>⏱️ 2.5 Hours</span>
+                    <span class="pill-badge price">LKR 4,500</span>
+                  </div>
+                </div>
+              </label>
+
+              <!-- Ayurvedic -->
+              <label class="teaching-card <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_ayurvedic')) ? 'selected' : '' %>">
+                <input type="checkbox" name="teachingCourses" value="custom_ayurvedic" <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_ayurvedic')) ? 'checked' : '' %> onchange="toggleCardSelected(this)">
+                <div class="teaching-card-info">
+                  <div class="teaching-card-title">Traditional Ayurvedic Cooking</div>
+                  <div class="teaching-card-meta">
+                    <span class="pill-badge">Health</span>
+                    <span>⏱️ 3 Hours</span>
+                    <span class="pill-badge price">LKR 5,000</span>
+                  </div>
+                </div>
+              </label>
+
+              <!-- BBQ & Grill -->
+              <label class="teaching-card <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_bbq')) ? 'selected' : '' %>">
+                <input type="checkbox" name="teachingCourses" value="custom_bbq" <%= (chef.teachingCourses && chef.teachingCourses.includes('custom_bbq')) ? 'checked' : '' %> onchange="toggleCardSelected(this)">
+                <div class="teaching-card-info">
+                  <div class="teaching-card-title">Outdoor BBQ &amp; Grill Masterclass</div>
+                  <div class="teaching-card-meta">
+                    <span class="pill-badge">Occasion</span>
+                    <span>⏱️ 3.5 Hours</span>
+                    <span class="pill-badge price">LKR 6,500</span>
+                  </div>
+                </div>
+              </label>
+
+            </div>
+          </div>
+
+          <!-- 4. Live Custom Courses if any -->
+          <% if (typeof courses !== 'undefined' && courses.length > 0) { %>
+            <div class="course-group-card">
+              <div class="course-group-title">
+                <span>🌟</span> Platform Live Courses
+                <span style="font-size:0.75rem; font-weight:500; color:var(--text-muted); margin-left:auto;">Live ChefNest Academy Tracks</span>
+              </div>
+              <div class="teaching-cards-grid">
+                <% courses.forEach(c => { %>
+                  <label class="teaching-card <%= (chef.teachingCourses && chef.teachingCourses.includes(c._id.toString())) ? 'selected' : '' %>">
+                    <input type="checkbox" name="teachingCourses" value="<%= c._id %>" <%= (chef.teachingCourses && chef.teachingCourses.includes(c._id.toString())) ? 'checked' : '' %> onchange="toggleCardSelected(this)">
+                    <div class="teaching-card-info">
+                      <div class="teaching-card-title"><%= c.title %></div>
+                      <div class="teaching-card-meta">
+                        <span class="pill-badge"><%= c.category || 'Live' %></span>
+                        <span>⏱️ <%= c.duration || '2 hours' %></span>
+                        <span class="pill-badge price"><%= c.price === 0 ? 'FREE' : 'LKR ' + c.price.toLocaleString() %></span>
+                      </div>
+                    </div>
+                  </label>
+                <% }) %>
+              </div>
+            </div>
+          <% } %>
+
+          <!-- Bottom Action Bar -->
+          <div style="display:flex; justify-content:space-between; align-items:center; background:var(--white); padding:1.2rem 1.4rem; border-radius:var(--radius-lg); border:1px solid var(--border-light); box-shadow:var(--shadow-sm); flex-wrap:wrap; gap:1rem;">
+            <div style="font-size:0.85rem; color:var(--text-muted);">
+              💡 <em>Note: If you leave all courses unchecked, you will only receive private dining bookings, and will not be listed for teaching cooking classes.</em>
+            </div>
+            <div style="display:flex; gap:0.6rem;">
+              <button type="button" class="btn-outline-sm" onclick="selectAllCourses(true)">Select All</button>
+              <button type="button" class="btn-outline-sm delete-btn" onclick="selectAllCourses(false)">Clear All</button>
+              <button type="button" class="btn-primary-sm" onclick="saveTeachingCourses()" id="btnSaveTeachingCoursesBottom">Save Preferences</button>
+            </div>
+          </div>
+
+        </div>
+      </form>
+
+      <!-- STUDENT ENROLLMENTS TABLE -->
+      <div class="table-card" style="margin-top:1.5rem;">
+        <div class="table-card-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <h3>👨‍🎓 My Enrolled Students (<%= (typeof studentEnrollments !== 'undefined' ? studentEnrollments.length : 0) %>)</h3>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">Students who booked you as instructor for cooking courses</p>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="chef-table">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Learning Mode</th>
+                <th>Preferred Slot</th>
+                <th>Dietary / Notes</th>
+                <th>Payment</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (typeof studentEnrollments !== 'undefined' && studentEnrollments.length > 0) { %>
+                <% studentEnrollments.forEach(enr => { %>
+                  <tr>
+                    <td>
+                      <strong><%= enr.userId ? (enr.userId.firstName + ' ' + enr.userId.lastName) : 'Student' %></strong>
+                      <div style="font-size:0.72rem; color:var(--text-muted);"><%= enr.userId ? enr.userId.phone : '' %></div>
+                    </td>
+                    <td>
+                      <strong><%= enr.courseTitle %></strong>
+                      <div style="font-size:0.72rem; color:var(--text-muted);"><%= enr.category %></div>
+                    </td>
+                    <td><span class="pill-badge"><%= enr.learningMode %></span></td>
+                    <td>
+                      <div style="font-size:0.8rem; font-weight:600;"><%= enr.preferredTime %></div>
+                      <div style="font-size:0.72rem; color:var(--text-muted);"><%= enr.preferredDate ? new Date(enr.preferredDate).toLocaleDateString() : 'Flexible Date' %></div>
+                    </td>
+                    <td>
+                      <div style="font-size:0.78rem;"><strong>Diet:</strong> <%= enr.dietaryPreference || 'None' %></div>
+                      <% if (enr.specialNotes) { %>
+                        <div style="font-size:0.72rem; color:var(--text-muted); font-style:italic; max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="<%= enr.specialNotes %>">"<%= enr.specialNotes %>"</div>
+                      <% } %>
+                    </td>
+                    <td>
+                      <strong><%= enr.price === 0 ? 'FREE' : 'LKR ' + enr.price.toLocaleString() %></strong>
+                      <span class="status-badge <%= enr.paymentStatus === 'Paid' ? 'confirmed' : 'pending' %>"><%= enr.paymentStatus %></span>
+                    </td>
+                    <td>
+                      <span class="status-badge <%= enr.status === 'Completed' ? 'confirmed' : 'pending' %>"><%= enr.status %></span>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="7" style="text-align:center; padding:2rem; color:var(--text-muted);">
+                    📚 No student enrollments yet. When students select your courses, their session requests will appear here.
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: REVIEWS                                             -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-reviews">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">Customer Reviews (<%= (typeof reviews !== 'undefined' ? reviews.length : 0) %>)</h1>
+          <p class="section-subtitle">Real ratings and comments left by your dining and course clients.</p>
+        </div>
+      </div>
+
+      <div class="reviews-list-container">
+        <% if (typeof reviews !== 'undefined' && reviews.length > 0) { %>
+          <% reviews.forEach(r => { %>
+            <div class="review-panel-item" style="background:var(--white); padding:1.2rem; border-radius:var(--radius-md); border:1px solid var(--border-light); margin-bottom:0.8rem;">
+              <div class="review-header-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+                <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+                  <strong><%= r.userId ? (r.userId.firstName + ' ' + r.userId.lastName) : 'Verified Customer' %></strong>
+                  <div class="review-stars">
+                    <% for (let i = 1; i <= 5; i++) { %>
+                      <svg class="svg-icon" viewBox="0 0 24 24" style="fill: <%= i <= (r.rating !== undefined ? r.rating : 5) ? '#f59e0b' : '#e2e8f0' %>;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    <% } %>
+                  </div>
+                  <% if (r.sentiment === 'Negative') { %>
+                    <span style="background:#ffebee; color:#c62828; border:1px solid #ffcdd2; padding:2px 8px; border-radius:12px; font-size:0.72rem; font-weight:700; display:inline-flex; align-items:center; gap:3px;">😞 Negative Sentiment</span>
+                  <% } else if (r.sentiment === 'Neutral') { %>
+                    <span style="background:#fff3e0; color:#e65100; border:1px solid #ffe0b2; padding:2px 8px; border-radius:12px; font-size:0.72rem; font-weight:700; display:inline-flex; align-items:center; gap:3px;">😐 Neutral Sentiment</span>
+                  <% } else { %>
+                    <span style="background:#e8f5e9; color:#2e7d32; border:1px solid #c8e6c9; padding:2px 8px; border-radius:12px; font-size:0.72rem; font-weight:700; display:inline-flex; align-items:center; gap:3px;">😊 Positive Sentiment</span>
+                  <% } %>
+                </div>
+                <span class="date" style="font-size:0.75rem; color:var(--text-muted);"><%= new Date(r.createdAt).toLocaleDateString() %></span>
+              </div>
+              <p class="text" style="font-size:0.85rem; color:var(--text-dark); margin:0; font-style:italic;">"<%= r.comment || 'Great experience with the chef!' %>"</p>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div style="text-align:center; padding:2.5rem; color:var(--text-muted); background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--border-light);">
+            ⭐ No client reviews submitted yet. When users rate your services, they will appear here.
+          </div>
+        <% } %>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: EARNINGS                                            -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-earnings">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">Earnings &amp; Payouts</h1>
+          <p class="section-subtitle">Track your earnings from completed bookings and course sessions.</p>
+        </div>
+      </div>
+
+      <%
+        const completedB = bookings.filter(b => b.status === 'Completed' || b.paymentStatus === 'Completed' || b.paymentStatus === 'Paid');
+        const totalEarn = completedB.reduce((acc, b) => acc + (b.totalAmount || 0), 0);
+        const pendingEarn = bookings.filter(b => b.status === 'Accepted').reduce((acc, b) => acc + (b.totalAmount || 0), 0);
+      %>
+
+      <!-- mini kpi row -->
+      <div class="mini-kpi-row">
+        <div class="mini-kpi">
+          <span class="mini-kpi-val">LKR <%= totalEarn.toLocaleString() %></span>
+          <span class="mini-kpi-label">Completed Earnings</span>
+        </div>
+        <div class="mini-kpi">
+          <span class="mini-kpi-val">LKR <%= pendingEarn.toLocaleString() %></span>
+          <span class="mini-kpi-label">In-Progress Bookings</span>
+        </div>
+        <div class="mini-kpi">
+          <span class="mini-kpi-val"><%= completedB.length %></span>
+          <span class="mini-kpi-label">Completed Services</span>
+        </div>
+        <div class="mini-kpi">
+          <span class="mini-kpi-val"><%= bookings.length %></span>
+          <span class="mini-kpi-label">Total Booking Requests</span>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>Completed Transaction History</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="chef-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Booking ID</th>
+                <th>Client</th>
+                <th>Amount</th>
+                <th>Payment Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (completedB.length > 0) { %>
+                <% completedB.forEach(b => { %>
+                  <tr>
+                    <td><%= new Date(b.date).toLocaleDateString() %></td>
+                    <td><span class="booking-id-tag">#<%= b._id.toString().slice(-6).toUpperCase() %></span></td>
+                    <td><strong><%= b.userId ? `${b.userId.firstName} ${b.userId.lastName}` : 'Customer' %></strong></td>
+                    <td><strong>LKR <%= (b.totalAmount || 0).toLocaleString() %></strong></td>
+                    <td><span class="status-badge confirmed"><%= b.paymentStatus || 'Completed' %></span></td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5" style="text-align:center; padding:2rem; color:var(--text-muted);">
+                    💰 No completed payouts yet. Once you complete accepted dining bookings, your earnings will appear here.
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: DISCOUNTS & SPECIAL OFFERS                         -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-discounts">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">🎟️ Active Platform Discounts &amp; Client Promo Offers</h1>
+          <p class="section-subtitle">Live promotional vouchers and discounts available across ChefNest client bookings.</p>
+        </div>
+      </div>
+
+      <% if (typeof discounts !== 'undefined' && discounts && discounts.length > 0) { %>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:1.2rem; margin-top:1.2rem;">
+          <% discounts.forEach(d => { %>
+            <div style="background:#fff; border:1.5px solid #d4e8d4; border-radius:16px; padding:1.4rem; display:flex; flex-direction:column; justify-content:space-between; position:relative; box-shadow:0 4px 14px rgba(44,95,45,0.06); overflow:hidden;">
+              <div style="position:absolute; top:0; left:0; width:6px; height:100%; background:linear-gradient(180deg, #2C5F2D, #D97A2B);"></div>
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.6rem;">
+                  <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:#D97A2B; background:#fff3e6; padding:0.2rem 0.6rem; border-radius:12px;"><%= d.type || 'Promo' %></span>
+                  <span style="font-size:1.15rem; font-weight:900; color:#2C5F2D;"><%= d.discountPercentage %>% OFF</span>
+                </div>
+                <h3 style="margin:0 0 0.4rem; font-size:1.1rem; font-weight:800; color:#1E2E1E;"><%= d.title %></h3>
+                <p style="margin:0 0 1rem; font-size:0.84rem; color:#666; line-height:1.4;"><%= d.description || `Special platform discount applicable when clients book verified dining services.` %></p>
+              </div>
+
+              <div>
+                <div style="background:#f8faf8; border:1px dashed #b8dbb8; border-radius:10px; padding:0.8rem; display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
+                  <div>
+                    <small style="display:block; font-size:0.7rem; color:#888; text-transform:uppercase; font-weight:700;">Promo Code</small>
+                    <code style="font-size:1rem; font-weight:900; color:#2C5F2D; letter-spacing:1px;"><%= d.code %></code>
+                  </div>
+                  <button type="button" onclick="navigator.clipboard.writeText('<%= d.code %>'); showToast('Copied code: <%= d.code %>');" style="background:#2C5F2D; color:#fff; border:none; padding:0.4rem 0.8rem; border-radius:6px; font-size:0.78rem; font-weight:700; cursor:pointer;">Copy</button>
+                </div>
+
+                <div style="font-size:0.75rem; color:#777; display:flex; justify-content:space-between; border-top:1px solid #edf2ed; padding-top:0.6rem;">
+                  <span>Min Order: LKR <%= (d.minOrderAmount || 0).toLocaleString() %></span>
+                  <span>Expires: <%= new Date(d.validTill).toLocaleDateString() %></span>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div style="padding:3.5rem; text-align:center; background:#fff; border-radius:16px; border:1px solid #e0ede0; margin-top:1.2rem;">
+          <div style="font-size:3rem; margin-bottom:0.5rem;">🏷️</div>
+          <h3 style="margin:0 0 0.5rem; color:#1E2E1E;">No Active Platform Discounts</h3>
+          <p style="color:#666; font-size:0.9rem; margin:0;">Platform administrators have not published active discount codes currently.</p>
+        </div>
+      <% } %>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: CHAT                                                -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-chat">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">💬 1-on-1 Messages &amp; Chat</h1>
+          <p class="section-subtitle">Real-time private messaging with Support Admin and your dining &amp; course clients.</p>
+        </div>
+      </div>
+
+      <!-- Contact Selection Bar with Dynamic Dropdowns -->
+      <div style="background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--border-light); padding:1.2rem; margin-bottom:1.2rem; box-shadow:var(--shadow-sm);">
+        <div style="display:grid; grid-template-columns: 220px 1fr auto; gap: 1rem; align-items: flex-end;">
+          <div>
+            <label style="font-size:0.8rem; font-weight:700; color:var(--text-dark); display:block; margin-bottom:0.35rem;">1. Select Contact Type</label>
+            <select id="chefChatRoleSelect" class="form-input" style="width:100%; padding:0.5rem;" onchange="handleChefChatRoleChange(this.value)">
+              <option value="admin">🛡️ Support Admin</option>
+              <option value="chefs">👨‍🍳 Fellow Chefs</option>
+              <option value="clients">👤 Registered Clients / Users</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-size:0.8rem; font-weight:700; color:var(--text-dark); display:block; margin-bottom:0.35rem;">2. Choose Person to Chat With</label>
+            <select id="chefChatPersonSelect" class="form-input" style="width:100%; padding:0.5rem;" onchange="handleChefChatPersonSelect(this.value)">
+              <option value="">-- Choose a contact --</option>
+            </select>
+          </div>
+
+          <div>
+            <button type="button" class="btn-primary-sm" onclick="startChefChatFromDropdown()" style="padding:0.55rem 1.3rem;">Open Chat 💬</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-container-layout" style="display:grid; grid-template-columns:260px 1fr; background:#fff; border-radius:16px; border:1.5px solid #ddecdd; overflow:hidden; height:520px; box-shadow:0 4px 16px rgba(0,0,0,0.04);">
+        <!-- Conversation list -->
+        <div class="chat-sidebar-list" id="chefChatContactList" style="border-right:1.5px solid #edf2ed; overflow-y:auto; background:#fafdfa; height:100%;">
+          <div style="padding:1.5rem;color:#999;font-size:0.85rem;text-align:center;" id="chefContactsLoading">Loading contacts...</div>
+        </div>
+
+        <!-- Chat window -->
+        <div class="chat-window-box" style="display:flex; flex-direction:column; height:100%; min-height:0; background:#fff;">
+          <div class="chat-window-header" id="chefChatHeader" style="padding:0.85rem 1.2rem; border-bottom:1px solid #edf2ed; background:#fff; display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+            <strong style="color:#1a3a1b; font-size:0.95rem;">Select a contact to start chatting</strong>
+          </div>
+          <div class="chat-window-messages" id="chatWindowMessages" style="flex:1; min-height:0; padding:1.2rem; overflow-y:auto; display:flex; flex-direction:column; gap:0.75rem; background:#f9fbf9;">
+            <div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:0.9rem;">
+              👈 Select a contact from the left
+            </div>
+          </div>
+          <!-- Fixed Reply Footer -->
+          <form class="chat-window-footer" onsubmit="sendChatMessage(event)" id="chefChatForm" style="display:flex; gap:0.6rem; padding:0.85rem 1.2rem; border-top:1.5px solid #edf2ed; background:#fff; flex-shrink:0;">
+            <input type="text" id="chatInput" placeholder="Select a contact first to type reply..." disabled required style="flex:1; padding:0.7rem 1rem; border:1.5px solid #cbe4cb; border-radius:10px; font-size:0.9rem; outline:none; font-family:inherit; background:#fff;">
+            <button type="submit" class="btn-primary-sm" id="chefChatSendBtn" disabled style="background:#2C5F2D; color:#fff; border:none; padding:0.7rem 1.4rem; border-radius:10px; font-weight:800; font-size:0.9rem; cursor:pointer; display:flex; align-items:center; gap:0.35rem;">
+              <span>Send</span> 📤
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: NOTIFICATIONS                                       -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-notifications">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">Notifications</h1>
+          <p class="section-subtitle">Platform notices, profile updates, and booking requests alerts.</p>
+        </div>
+      </div>
+
+      <div class="notif-log-card">
+        <ul class="notif-log-list">
+          <% if (typeof notifications !=='undefined' && notifications.length> 0) { %>
+            <% notifications.slice(0,20).forEach(n=> { %>
+              <% 
+                const isChatNotif = (n.type === 'chat' || (n.title && n.title.includes('Message from'))); 
+                const senderClean = n.title ? n.title.replace(/^💬 Message from\s+/i, '').trim() : '';
+              %>
+              <li class="notif-log-item" style="cursor:<%= isChatNotif ? 'pointer' : 'default' %>; transition:all 0.2s;" <% if (isChatNotif) { %>onclick="openChatFromNotification('<%= senderClean %>')"<% } %>>
+                <span class="notif-type-badge <%= isChatNotif ? 'push' : (n.type === 'booking' ? 'push' : (n.type === 'grocery' ? 'push' : 'email')) %>" style="<%= isChatNotif ? 'background:#e8f5e9; color:#1b5e20; border:1px solid #a5d6a7;' : '' %>">
+                  <%= isChatNotif ? '💬 Chat' : (n.type==='booking' ? 'Booking' : (n.type==='grocery' ? 'Grocery' : 'System' )) %>
+                </span>
+                <div class="notif-log-text">
+                  <strong><%= n.title %></strong> — <%= n.message %>
+                  <% if (isChatNotif) { %>
+                    <span style="display:inline-block; margin-left:0.5rem; color:#2C5F2D; font-weight:700; font-size:0.75rem;">👉 Click to Open Chat</span>
+                  <% } %>
+                  <span class="notif-time"><%= new Date(n.createdAt).toLocaleString() %></span>
+                </div>
+              </li>
+            <% }) %>
+                <% } else { %>
+                  <li class="notif-log-item" style="text-align:center; padding:2rem; color:var(--text-muted);">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zM4 18V8l8 5 8-5v10H4z"/></svg> No notifications yet.
+                  </li>
+                  <% } %>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!--  SECTION: SETTINGS                                            -->
+    <!-- ============================================================ -->
+    <section class="chef-section" id="section-settings">
+      <div class="section-header-row">
+        <div>
+          <h1 class="section-title">Settings</h1>
+          <p class="section-subtitle">Manage security credentials, visibility options, and preferences.</p>
+        </div>
+      </div>
+
+      <div class="settings-grid">
+        <!-- Security -->
+        <div class="settings-card">
+          <h3>Change Password</h3>
+          <form class="settings-form" id="chefPasswordForm" onsubmit="changeChefPassword(event)">
+            <div class="field-group">
+              <label class="field-label">Current Password</label>
+              <input type="password" name="currentPassword" class="form-input" required>
+            </div>
+            <div class="field-group">
+              <label class="field-label">New Password</label>
+              <input type="password" name="newPassword" class="form-input" required>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Confirm New Password</label>
+              <input type="password" name="confirmPassword" class="form-input" required>
+            </div>
+            <button type="submit" class="btn-primary-sm">Update Password</button>
+          </form>
+        </div>
+
+        <!-- General Preferences -->
+        <div class="settings-card">
+          <h3>Preferences</h3>
+          <form onsubmit="saveChefPreferences(event)" id="chefPreferencesForm">
+            <div class="field-group">
+              <label class="field-label">Profile Visibility</label>
+              <select id="prefVisibility" class="form-input" style="padding:0.5rem; font-weight:600;">
+                <option value="Public" <%= (chef.profileVisibility === 'Public' || !chef.profileVisibility) ? 'selected' : '' %>>Public (Visible to all clients)</option>
+                <option value="Private" <%= chef.profileVisibility === 'Private' ? 'selected' : '' %>>Private (Hidden / Not accepting bookings)</option>
+              </select>
+              <small style="font-size:0.75rem; color:#666; display:block; margin-top:0.3rem;">Set to Private when on leave or not taking new client bookings.</small>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Notification Options</label>
+              <% const notifPrefs = chef.notificationPreferences || { emailAlerts: true, smsAlerts: true }; %>
+              <label style="display:flex; align-items:center; gap:0.4rem; margin-bottom:0.4rem; font-size:0.88rem; cursor:pointer;">
+                <input type="checkbox" id="prefEmailAlerts" <%= notifPrefs.emailAlerts !== false ? 'checked' : '' %>>
+                <span>Email alerts (New booking &amp; message notices)</span>
+              </label>
+              <label style="display:flex; align-items:center; gap:0.4rem; margin-bottom:0.4rem; font-size:0.88rem; cursor:pointer;">
+                <input type="checkbox" id="prefSmsAlerts" <%= notifPrefs.smsAlerts !== false ? 'checked' : '' %>>
+                <span>SMS alerts (Urgent booking alerts to phone)</span>
+              </label>
+            </div>
+            <button type="submit" id="btnSavePreferences" class="btn-primary-sm" style="margin-top:0.5rem;">Save Preferences</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============================================================ -->
+  <!--  DISH UPLOAD MODAL                                            -->
+  <!-- ============================================================ -->
+  <div class="logout-modal-overlay" id="dishUploadModal" style="display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.6); position:fixed; inset:0; z-index:9999; backdrop-filter:blur(3px);">
+    <div style="background:#fff; border-radius:18px; padding:2rem; max-width:500px; width:92%; box-shadow:0 15px 40px rgba(0,0,0,0.2); overflow:hidden;">
+      <h3 style="margin-top:0; color:#1a3a1b; font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:0.5rem;">🍳 Add Signature Dish</h3>
+      <p style="color:#666; font-size:0.85rem; margin-bottom:1.5rem;">Showcase your dish by entering its details and uploading quality food photos.</p>
+      
+      <form id="dishUploadForm" onsubmit="uploadDish(event)" enctype="multipart/form-data">
+        <div class="field-group" style="margin-bottom:0.8rem;">
+          <label class="field-label" style="font-weight:600; font-size:0.85rem; margin-bottom:0.25rem;">Dish Name *</label>
+          <input type="text" name="name" class="form-input" placeholder="e.g. Traditional Jaffna Crab Curry" style="width:100%;" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin-bottom:0.8rem;">
+          <div class="field-group">
+            <label class="field-label" style="font-weight:600; font-size:0.85rem; margin-bottom:0.25rem;">Cuisine *</label>
+            <input type="text" name="cuisine" class="form-input" placeholder="e.g. Sri Lankan" style="width:100%;" required>
+          </div>
+          <div class="field-group">
+            <label class="field-label" style="font-weight:600; font-size:0.85rem; margin-bottom:0.25rem;">Category</label>
+            <select name="category" class="form-input" style="width:100%; padding:0.4rem;">
+              <option value="Main Course">Main Course</option>
+              <option value="Appetizer">Appetizer</option>
+              <option value="Side Dish">Side Dish</option>
+              <option value="Dessert">Dessert</option>
+              <option value="Snack">Snack</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group" style="margin-bottom:0.8rem;">
+          <label class="field-label" style="font-weight:600; font-size:0.85rem; margin-bottom:0.25rem;">Description</label>
+          <textarea name="description" class="form-textarea" rows="2" placeholder="Brief details about the ingredients, taste, or preparation..." style="width:100%; font-family:inherit;"></textarea>
+        </div>
+
+        <div class="field-group" style="margin-bottom:1.2rem;">
+          <label class="field-label" style="font-weight:600; font-size:0.85rem; margin-bottom:0.25rem;">Food Photos (Upload one or more) *</label>
+          <input type="file" name="foodImages" multiple accept="image/*" class="form-input" style="width:100%; padding:0.3rem;" required>
+          <span style="font-size:0.75rem; color:#999;">Supports JPEG, PNG, WEBP up to 5MB.</span>
+        </div>
+
+        <div style="display:flex; gap:0.8rem; justify-content:flex-end; margin-top:1.5rem;">
+          <button type="button" class="btn-back" onclick="closeDishUploadModal()" style="padding:0.5rem 1.2rem;">Cancel</button>
+          <button type="submit" class="btn-primary-sm" id="btnUploadDishSubmit" style="padding:0.5rem 1.5rem;">Upload Dish</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!--  LOGOUT MODAL                                                 -->
+  <!-- ============================================================ -->
+  <div class="logout-modal-overlay" id="logoutModal">
+    <div class="logout-modal-card">
+      <h3>Are you sure?</h3>
+      <p>Do you want to log out of your session?</p>
+      <div class="logout-modal-actions">
+        <button class="btn-back" onclick="closeLogoutModal()">Cancel</button>
+        <a href="/logout" class="btn-primary-sm orange-btn"
+          style="text-decoration:none; display:inline-flex; align-items:center;">Logout</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toastMsg" role="alert" aria-live="assertive"></div>
+
+  <script>
+    // ── Section Switcher ─────────────────────────────────────────
+    function showSection(sectionId, clickedLink) {
+      document.querySelectorAll('.chef-section').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById('section-' + sectionId);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll('.nav-item').forEach(li => li.classList.remove('active'));
+
+      let parentLi = clickedLink?.closest('.nav-item');
+      if (!parentLi && sectionId) {
+        const matchingLi = document.querySelector(`[data-section="${sectionId}"]`);
+        if (matchingLi) parentLi = matchingLi;
+      }
+      if (parentLi) parentLi.classList.add('active');
+
+      const label = parentLi?.querySelector('.nav-label')?.textContent || sectionId;
+      document.getElementById('breadcrumbCurrent').textContent = label;
+
+      if (window.innerWidth < 900) closeSidebar();
+
+      // Close accept modal on Escape key
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          const modal = document.getElementById('acceptBookingModal');
+          if (modal && modal.style.display !== 'none') modal.style.display = 'none';
+        }
+      });
+      return false;
+    }
+
+    // ── Sidebar Toggles ──────────────────────────────────────────
+    const sidebar = document.getElementById('chefSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const hamburger = document.getElementById('hamburgerBtn');
+    const sidebarClose = document.getElementById('sidebarClose');
+
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.add('open');
+      overlay.classList.add('active');
+    });
+    overlay.addEventListener('click', closeSidebar);
+    sidebarClose.addEventListener('click', closeSidebar);
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    }
+
+    // ── Booking Tabs Switcher ────────────────────────────────────
+    function switchBookingTab(btn, status) {
+      const section = btn.closest('.chef-section');
+      section.querySelectorAll('.bookings-tab').forEach(b => b.classList.remove('active'));
+      section.querySelectorAll('.booking-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('bookingpanel-' + status)?.classList.add('active');
+    }
+
+    // ── Booking Actions ──────────────────────────────────────────
+    let currentBookingIdToAccept = '';
+
+    function openAcceptModal(id) {
+      currentBookingIdToAccept = id;
+      document.getElementById('cookingTimeInput').value = '';
+      document.getElementById('extraIngredientsInput').value = '';
+      document.getElementById('acceptBookingModal').style.display = 'flex';
+    }
+
+    async function respondBookingWithDetails() {
+      const id = currentBookingIdToAccept;
+      const cookingTime = document.getElementById('cookingTimeInput').value.trim();
+      const extraIngredients = document.getElementById('extraIngredientsInput').value.trim();
+
+      document.getElementById('acceptBookingModal').style.display = 'none';
+
+      try {
+        const response = await fetch(`/chef/booking/${id}/respond`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'accept',
+            cookingTimeEstimate: cookingTime,
+            extraIngredients: extraIngredients
+          })
+        });
+        const result = await response.json();
+        if (result.success) {
+          showToast('✅ Booking accepted successfully!');
+          setTimeout(() => location.reload(), 1200);
+        } else {
+          showToast('❌ Error: ' + (result.message || 'Failed to accept booking.'));
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('❌ Error responding to booking.');
+      }
+    }
+
+    async function respondBooking(id, action) {
+      if (action === 'reject') {
+        if (!confirm('Are you sure you want to decline this booking request?')) return;
+      }
+      try {
+        const response = await fetch(`/chef/booking/${id}/respond`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action })
+        });
+        const result = await response.json();
+        if (result.success) {
+          showToast(action === 'reject' ? '❌ Booking request declined.' : '✅ Action updated.');
+          setTimeout(() => location.reload(), 1200);
+        } else {
+          showToast('❌ Error: ' + (result.message || 'Action failed'));
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('❌ Error responding to booking.');
+      }
+    }
+
+    async function startCookingProcess(id) {
+      if (!confirm('🍳 Are you ready to start cooking? This will notify the customer that you have arrived and started cooking.')) return;
+      try {
+        const response = await fetch(`/chef/booking/${id}/respond`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'start_cooking' })
+        });
+        const result = await response.json();
+        if (result.success) {
+          showToast('🍳 Cooking marked in progress! Customer notified.');
+          setTimeout(() => location.reload(), 1000);
+        } else {
+          showToast('❌ Error: ' + (result.message || 'Action failed'));
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('❌ Error updating cooking status.');
+      }
+    }
+
+    function openCompleteBookingModal(id, totalAmount, custName) {
+      const modal = document.getElementById('completeBookingModal');
+      if (!modal) return;
+      document.getElementById('completeBookingId').value = id;
+      document.getElementById('completeCustomerName').textContent = custName || 'Customer';
+      document.getElementById('completeTotalAmount').textContent = 'LKR ' + (Number(totalAmount) || 0).toLocaleString();
+      document.getElementById('completeCashReceived').value = Number(totalAmount) || '';
+      modal.style.display = 'flex';
+    }
+
+    function closeCompleteBookingModal() {
+      const modal = document.getElementById('completeBookingModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    async function submitBookingCompletion(e) {
+      e.preventDefault();
+      const id = document.getElementById('completeBookingId').value;
+      const cashAmount = document.getElementById('completeCashReceived').value;
+      const btn = document.getElementById('btnSubmitCompletion');
+      if (btn) { btn.disabled = true; btn.textContent = 'Saving...'; }
+
+      try {
+        const response = await fetch(`/chef/booking/${id}/respond`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'complete', cashCollectedAmount: cashAmount })
+        });
+        const result = await response.json();
+        if (result.success) {
+          showToast(`🏆 Booking Completed! LKR ${Number(cashAmount).toLocaleString()} recorded.`);
+          closeCompleteBookingModal();
+          setTimeout(() => location.reload(), 1200);
+        } else {
+          showToast('❌ ' + (result.message || 'Failed to complete booking.'));
+          if (btn) { btn.disabled = false; btn.textContent = '💾 Save & Finish Booking'; }
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('❌ Network error completing booking.');
+        if (btn) { btn.disabled = false; btn.textContent = '💾 Save & Finish Booking'; }
+      }
+    }
+
+    async function markCompleted(id) {
+      openCompleteBookingModal(id, 0, 'Customer');
+    }
+
+    // ── Logout Modal ─────────────────────────────────────────────
+    function openLogoutModal() {
+      document.getElementById('logoutModal').classList.add('active');
+    }
+    function closeLogoutModal() {
+      document.getElementById('logoutModal').classList.remove('active');
+    }
+
+    // ── Toast ────────────────────────────────────────────────────
+    function showToast(msg) {
+      const t = document.getElementById('toastMsg');
+      if (!t) return;
+      t.innerHTML = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // ── Dish Gallery Handlers ──────────────────────────────────────
+    function openDishUploadModal() {
+      document.getElementById('dishUploadModal').style.display = 'flex';
+    }
+
+    function closeDishUploadModal() {
+      document.getElementById('dishUploadModal').style.display = 'none';
+    }
+
+    async function uploadDish(e) {
+      e.preventDefault();
+      const form = document.getElementById('dishUploadForm');
+      const btn = document.getElementById('btnUploadDishSubmit');
+      const formData = new FormData(form);
+
+      btn.disabled = true;
+      btn.textContent = 'Uploading...';
+
+      try {
+        const response = await fetch('/chef/dish/upload', {
+          method: 'POST',
+          body: formData
+        });
+        const result = await response.json();
+        if (result.success) {
+          showToast('✅ Dish uploaded successfully!');
+          closeDishUploadModal();
+          setTimeout(() => location.reload(), 1200);
+        } else {
+          showToast('❌ Error: ' + result.message);
+          btn.disabled = false;
+          btn.textContent = 'Upload Dish';
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('❌ Failed to upload dish.');
+        btn.disabled = false;
+        btn.textContent = 'Upload Dish';
+      }
+    }
+
+    async function deleteDish(id) {
+      if (!confirm('Are you sure you want to delete this signature dish?')) return;
+      try {
+        const response = await fetch(`/chef/dish/${id}/delete`, {
+          method: 'POST'
+        });
+        const result = await response.json();
+        if (result.success) {
+          showToast('✅ Dish deleted successfully.');
+          setTimeout(() => location.reload(), 1000);
+        } else {
+          showToast('❌ Error: ' + result.message);
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('❌ Failed to delete dish.');
+      }
+    }
+
+    // Load contacts when chat section is opened
+    document.addEventListener('DOMContentLoaded', () => {
+      loadChefContacts();
+      setInterval(loadChefContacts, 15000); // Refresh contacts every 15s
+    });
+
+    async function updateChefProfile(e) {
+      e.preventDefault();
+      const form = document.getElementById('chefProfileForm');
+      const formData = new FormData(form);
+      const data = {};
+      formData.forEach((value, key) => {
+        if (key === 'cuisines') {
+          if (!data[key]) data[key] = [];
+          data[key].push(value);
+        } else {
+          data[key] = value;
+        }
+      });
+      try {
+        const response = await fetch('/chef/profile/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        if (result.success) {
+          showToast('✅ Profile updated successfully!');
+          setTimeout(() => location.reload(), 1500);
+        } else {
+          showToast('❌ Error: ' + result.message);
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('❌ Error updating profile.');
+      }
+    }
+
+    async function changeChefPassword(e) {
+      e.preventDefault();
+      const form = document.getElementById('chefPasswordForm');
+      const currentPassword = form.querySelector('[name="currentPassword"]').value;
+      const newPassword = form.querySelector('[name="newPassword"]').value;
+      const confirmPassword = form.querySelector('[name="confirmPassword"]').value;
+      try {
+        const response = await fetch('/account/password/change', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ currentPassword, newPassword, confirmPassword })
+        });
+        const result = await response.json();
+        if (result.success) {
+          showToast('✅ Password updated successfully!');
+          form.reset();
+        } else {
+          showToast('❌ Error: ' + result.message);
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('❌ Error updating password.');
+      }
+    }
+
+    // ── Teaching Courses Handlers ──────────────────────────────
+    function toggleCardSelected(checkbox) {
+      const card = checkbox.closest('.teaching-card');
+      if (card) {
+        if (checkbox.checked) {
+          card.classList.add('selected');
+        } else {
+          card.classList.remove('selected');
+        }
+      }
+    }
+
+    function selectAllCourses(select) {
+      const checkboxes = document.querySelectorAll('#teachingCoursesForm input[name="teachingCourses"]');
+      checkboxes.forEach(cb => {
+        cb.checked = select;
+        toggleCardSelected(cb);
+      });
+    }
+
+    async function saveTeachingCourses() {
+      const btn1 = document.getElementById('btnSaveTeachingCourses');
+      const btn2 = document.getElementById('btnSaveTeachingCoursesBottom');
+      const originalText = btn1 ? btn1.innerHTML : 'Save';
+
+      if (btn1) { btn1.disabled = true; btn1.innerHTML = '⏳ Saving...'; }
+      if (btn2) { btn2.disabled = true; btn2.innerHTML = '⏳ Saving...'; }
+
+      const selected = [];
+      document.querySelectorAll('#teachingCoursesForm input[name="teachingCourses"]:checked').forEach(cb => {
+        selected.push(cb.value);
+      });
+
+      try {
+        const response = await fetch('/chef/teaching-courses', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ courses: selected })
+        });
+        const result = await response.json();
+        if (result.success) {
+          showToast(`✅ Teaching preferences saved! (${selected.length} courses active)`);
+        } else {
+          showToast('❌ Error: ' + (result.message || 'Could not save preferences.'));
+        }
+      } catch (err) {
+        console.error('Save teaching courses error:', err);
+        showToast('❌ Server error saving preferences.');
+      } finally {
+        if (btn1) { btn1.disabled = false; btn1.innerHTML = originalText; }
+        if (btn2) { btn2.disabled = false; btn2.innerHTML = 'Save Preferences'; }
+      }
+    }
+
+    // ── Availability & Calendar Handlers ────────────────────────
+    function toggleWeekdayStatus(el) {
+      const current = el.getAttribute('data-status') || 'available';
+      let nextStatus = 'available';
+      if (current === 'available') nextStatus = 'unavailable';
+      else if (current === 'unavailable') nextStatus = 'leave';
+      else if (current === 'leave') nextStatus = 'available';
+
+      el.classList.remove('available', 'unavailable', 'leave');
+      el.classList.add(nextStatus);
+      el.setAttribute('data-status', nextStatus);
+      const span = el.querySelector('span');
+      if (span) {
+        span.textContent = nextStatus.charAt(0).toUpperCase() + nextStatus.slice(1);
+      }
+    }
+
+    async function saveChefAvailability() {
+      const btn = document.getElementById('btnSaveSchedule');
+      const origText = btn ? btn.innerHTML : 'Save Schedule';
+      if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Saving...'; }
+
+      const weekdays = {};
+      document.querySelectorAll('#chefWeekdayGrid .weekday-day').forEach(d => {
+        const dayKey = d.getAttribute('data-day');
+        const status = d.getAttribute('data-status') || 'available';
+        if (dayKey) weekdays[dayKey] = status;
+      });
+
+      const startHour = document.getElementById('availStartHour').value || '08:00';
+      const endHour = document.getElementById('availEndHour').value || '19:00';
+
+      try {
+        const res = await fetch('/chef/availability/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ weekdays, startHour, endHour })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('✅ Weekly availability schedule saved!');
+        } else {
+          showToast('❌ Error: ' + data.message);
+        }
+      } catch (err) {
+        console.error('Save availability error:', err);
+        showToast('❌ Failed to save availability.');
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+      }
+    }
+
+    async function addChefVacation(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnAddVacation');
+      const start = document.getElementById('vacationStartDate').value;
+      const end = document.getElementById('vacationEndDate').value;
+      const note = document.getElementById('vacationNote').value.trim();
+
+      if (!start || !end) {
+        showToast('⚠️ Please select both start and end date.');
+        return;
+      }
+      if (new Date(end) < new Date(start)) {
+        showToast('⚠️ End date cannot be before start date.');
+        return;
+      }
+
+      if (btn) { btn.disabled = true; btn.textContent = 'Adding...'; }
+
+      try {
+        const res = await fetch('/chef/vacation/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ startDate: start, endDate: end, note })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('✅ Vacation leave dates scheduled!');
+          document.getElementById('chefVacationForm').reset();
+          setTimeout(() => location.reload(), 1200);
+        } else {
+          showToast('❌ Error: ' + data.message);
+          if (btn) { btn.disabled = false; btn.textContent = '+ Add Vacation Period'; }
+        }
+      } catch (err) {
+        console.error('Add vacation error:', err);
+        showToast('❌ Failed to add vacation dates.');
+        if (btn) { btn.disabled = false; btn.textContent = '+ Add Vacation Period'; }
+      }
+    }
+
+    async function deleteChefVacation(index) {
+      if (!confirm('Are you sure you want to remove this vacation period?')) return;
+      try {
+        const res = await fetch(`/chef/vacation/delete/${index}`, { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          showToast('✅ Vacation period removed.');
+          const item = document.getElementById(`vacation-item-${index}`);
+          if (item) item.remove();
+          setTimeout(() => location.reload(), 1000);
+        } else {
+          showToast('❌ Error: ' + data.message);
+        }
+      } catch (err) {
+        console.error('Delete vacation error:', err);
+        showToast('❌ Failed to delete vacation.');
+      }
+    }
+
+    // ── Pricing Handlers ─────────────────────────────────────────
+    async function saveChefPricing(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSavePricing');
+      const origText = btn ? btn.innerHTML : 'Save Pricing';
+      if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Saving...'; }
+
+      const body = {
+        hourlyRate: document.getElementById('pricingHourlyRate').value,
+        guestTier1to5: document.getElementById('guestTier1to5').value,
+        guestTier6to10: document.getElementById('guestTier6to10').value,
+        guestTier11to20: document.getElementById('guestTier11to20').value,
+        urgentMarkup: document.getElementById('urgentMarkup').value,
+        christmasMarkup: document.getElementById('christmasMarkup').value,
+        newYearMarkup: document.getElementById('newYearMarkup').value
+      };
+
+      try {
+        const res = await fetch('/chef/pricing/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('✅ Pricing and surcharge settings saved!');
+        } else {
+          showToast('❌ Error: ' + data.message);
+        }
+      } catch (err) {
+        console.error('Save pricing error:', err);
+        showToast('❌ Failed to save pricing settings.');
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+      }
+    }
+
+    // ── Preferences Handlers ─────────────────────────────────────
+    async function saveChefPreferences(e) {
+      e.preventDefault();
+      const profileVisibility = document.getElementById('prefVisibility').value;
+      const emailAlerts = document.getElementById('prefEmailAlerts').checked;
+      const smsAlerts = document.getElementById('prefSmsAlerts').checked;
+      const btn = document.getElementById('btnSavePreferences');
+      const origText = btn ? btn.innerHTML : 'Save Preferences';
+      if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Saving...'; }
+
+      try {
+        const res = await fetch('/chef/preferences/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ profileVisibility, emailAlerts, smsAlerts })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`✅ ${data.message}`);
+        } else {
+          showToast(`❌ ${data.message || 'Error saving preferences.'}`);
+        }
+      } catch (err) {
+        console.error('Preferences save error:', err);
+        showToast('❌ Server error saving preferences.');
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = origText; }
+      }
+    }
+
+    // ── Charts ───────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      loadChefChatContacts();
+
+      const green = '#2C5F2D';
+      const greenAlpha = 'rgba(44,95,45,0.15)';
+      const font = { family: 'Outfit', size: 12 };
+
+      // Income Line Chart
+      new Chart(document.getElementById('chefIncomeChart'), {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Income (LKR)',
+            data: [12000, 15000, 8000, 18000, 22000, 30000, 25000],
+            backgroundColor: greenAlpha,
+            borderColor: green,
+            borderWidth: 3,
+            fill: true,
+            tension: 0.45,
+            pointBackgroundColor: green,
+            pointRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { grid: { color: '#f0ede8' }, ticks: { font } },
+            x: { grid: { display: false }, ticks: { font } }
+          }
+        }
+      });
+    });
+
+    // ── Real-Time 1-on-1 Chat Handlers ─────────────────────────
+    const currentChefId = "<%= chef._id %>";
+    const socket = typeof io !== 'undefined' ? io() : null;
+    let activeChatContactId = null;
+    let chefChatData = { admin: null, chefs: [], clients: [] };
+
+    if (socket) {
+      socket.emit('join-user', currentChefId);
+
+      socket.on('messages-read', (data) => {
+        if (activeChatContactId && activeChatContactId.toString() === data.readerId.toString()) {
+          document.querySelectorAll('#chatWindowMessages .msg-item.sent .time').forEach(el => {
+            const timePart = el.innerText.split('·')[0].trim();
+            el.innerHTML = `${timePart} <span style="color:#25D366; font-weight:800;"> · Seen ✓✓</span>`;
+          });
+        }
+      });
+
+      socket.on('new-private-message', (msg) => {
+        if (!msg || !currentChefId) return;
+        const sId = (msg.senderId && msg.senderId._id ? msg.senderId._id : msg.senderId).toString();
+        const rId = (msg.receiverId && msg.receiverId._id ? msg.receiverId._id : msg.receiverId).toString();
+        const myId = currentChefId.toString();
+        const otherId = (sId === myId) ? rId : sId;
+
+        // 1. Move contact item to the very TOP of the list
+        const container = document.getElementById('chefChatContactList');
+        const item = document.getElementById(`chat-contact-${otherId}`);
+        if (item && container) {
+          container.prepend(item);
+        }
+
+        // 2. Update snippet and bold highlight
+        if (item) {
+          const snippetEl = item.querySelector('.chat-snippet');
+          if (snippetEl) {
+            snippetEl.textContent = msg.content;
+            snippetEl.style.fontWeight = '700';
+            snippetEl.style.color = '#111';
+          }
+          const nameEl = item.querySelector('.chat-name');
+          if (nameEl) nameEl.style.fontWeight = '800';
+          const badge = item.querySelector('.unread-dot');
+          if (badge && (!activeChatContactId || activeChatContactId.toString() !== otherId)) {
+            badge.style.display = 'inline-block';
+          }
+        }
+
+        // 3. Update Chat sidebar badge
+        const navBadge = document.getElementById('chefChatNavBadge');
+        if (navBadge && (!activeChatContactId || activeChatContactId.toString() !== otherId)) {
+          const count = parseInt(navBadge.textContent || '0') + 1;
+          navBadge.textContent = count;
+          navBadge.style.display = 'inline-block';
+        }
+
+        // 4. Append to open window if currently chatting and message is from recipient
+        if (activeChatContactId && activeChatContactId.toString() === otherId && sId !== myId) {
+          appendChatMessage(msg);
+        }
+      });
+    }
+
+    async function loadChefChatContacts() {
+      const container = document.getElementById('chefChatContactList');
+      if (!container) return;
+      try {
+        const res = await fetch('/api/chat/contacts');
+        const data = await res.json();
+        if (!data.success) {
+          container.innerHTML = '<div style="padding:1rem;color:#999;font-size:0.8rem;text-align:center;">Failed to load contacts.</div>';
+          return;
+        }
+
+        // Update nav badge with total unread
+        const navBadge = document.getElementById('chefChatNavBadge');
+        if (navBadge) {
+          if (data.totalUnread > 0) {
+            navBadge.textContent = data.totalUnread;
+            navBadge.style.display = 'inline-block';
+          } else {
+            navBadge.style.display = 'none';
+          }
+        }
+
+        const contacts = data.contacts || [];
+        chefChatData.admin = data.admin || contacts.find(c => c.role === 'admin') || null;
+        chefChatData.chefs = data.chefs || contacts.filter(c => c.role === 'chef');
+        chefChatData.clients = data.clients || data.users || contacts.filter(c => c.role === 'user');
+
+        // Populate dropdown for initial role
+        handleChefChatRoleChange('admin');
+
+        let html = '';
+
+        // Render all contacts sorted (recent/unread first from server)
+        contacts.forEach(c => {
+          const hasUnread = c.unread > 0;
+          const isAdm = c.role === 'admin';
+          const isChf = c.role === 'chef';
+          const avatarBg = isAdm ? '#2C5F2D' : (isChf ? '#2C5F2D' : '#D97A2B');
+          const avatarIcon = isAdm ? '🛡️' : (isChf ? '👨‍🍳' : (c.firstName ? c.firstName.charAt(0).toUpperCase() : '👤'));
+          const displayName = isAdm ? `Support Admin (${c.firstName} ${c.lastName})` : (isChf ? `Chef ${c.firstName} ${c.lastName}` : `${c.firstName} ${c.lastName}`);
+          const roleLabel = isAdm ? 'admin' : (isChf ? 'chef' : 'user');
+          const subText = c.lastMessage || (isAdm ? '24/7 Platform Support' : (isChf ? (c.city || 'Verified Chef') : (c.memberId || 'Client User')));
+
+          html += `
+            <div class="chat-user-item" id="chat-contact-${c._id}" onclick="selectChatContact('${c._id}', '${displayName}', '${roleLabel}')" style="padding:0.75rem 0.9rem; border-bottom:1px solid #f0ede8; cursor:pointer; display:flex; align-items:center; gap:0.75rem; transition:all 0.2s;">
+              <div class="avatar-circle" style="background:${avatarBg}; color:#fff; font-weight:700; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:0.85rem;">${avatarIcon}</div>
+              <div style="flex:1; overflow:hidden;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <strong class="chat-name" style="font-size:0.85rem; font-weight:${hasUnread ? '800' : '600'}; color:#1f2937; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">
+                    ${displayName}
+                  </strong>
+                  <span class="unread-dot" style="display:${hasUnread ? 'inline-block' : 'none'}; background:#e74c3c; color:#fff; font-size:0.65rem; font-weight:800; padding:0.1rem 0.45rem; border-radius:10px; margin-left:4px;">${c.unread > 0 ? c.unread + ' NEW' : '●'}</span>
+                </div>
+                <p class="chat-snippet" style="font-size:0.75rem; color:${hasUnread ? '#111' : '#777'}; font-weight:${hasUnread ? '700' : '400'}; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; margin-top:2px; line-height:1.3;">
+                  ${escapeHtml(subText)}
+                </p>
+              </div>
+            </div>
+          `;
+        });
+
+        container.innerHTML = html || '<div style="padding:1.5rem; text-align:center; color:#999; font-size:0.85rem;">No contacts available.</div>';
+      } catch (err) {
+        console.error('Error loading chat contacts:', err);
+        container.innerHTML = '<div style="padding:1rem;color:#999;font-size:0.8rem;text-align:center;">Error loading contacts.</div>';
+      }
+    }
+
+    function handleChefChatRoleChange(role) {
+      const select = document.getElementById('chefChatPersonSelect');
+      if (!select) return;
+      select.innerHTML = '<option value="">-- Choose a contact --</option>';
+
+      if (role === 'admin' && chefChatData.admin) {
+        const opt = document.createElement('option');
+        opt.value = chefChatData.admin._id;
+        opt.textContent = `🛡️ Support Admin (${chefChatData.admin.firstName} ${chefChatData.admin.lastName})`;
+        opt.setAttribute('data-name', `Support Admin (${chefChatData.admin.firstName} ${chefChatData.admin.lastName})`);
+        opt.setAttribute('data-role', 'admin');
+        select.appendChild(opt);
+      } else if (role === 'chefs' && chefChatData.chefs.length > 0) {
+        chefChatData.chefs.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c._id;
+          opt.textContent = `👨‍🍳 Chef ${c.firstName} ${c.lastName} (${c.city || 'Verified'})`;
+          opt.setAttribute('data-name', `Chef ${c.firstName} ${c.lastName}`);
+          opt.setAttribute('data-role', 'chef');
+          select.appendChild(opt);
+        });
+      } else if (role === 'clients' && chefChatData.clients.length > 0) {
+        chefChatData.clients.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c._id;
+          opt.textContent = `👤 ${c.firstName} ${c.lastName} (${c.email || c.memberId || 'Client'})`;
+          opt.setAttribute('data-name', `${c.firstName} ${c.lastName}`);
+          opt.setAttribute('data-role', 'user');
+          select.appendChild(opt);
+        });
+      }
+    }
+
+    function handleChefChatPersonSelect(personId) {
+      if (personId) {
+        startChefChatFromDropdown();
+      }
+    }
+
+    function startChefChatFromDropdown() {
+      const select = document.getElementById('chefChatPersonSelect');
+      if (!select || !select.value) {
+        showToast('⚠️ Please select a contact from the dropdown.');
+        return;
+      }
+      const opt = select.options[select.selectedIndex];
+      const name = opt.getAttribute('data-name') || 'Contact';
+      const role = opt.getAttribute('data-role') || 'user';
+      selectChatContact(select.value, name, role);
+    }
+
+    function openChatFromNotification(senderNameOrId) {
+      showSection('chat', document.querySelector('[data-section="chat"] a'));
+      setTimeout(() => {
+        let matched = false;
+        if (senderNameOrId) {
+          const clean = senderNameOrId.toLowerCase().trim();
+          document.querySelectorAll('#chefChatContactList .chat-user-item').forEach(item => {
+            const nameEl = item.querySelector('.chat-name');
+            if (nameEl && nameEl.innerText.toLowerCase().includes(clean)) {
+              item.click();
+              matched = true;
+            }
+          });
+        }
+        if (!matched) {
+          const first = document.querySelector('#chefChatContactList .chat-user-item');
+          if (first) first.click();
+        }
+      }, 350);
+    }
+
+    async function selectChatContact(contactId, contactName, role) {
+      activeChatContactId = contactId;
+
+      // Update sidebar active class
+      document.querySelectorAll('#chefChatContactList .chat-user-item').forEach(el => el.classList.remove('active'));
+      const activeEl = document.getElementById(`chat-contact-${contactId}`);
+      if (activeEl) {
+        activeEl.classList.add('active');
+        activeEl.style.fontWeight = 'normal';
+        const badge = activeEl.querySelector('.unread-dot');
+        if (badge) badge.style.display = 'none';
+      }
+
+      // Update header
+      const header = document.getElementById('chefChatHeader');
+      if (header) {
+        header.innerHTML = `<strong>${contactName}</strong> <span>${role === 'admin' ? '🛡️ Admin Support' : '👤 Client'}</span>`;
+      }
+
+      // Enable input
+      const input = document.getElementById('chatInput');
+      const btn = document.getElementById('chefChatSendBtn');
+      if (input) { input.disabled = false; input.placeholder = `Type a message to ${contactName}...`; input.focus(); }
+      if (btn) { btn.disabled = false; }
+
+      // Fetch messages
+      const msgsBox = document.getElementById('chatWindowMessages');
+      msgsBox.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:0.85rem;">⏳ Loading conversation...</div>';
+
+      try {
+        const res = await fetch(`/api/chat/messages/${contactId}`);
+        const data = await res.json();
+        if (data.success && data.messages) {
+          if (data.messages.length === 0) {
+            msgsBox.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:0.85rem;">👋 Start the conversation! Send a message below.</div>';
+          } else {
+            msgsBox.innerHTML = '';
+            data.messages.forEach(m => appendChatMessage(m));
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching conversation:', err);
+        msgsBox.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#c0392b;font-size:0.85rem;">❌ Failed to load messages.</div>';
+      }
+    }
+
+    function appendChatMessage(msg) {
+      const msgsBox = document.getElementById('chatWindowMessages');
+      if (!msgsBox) return;
+
+      const msgId = msg._id ? msg._id.toString() : '';
+      if (msgId && document.getElementById(`chef-msg-${msgId}`)) {
+        return; // Prevent duplicate display
+      }
+
+      if (msgsBox.innerText.includes('Select a contact') || msgsBox.innerText.includes('Start the conversation') || msgsBox.innerText.includes('Loading conversation')) {
+        msgsBox.innerHTML = '';
+      }
+
+      const sId = (msg.senderId && (msg.senderId._id || msg.senderId.id || msg.senderId)).toString();
+      const isMine = sId === currentChefId.toString();
+
+      const div = document.createElement('div');
+      if (msgId) div.id = `chef-msg-${msgId}`;
+      div.className = `msg-item ${isMine ? 'sent' : 'received'}`;
+      div.style.maxWidth = '78%';
+      div.style.padding = '0.75rem 1rem';
+      div.style.borderRadius = '14px';
+      div.style.fontSize = '0.88rem';
+      div.style.lineHeight = '1.5';
+      div.style.display = 'flex';
+      div.style.flexDirection = 'column';
+      div.style.gap = '0.25rem';
+      div.style.wordBreak = 'break-word';
+
+      if (isMine) {
+        div.style.alignSelf = 'flex-end';
+        div.style.marginLeft = 'auto';
+        div.style.marginRight = '0';
+        div.style.background = '#2C5F2D';
+        div.style.color = '#ffffff';
+        div.style.borderBottomRightRadius = '2px';
+        div.style.boxShadow = '0 3px 10px rgba(44,95,45,0.2)';
+      } else {
+        div.style.alignSelf = 'flex-start';
+        div.style.marginRight = 'auto';
+        div.style.marginLeft = '0';
+        div.style.background = '#f0f4f0';
+        div.style.color = '#1a3a1b';
+        div.style.border = '1px solid #ddecdd';
+        div.style.borderBottomLeftRadius = '2px';
+      }
+
+      const seenStatus = isMine ? (msg.isRead ? '<span style="color:#25D366; font-weight:800;"> · Seen ✓✓</span>' : '<span style="opacity:0.75;"> · Sent ✓</span>') : '';
+      div.innerHTML = `
+        <div style="color:${isMine ? '#ffffff' : '#1a3a1b'}; white-space:pre-wrap;">${escapeHtml(msg.content)}</div>
+        <span class="time" style="font-size:0.7rem; color:${isMine ? 'rgba(255,255,255,0.85)' : '#6b7f6b'}; text-align:${isMine ? 'right' : 'left'};">${new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}${seenStatus}</span>
+      `;
+      msgsBox.appendChild(div);
+      msgsBox.scrollTop = msgsBox.scrollHeight;
+    }
+
+    async function sendChatMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const text = input ? input.value.trim() : '';
+      if (!text || !activeChatContactId) {
+        showToast('⚠️ Please select a contact first.');
+        return;
+      }
+
+      input.value = '';
+
+      // 1. Instant optimistic bubble in UI (0ms latency)
+      appendChatMessage({
+        senderId: currentChefId,
+        receiverId: activeChatContactId,
+        content: text,
+        createdAt: new Date().toISOString(),
+        isRead: false
+      });
+
+      // 2. Persist via API
+      try {
+        const res = await fetch('/api/chat/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ receiverId: activeChatContactId, content: text })
+        });
+        const data = await res.json();
+        if (!data.success) {
+          showToast('❌ ' + (data.message || 'Failed to send message.'));
+        }
+      } catch (err) {
+        console.error('Error sending chat message:', err);
+        showToast('❌ Error sending message. Please check connection.');
+      }
+    }
+
+    // ── Certificate Upload & Delete Handlers ──────────────────
+    async function handleChefCertUpload(e) {
+      e.preventDefault();
+      const form = document.getElementById('chefCertUploadForm');
+      const fileInput = document.getElementById('chefCertFileInput');
+      const btn = document.getElementById('chefCertUploadBtn');
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        showToast('⚠️ Please choose a certificate file.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '⏳ Uploading...';
+
+      const formData = new FormData();
+      formData.append('certificateFile', fileInput.files[0]);
+
+      try {
+        const res = await fetch('/chef/certificates/upload', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json'
+          },
+          body: formData
+        });
+        const data = await res.json().catch(() => ({ success: false, message: 'Server returned HTTP ' + res.status }));
+        if (data && data.success) {
+          showToast('✅ Certificate uploaded successfully!');
+          renderChefCertificates(data.certificates);
+          form.reset();
+        } else {
+          showToast('❌ ' + ((data && data.message) || 'Upload failed.'));
+        }
+      } catch (err) {
+        console.error('Error uploading certificate:', err);
+        showToast('❌ Failed to upload certificate: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Upload Certificate 📤';
+      }
+    }
+
+    async function deleteChefCertificate(idx) {
+      if (!confirm('Are you sure you want to remove this certificate?')) return;
+      try {
+        const res = await fetch('/chef/certificates/delete/' + idx, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        const data = await res.json().catch(() => ({ success: false, message: 'Server error' }));
+        if (data && data.success) {
+          showToast('✅ Certificate removed.');
+          renderChefCertificates(data.certificates);
+        } else {
+          showToast('❌ ' + ((data && data.message) || 'Error deleting'));
+        }
+      } catch (err) {
+        console.error('Error deleting certificate:', err);
+        showToast('❌ Failed to remove certificate.');
+      }
+    }
+
+    function renderChefCertificates(certs) {
+      const container = document.getElementById('chefCertificatesList');
+      if (!container) return;
+      if (!certs || certs.length === 0) {
+        container.innerHTML = `
+          <div id="emptyCertMsg" style="text-align:center; padding:1.2rem; color:var(--text-muted); font-size:0.82rem;">
+            No certificates uploaded yet. Use the upload box above to add your credentials!
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = certs.map((cert, idx) => `
+        <div class="doc-upload-item" id="cert-item-${idx}" style="display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0.8rem; background:#fff; border:1px solid #e0ead0; border-radius:6px;">
+          <div style="display:flex; align-items:center; gap:0.6rem; overflow:hidden;">
+            <span style="font-size:1.2rem;">📜</span>
+            <div style="overflow:hidden;">
+              <strong style="font-size:0.82rem; display:block; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${cert.split('/').pop()}</strong>
+              <span style="font-size:0.7rem; color:#888;">Professional Certificate</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:0.4rem; align-items:center;">
+            <a href="${cert}" target="_blank" class="btn-outline-sm" style="padding:0.25rem 0.6rem; font-size:0.75rem; text-decoration:none;">View 📄</a>
+            <button type="button" onclick="deleteChefCertificate(${idx})" class="btn-outline-sm" style="padding:0.25rem 0.6rem; font-size:0.75rem; color:#e74c3c; border-color:#e74c3c;">🗑️ Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+  </script>
+
+  <!-- ── Complete Booking & Cash Collection Modal ─────────────────── -->
+  <div id="completeBookingModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:99999; backdrop-filter:blur(4px); align-items:center; justify-content:center;" onclick="if(event.target===this) closeCompleteBookingModal()">
+    <div style="background:#fff; border-radius:18px; padding:1.8rem; max-width:440px; width:92%; box-shadow:0 20px 60px rgba(0,0,0,0.3); border:1.5px solid #ddecdd; animation:fadeInModal 0.2s ease;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.1rem; border-bottom:1px solid #edf2ed; padding-bottom:0.75rem;">
+        <h3 style="margin:0; font-size:1.15rem; color:#1a3a1b; display:flex; align-items:center; gap:0.5rem;">
+          <span>✅</span> Complete Dining &amp; Collect Cash
+        </h3>
+        <button type="button" onclick="closeCompleteBookingModal()" style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:#888; line-height:1;">✕</button>
+      </div>
+      
+      <form id="completeBookingForm" onsubmit="submitBookingCompletion(event)">
+        <input type="hidden" id="completeBookingId" name="bookingId">
+        
+        <div style="background:#f0f9f0; border:1px solid #c8e6c9; border-radius:10px; padding:0.9rem 1rem; margin-bottom:1.2rem;">
+          <div style="font-size:0.85rem; color:#555; margin-bottom:0.35rem;">Customer: <strong id="completeCustomerName" style="color:#111;">Customer</strong></div>
+          <div style="font-size:0.85rem; color:#555;">Total Booking Bill: <strong id="completeTotalAmount" style="color:#2C5F2D; font-size:1.05rem;">LKR 0</strong></div>
+        </div>
+
+        <div style="margin-bottom:1.25rem;">
+          <label style="font-size:0.88rem; font-weight:800; color:#1a3a1b; display:block; margin-bottom:0.4rem;">
+            💵 Cash Amount Received from Customer (LKR)
+          </label>
+          <input type="number" id="completeCashReceived" name="cashCollectedAmount" required min="0" step="any" class="form-input" style="width:100%; padding:0.75rem 1rem; font-size:1.15rem; font-weight:800; border:2px solid #2C5F2D; border-radius:10px; color:#1a3a1b; outline:none; box-sizing:border-box;" placeholder="Enter cash amount handed over">
+          <small style="font-size:0.76rem; color:#666; display:block; margin-top:0.4rem; line-height:1.4;">
+            ℹ️ Enter the cash amount handed to you by the client upon completion. This will be recorded directly into the system.
+          </small>
+        </div>
+
+        <div style="display:flex; gap:0.75rem; justify-content:flex-end;">
+          <button type="button" onclick="closeCompleteBookingModal()" class="btn-outline-sm" style="padding:0.65rem 1.2rem; border-radius:8px; font-weight:600; cursor:pointer;">Cancel</button>
+          <button type="submit" id="btnSubmitCompletion" class="btn-primary-sm" style="background:#2C5F2D; color:#fff; padding:0.65rem 1.4rem; border-radius:8px; font-weight:800; font-size:0.92rem; border:none; cursor:pointer;">
+            💾 Confirm &amp; Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

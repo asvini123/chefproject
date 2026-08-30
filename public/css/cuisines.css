@@ -1,0 +1,289 @@
+/* ============================================================
+   ChefNest Cuisines Stylesheet (cuisines.css)
+   ============================================================ */
+
+.cuisines-page {
+  padding-bottom: 5rem;
+}
+
+/* 1. HERO SECTION */
+.cuisines-hero {
+  position: relative;
+  height: 45vh;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(rgba(44, 95, 45, 0.75), rgba(20, 47, 21, 0.85)), url("/images/hero_cuisines.png") no-repeat center center;
+  background-size: cover;
+  color: var(--butter-cream);
+  text-align: center;
+  overflow: hidden;
+}
+
+.cuisines-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 0 C60 0, 80 20, 80 40 C80 60, 60 80, 40 80 C20 80, 0 60, 0 40 C0 20, 20 0, 40 0 Z' fill='none' stroke='%23ffffff' stroke-opacity='0.015' stroke-width='1.5'/%3E%3C/svg%3E") repeat;
+  pointer-events: none;
+}
+
+.cuisines-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, transparent 30%, rgba(30, 70, 32, 0.4) 100%);
+}
+
+.cuisines-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 1.5rem;
+}
+
+.cuisines-subtitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--orange-light);
+  letter-spacing: 2px;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.cuisines-title {
+  font-family: var(--font-family-serif);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.cuisines-tagline {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* 2. GRID SECTION */
+.cuisines-grid-section {
+  padding: 5rem 1.5rem 2rem;
+  background-color: var(--cream-bg);
+}
+
+.cuisines-container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.cuisines-display-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+/* 3. CARD DESIGN */
+.cuisine-display-card {
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(44, 95, 45, 0.05);
+  overflow: hidden;
+  transition: var(--transition-smooth);
+  display: flex;
+  flex-direction: column;
+}
+
+.cuisine-display-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--warm-orange-light);
+}
+
+.cuisine-card-header-img {
+  position: relative;
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  transition: var(--transition-smooth);
+  background-color: var(--butter-cream);
+}
+
+/* Fallback stylized patterns using CSS gradients for cuisines */
+.img-sri-lankan {
+  background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url('/images/cuisines/sri_lankan.png');
+}
+
+.img-italian {
+  background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url('/images/cuisines/italian.png');
+}
+
+.img-indian {
+  background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url('/images/cuisines/indian.png');
+}
+
+.img-japanese {
+  background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url('/images/cuisines/japanese.png');
+}
+
+.img-chinese {
+  background-image: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.35)), url('https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80');
+}
+
+.img-malaysian {
+  background-image: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.35)), url('https://images.unsplash.com/photo-1567982047351-76b6f93e38ee?auto=format&fit=crop&w=600&q=80');
+}
+
+.img-french {
+  background-image: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.35)), url('https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80');
+}
+
+.img-mexican {
+  background-image: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.35)), url('https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80');
+}
+
+.img-portuguese {
+  background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url('/images/cuisines/portuguese.png');
+}
+
+.cuisine-card-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--forest-green);
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Round flag circle overlaid at bottom-left of cover image */
+.cuisine-card-icon-overlay {
+  position: absolute;
+  bottom: -22px;
+  left: 22px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  border: 3px solid var(--white);
+  overflow: hidden;
+}
+
+.cuisine-card-icon-overlay img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cuisine-card-body {
+  padding: 2.2rem 1.8rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.cuisine-card-body h3 {
+  font-family: var(--font-family-serif);
+  font-size: 1.6rem;
+  color: var(--forest-green);
+  margin-bottom: 0.6rem;
+}
+
+.cuisine-card-desc {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
+.cuisine-card-highlights {
+  border-top: 1.5px dashed rgba(212, 163, 115, 0.3);
+  border-bottom: 1.5px dashed rgba(212, 163, 115, 0.3);
+  padding: 0.8rem 0;
+  margin-bottom: 1.5rem;
+}
+
+.cuisine-card-highlights h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--orange);
+  letter-spacing: 1px;
+  margin-bottom: 0.4rem;
+}
+
+.cuisine-dishes-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.6rem;
+}
+
+.dish-tag {
+  background: var(--butter-cream);
+  color: var(--forest-green-dark);
+  font-size: 0.85rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-weight: 550;
+}
+
+.cuisine-card-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-cuisine-search {
+  background: var(--forest-green);
+  color: var(--white);
+  padding: 0.65rem 1.2rem;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition-smooth);
+  border: 1px solid var(--forest-green);
+}
+
+.btn-cuisine-search:hover {
+  background: var(--forest-green-dark);
+  border-color: var(--forest-green-dark);
+}
+
+.cuisine-chefs-count {
+  font-size: 0.85rem;
+  color: #777;
+  font-weight: 500;
+}
+
+/* RESPONSIVENESS */
+@media (max-width: 768px) {
+  .cuisines-title {
+    font-size: 2.4rem;
+  }
+  .cuisines-display-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

@@ -1,0 +1,1924 @@
+/* ============================================================
+   ChefNest Courses Stylesheet (courses.css)
+   ============================================================ */
+
+.courses-page {
+  padding-bottom: 5rem;
+}
+
+/* 1. HERO BANNER */
+.courses-hero {
+  position: relative;
+  height: 70vh;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(rgba(44, 95, 45, 0.72), rgba(20, 47, 21, 0.82)), url("/images/hero_courses_laptop.jpg") no-repeat center center;
+  background-size: cover;
+  color: var(--butter-cream);
+  text-align: center;
+  overflow: hidden;
+}
+
+.courses-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='%23ffffff' stroke-opacity='0.015' stroke-width='1'/%3E%3C/svg%3E") repeat;
+  pointer-events: none;
+}
+
+.courses-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, transparent 35%, rgba(22, 54, 24, 0.5) 100%);
+}
+
+.courses-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 1.5rem;
+}
+
+.courses-subtitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--orange-light);
+  letter-spacing: 2.5px;
+  display: block;
+  margin-bottom: 0.8rem;
+}
+
+.courses-title {
+  font-family: var(--font-family-serif);
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.2rem;
+}
+
+.courses-tagline {
+  font-size: 1.15rem;
+  opacity: 0.95;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* 2. MAIN CONTAINER */
+.courses-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* 3. COURSES SECTION */
+.courses-section {
+  padding: 5rem 0 3rem;
+  background-color: var(--cream-bg);
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 2.5rem;
+}
+
+.course-card {
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(44, 95, 45, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition-smooth);
+}
+
+.course-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--warm-orange-light);
+}
+
+.course-img-wrap {
+  position: relative;
+  height: 230px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--butter-cream);
+}
+
+/* Fallback stylized patterns using CSS gradients for courses */
+.c-pastry { background: linear-gradient(135deg, #e5b273, #b6782b); }
+.c-spice { background: linear-gradient(135deg, #d26a27, #852e06); }
+.c-sushi { background: linear-gradient(135deg, #3d7941, #1e3f20); }
+.c-sauce { background: linear-gradient(135deg, #d23232, #7a1313); }
+
+.course-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: var(--orange);
+  color: var(--white);
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(217, 122, 43, 0.3);
+}
+
+.course-duration {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: rgba(30, 46, 30, 0.85);
+  color: var(--white);
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.course-body {
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.course-instructor {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--orange);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.course-body h3 {
+  font-family: var(--font-family-serif);
+  font-size: 1.5rem;
+  color: var(--forest-green);
+  margin-bottom: 0.6rem;
+}
+
+.course-desc {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+
+.course-stats {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(44, 95, 45, 0.08);
+  border-bottom: 1px solid rgba(44, 95, 45, 0.08);
+  padding: 0.7rem 0;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.course-stat-item strong {
+  color: var(--dark-text);
+}
+
+.course-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-price {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--forest-green);
+}
+
+.btn-enroll {
+  background: var(--orange);
+  color: var(--white);
+  padding: 0.65rem 1.4rem;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid var(--orange);
+  transition: var(--transition-smooth);
+}
+
+.btn-enroll:hover {
+  background: var(--orange-dark);
+  border-color: var(--orange-dark);
+}
+
+/* 4. E-CERTIFICATE SECTION */
+.certificate-section {
+  padding: 5rem 0;
+  background-color: var(--butter-cream);
+  border-top: 2px solid var(--warm-orange-light);
+  border-bottom: 2px solid var(--warm-orange-light);
+}
+
+.certificate-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.certificate-text h2 {
+  font-family: var(--font-family-serif);
+  font-size: 2.6rem;
+  color: var(--forest-green);
+  margin-bottom: 1rem;
+}
+
+.certificate-text p {
+  font-size: 1.05rem;
+  color: #4a544a;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.certificate-features {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.certificate-features li {
+  font-size: 1rem;
+  color: var(--dark-text);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 550;
+}
+
+.cert-icon-check {
+  color: var(--forest-green);
+  font-weight: bold;
+}
+
+.btn-view-sample-cert {
+  background: var(--forest-green);
+  color: var(--white);
+  padding: 0.8rem 1.8rem;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: 1px solid var(--forest-green);
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.btn-view-sample-cert:hover {
+  background: var(--forest-green-dark);
+  border-color: var(--forest-green-dark);
+}
+
+.certificate-preview-card {
+  position: relative;
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(212, 163, 115, 0.4);
+  cursor: pointer;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.certificate-preview-card:hover {
+  transform: scale(1.02);
+}
+
+.certificate-preview-card img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius-sm);
+  display: block;
+}
+
+.cert-hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(44, 95, 45, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  opacity: 0;
+  transition: var(--transition-smooth);
+}
+
+.certificate-preview-card:hover .cert-hover-overlay {
+  opacity: 1;
+}
+
+.cert-hover-overlay span {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-top: 0.5rem;
+}
+
+/* 5. MODAL STYLES */
+.cert-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 30, 15, 0.85);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  padding: 2rem;
+}
+
+.cert-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cert-modal-content {
+  position: relative;
+  max-width: 900px;
+  width: 100%;
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  padding: 0.8rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.cert-modal.active .cert-modal-content {
+  transform: scale(1);
+}
+
+.cert-modal-content img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius-sm);
+  display: block;
+}
+
+.cert-modal-close {
+  position: absolute;
+  top: -45px;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: var(--white);
+  font-size: 2.2rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.cert-modal-close:hover {
+  color: var(--orange-light);
+}
+
+/* RESPONSIVENESS */
+@media (max-width: 992px) {
+  .certificate-layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .courses-title {
+    font-size: 2.4rem;
+  }
+  .courses-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   NEW: HERO STATS ROW
+   ============================================================ */
+.hero-stats-row {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 2.2rem;
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  padding: 0.8rem 1.6rem;
+  backdrop-filter: blur(4px);
+}
+
+.hero-stat span {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--butter-cream);
+}
+
+.hero-stat small {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  color: var(--butter-cream);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ============================================================
+   NEW: FILTER TABS BAR
+   ============================================================ */
+.courses-filter-bar {
+  background: #fff;
+  border-bottom: 1px solid rgba(44,95,45,0.1);
+  padding: 1rem 0;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 2px 12px rgba(44,95,45,0.07);
+  margin-top: 0;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 0;
+  justify-content: center;
+  flex-wrap: wrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filter-tabs::-webkit-scrollbar { display: none; }
+
+.filter-tab {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 1.1rem 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  font-family: var(--font-family), system-ui, sans-serif;
+}
+
+.filter-tab:hover {
+  color: var(--forest-green);
+  background: rgba(44,95,45,0.04);
+}
+
+.filter-tab.active {
+  color: var(--forest-green);
+  border-bottom-color: var(--forest-green);
+  background: rgba(44,95,45,0.05);
+}
+
+/* ============================================================
+   NEW: CATEGORY SECTION HEADERS
+   ============================================================ */
+.courses-category-header {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin: 1.5rem 0 1.8rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 2px solid rgba(44,95,45,0.1);
+  grid-column: 1 / -1;
+}
+
+.cat-header-icon {
+  font-size: 2.2rem;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(44,95,45,0.07);
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+
+.courses-category-header h2 {
+  font-family: var(--font-family-serif), Georgia, serif;
+  font-size: 1.7rem;
+  color: var(--forest-green);
+  margin: 0 0 0.2rem;
+}
+
+.courses-category-header p {
+  font-size: 0.88rem;
+  color: #777;
+  margin: 0;
+}
+
+/* ============================================================
+   NEW: COURSE CARD IMPROVEMENTS
+   ============================================================ */
+.course-img-icon {
+  font-size: 3.5rem;
+  position: absolute;
+  bottom: 1rem;
+  right: 1.2rem;
+  opacity: 0.35;
+  line-height: 1;
+}
+
+.course-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+}
+
+.course-level {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.level-beginner  { background: #e8f5e9; color: #2e7d32; }
+.level-intermediate { background: #fff3e0; color: #e65100; }
+.level-advanced  { background: #eceff1; color: #37474f; }
+.level-all       { background: #ede7f6; color: #4a148c; }
+
+.course-enrolled {
+  font-size: 0.78rem;
+  color: #888;
+}
+
+.course-instructor {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0.9rem 0;
+  padding: 0.7rem;
+  background: #f8f8f8;
+  border-radius: 10px;
+}
+
+.instructor-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lg-avatar {
+  width: 46px;
+  height: 46px;
+  font-size: 0.88rem;
+}
+
+.instructor-name {
+  display: block;
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.2;
+}
+
+.instructor-tag {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--forest-green);
+  font-weight: 600;
+}
+
+.course-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+.stars {
+  color: #f59e0b;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.rating-num {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #333;
+}
+
+.rating-count {
+  font-size: 0.78rem;
+  color: #999;
+}
+
+/* Badge colour variants */
+.badge-cuisine     { background: rgba(44,95,45,0.85); }
+.badge-skill       { background: rgba(230,81,0,0.85); }
+.badge-health      { background: rgba(27,94,32,0.85); }
+.badge-occasion    { background: rgba(136,14,79,0.85); }
+.badge-cert        { background: rgba(44,95,45,0.9); color: #fff; font-size:0.75rem; padding:0.3rem 0.85rem; border-radius:20px; font-weight:700; }
+
+/* ML badge */
+.course-ml-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: linear-gradient(135deg,#4a148c,#7b1fa2);
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 0.8rem;
+}
+
+/* Free price */
+.free-price {
+  color: #2e7d32 !important;
+  font-weight: 800 !important;
+  font-size: 1.1rem !important;
+}
+
+/* Large enroll button */
+.btn-enroll-lg {
+  padding: 0.8rem 1.8rem !important;
+  font-size: 0.95rem !important;
+  border-radius: 40px !important;
+}
+
+/* full-width helper inside grid */
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* ============================================================
+   NEW: CERTIFICATION FEATURED CARD
+   ============================================================ */
+.cert-featured-card {
+  background: linear-gradient(135deg, #1E4620 0%, #2C5F2D 100%);
+  color: #fff;
+  border-radius: 20px;
+  padding: 0;
+  box-shadow: 0 20px 60px rgba(44,95,45,0.25);
+  grid-column: 1 / -1;
+}
+
+.cert-card-inner {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 0;
+}
+
+.cert-card-left {
+  padding: 2.5rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.cert-big-icon {
+  font-size: 3.5rem;
+  flex-shrink: 0;
+  margin-top: 0.3rem;
+}
+
+.cert-card-left h3 {
+  font-family: var(--font-family-serif), Georgia, serif;
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 0.8rem;
+  line-height: 1.3;
+}
+
+.cert-card-left .course-desc {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.cert-modules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 1.2rem;
+}
+
+.cert-module {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.1);
+  padding: 0.35rem 0.8rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.cert-card-right {
+  background: rgba(0,0,0,0.2);
+  padding: 2.5rem;
+  border-radius: 0 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cert-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.cert-stat {
+  background: rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.cert-stat strong {
+  display: block;
+  font-size: 1.3rem;
+  color: #fff;
+  font-weight: 800;
+}
+
+.cert-stat small {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cert-instructor-row {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.8rem;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+}
+
+.cert-instructor-row .instructor-name { color: #fff; }
+.cert-instructor-row .instructor-tag  { color: rgba(255,255,255,0.75); }
+.cert-instructor-row .stars           { color: #fbbf24; }
+.cert-instructor-row .rating-num      { color: #fff; }
+.cert-instructor-row .rating-count    { color: rgba(255,255,255,0.6); }
+
+.cert-featured-card .course-footer {
+  background: none;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 1rem;
+}
+
+.cert-featured-card .course-price {
+  color: #fbbf24;
+  font-size: 1.3rem;
+}
+
+.cert-featured-card .btn-enroll {
+  background: var(--orange);
+  border-color: var(--orange);
+  font-size: 0.9rem;
+}
+
+.cert-upgrade-note {
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.08);
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--orange-light, #EC9A52);
+}
+
+.cert-upgrade-note strong { color: #fbbf24; }
+
+/* ============================================================
+   RESPONSIVE ADDITIONS
+   ============================================================ */
+@media (max-width: 900px) {
+  .cert-card-inner { grid-template-columns: 1fr; }
+  .cert-card-right { border-radius: 0 0 20px 20px; }
+}
+
+@media (max-width: 640px) {
+  .hero-stats-row { gap: 0.8rem; }
+  .hero-stat { padding: 0.6rem 1rem; }
+  .courses-category-header { flex-direction: column; align-items: flex-start; gap: 0.7rem; }
+  .cert-card-left { flex-direction: column; }
+  .filter-tab { padding: 0.9rem 1rem; font-size: 0.8rem; }
+}
+
+/* ============================================================
+   ENROLLMENT MODAL
+   ============================================================ */
+
+.enroll-modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 25, 10, 0.7);
+  backdrop-filter: blur(6px);
+  z-index: 9000;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.enroll-modal-backdrop.active {
+  display: flex;
+  animation: fadeInBackdrop 0.3s ease;
+}
+
+@keyframes fadeInBackdrop {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.enroll-modal-box {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 680px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+  overflow: hidden;
+  animation: slideUpModal 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-height: 92vh;
+  overflow-y: auto;
+}
+
+@keyframes slideUpModal {
+  from { transform: translateY(50px) scale(0.96); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* ── Modal Header ── */
+.enroll-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(135deg, #1E4620, #2C5F2D);
+  padding: 1.5rem 1.8rem;
+  position: relative;
+}
+
+.enroll-modal-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+
+.enroll-modal-header h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.2rem;
+}
+
+.enroll-course-name {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.75);
+  margin: 0;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+}
+
+.enroll-modal-close {
+  position: absolute;
+  right: 1.2rem;
+  top: 1.2rem;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  font-size: 1.3rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  line-height: 1;
+}
+
+.enroll-modal-close:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* ── Step Indicator ── */
+.enroll-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.4rem 2rem 1.2rem;
+  background: #f8faf8;
+  border-bottom: 1px solid rgba(44,95,45,0.08);
+  gap: 0;
+}
+
+.estep {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.45;
+  transition: all 0.35s ease;
+}
+
+.estep.active {
+  opacity: 1;
+}
+
+.estep.completed {
+  opacity: 0.75;
+}
+
+.estep-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #999;
+  background: #e8e8e8;
+  transition: all 0.35s ease;
+  flex-shrink: 0;
+}
+
+.estep.active .estep-num {
+  background: linear-gradient(135deg, #2C5F2D, #3a7d3c);
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(44,95,45,0.3);
+}
+
+.estep.completed .estep-num {
+  background: #4caf50;
+  color: #fff;
+}
+
+.estep-lbl {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #777;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.estep.active .estep-lbl {
+  color: #1E4620;
+}
+
+.estep.completed .estep-lbl {
+  color: #4caf50;
+}
+
+.estep-line {
+  width: 40px;
+  height: 2px;
+  background: #ddd;
+  margin: 0 0.5rem;
+  border-radius: 2px;
+  transition: background 0.35s;
+  flex-shrink: 0;
+}
+
+.estep-line.done {
+  background: #4caf50;
+}
+
+/* ── Form ── */
+.enroll-form {
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.enroll-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.enroll-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.enroll-field label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.enroll-field .req {
+  color: #e53935;
+}
+
+.enroll-field input[type="text"],
+.enroll-field input[type="email"],
+.enroll-field input[type="tel"],
+.enroll-field select,
+.enroll-field textarea {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #333;
+  background: #fafafa;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.enroll-field input:focus,
+.enroll-field select:focus,
+.enroll-field textarea:focus {
+  border-color: #2C5F2D;
+  box-shadow: 0 0 0 3px rgba(44,95,45,0.1);
+  background: #fff;
+}
+
+.enroll-field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.enroll-error {
+  font-size: 0.76rem;
+  color: #e53935;
+  font-weight: 600;
+  min-height: 1em;
+}
+
+/* ── Payment Options ── */
+.enroll-payment-options {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-top: 0.2rem;
+}
+
+.payment-opt {
+  cursor: pointer;
+}
+
+.payment-opt input[type="radio"] {
+  display: none;
+}
+
+.payment-opt-box {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  transition: all 0.2s;
+  cursor: pointer;
+  user-select: none;
+}
+
+.payment-opt-box:hover {
+  border-color: #2C5F2D;
+  color: #2C5F2D;
+  background: rgba(44,95,45,0.04);
+}
+
+.payment-opt-box.selected {
+  border-color: #2C5F2D;
+  background: rgba(44,95,45,0.08);
+  color: #2C5F2D;
+}
+
+/* ── Agree Checkbox ── */
+.enroll-agree {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.agree-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  cursor: pointer;
+}
+
+.agree-check input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  margin-top: 2px;
+  accent-color: #2C5F2D;
+  flex-shrink: 0;
+}
+
+.agree-check span {
+  font-size: 0.83rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.agree-check a {
+  color: #2C5F2D;
+  font-weight: 600;
+}
+
+/* ── Submit Button ── */
+.btn-enroll-submit {
+  width: 100%;
+  background: linear-gradient(135deg, #2C5F2D, #1E4620);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 15px rgba(44,95,45,0.25);
+}
+
+.btn-enroll-submit:hover {
+  background: linear-gradient(135deg, #1E4620, #163618);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(44,95,45,0.35);
+}
+
+.btn-submit-icon {
+  font-size: 1.1rem;
+  transition: transform 0.2s;
+}
+
+.btn-enroll-submit:hover .btn-submit-icon {
+  transform: translateX(4px);
+}
+
+/* ── Success Screen ── */
+.enroll-success {
+  padding: 3rem 2rem;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.success-icon {
+  font-size: 4rem;
+  animation: bounceIn 0.5s ease;
+}
+
+@keyframes bounceIn {
+  0%   { transform: scale(0.3); opacity: 0; }
+  60%  { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.enroll-success h3 {
+  font-size: 1.6rem;
+  color: #2C5F2D;
+  font-family: var(--font-family-serif), Georgia, serif;
+  margin: 0;
+}
+
+.enroll-success p {
+  font-size: 0.95rem;
+  color: #444;
+  max-width: 400px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.success-sub {
+  font-size: 0.85rem !important;
+  color: #777 !important;
+}
+
+.btn-success-close {
+  background: #2C5F2D;
+  color: #fff;
+  border: none;
+  border-radius: 40px;
+  padding: 0.75rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.btn-success-close:hover {
+  background: #1E4620;
+}
+
+/* ── Responsive ── */
+@media (max-width: 560px) {
+  .enroll-form-row {
+    grid-template-columns: 1fr;
+  }
+  .enroll-payment-options {
+    flex-direction: column;
+  }
+  .enroll-form {
+    padding: 1.2rem;
+  }
+}
+
+/* ============================================================
+   CREDIT CARD PAYMENT PORTAL (ICBT / COMMERCIAL BANK THEME)
+   ============================================================ */
+
+.cp-portal-title {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1b365d;
+  margin-bottom: 1.5rem;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.5px;
+}
+
+.cp-portal-box {
+  background: #ffffff;
+  border: 1px solid #1a8cff;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(26, 140, 255, 0.1);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.cp-portal-toprow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e1e8ed;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cp-portal-merchant {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cp-merchant-icon {
+  font-size: 1.8rem;
+}
+
+.cp-portal-merchant strong {
+  display: block;
+  font-size: 1.1rem;
+  color: #2c5f2d;
+}
+
+.cp-portal-merchant small {
+  color: #666;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cp-bank-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f4f6f8;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #d1d5db;
+}
+
+.cp-bank-icon {
+  font-size: 1rem;
+}
+
+.cp-bank-badge strong {
+  color: #8b0000;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.cp-bank-badge small {
+  display: block;
+  font-size: 0.65rem;
+  color: #666;
+}
+
+.cp-summary-table {
+  background: #f8fafc;
+  border-radius: 6px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.cp-summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.cp-summary-row:not(:last-child) {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.cp-summary-label {
+  font-weight: 500;
+}
+
+.cp-summary-value {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.cp-amount-row {
+  border-top: 1px solid #cbd5e1 !important;
+  margin-top: 8px;
+  padding-top: 12px;
+}
+
+.cp-amount-row .cp-summary-label {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.cp-amount-val {
+  font-size: 1.2rem;
+  color: #1b5e20;
+  font-weight: 800;
+}
+
+.cp-portal-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.cp-btn-cancel,
+.cp-btn-proceed {
+  flex: 1;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  text-align: center;
+}
+
+.cp-btn-cancel {
+  background: #ff4d4d;
+  color: #ffffff;
+}
+
+.cp-btn-proceed {
+  background: #28a745;
+  color: #ffffff;
+}
+
+.cp-btn-cancel:hover,
+.cp-btn-proceed:hover {
+  opacity: 0.9;
+}
+
+.cp-card-brands {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #e1e8ed;
+  padding-top: 1.25rem;
+}
+
+.cp-card-brands span {
+  font-family: 'Arial Black', sans-serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+.cp-visa-logo {
+  color: #0033a0;
+}
+
+.cp-mc-logo {
+  color: #000;
+  font-size: 0.95rem !important;
+  font-family: inherit !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+}
+
+.cp-up-logo {
+  color: #b30000;
+}
+
+.cp-gateway-badge {
+  text-align: center;
+  margin-top: 4px;
+}
+
+.cp-gateway-badge small {
+  display: block;
+  font-size: 0.7rem;
+  color: #888;
+}
+
+.cp-gateway-badge strong {
+  color: #8b0000;
+  font-size: 0.8rem;
+}
+
+/* CARD DETAILS FORM (STEP 2b) */
+.cp-card-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e1e8ed;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.cp-card-amount-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.cp-card-close {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.cp-card-close:hover {
+  color: #666;
+}
+
+.cp-card-field {
+  margin-bottom: 1.2rem;
+}
+
+.cp-card-field label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.cp-card-input-wrap {
+  position: relative;
+}
+
+.cp-card-input-wrap input {
+  width: 100%;
+  padding: 10px 48px 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.cp-card-input-wrap input:focus {
+  border-color: #1a8cff;
+  box-shadow: 0 0 0 3px rgba(26, 140, 255, 0.1);
+}
+
+.cp-card-type-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.cp-card-accept-hint {
+  display: block;
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-top: 6px;
+  line-height: 1.3;
+}
+
+.cp-mc-logo-sm {
+  font-size: 0.9rem;
+}
+
+.cp-visa-logo-sm {
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: #0033a0;
+  font-style: italic;
+}
+
+.cp-card-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cp-card-field select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  outline: none;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.cp-cvv-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cp-cvv-wrap input {
+  width: 80px;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  outline: none;
+  text-align: center;
+}
+
+.cp-cvv-hint {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+.cp-otp-notice {
+  background: #fff8eb;
+  border: 1px solid #ffe0b2;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 0.8rem;
+  color: #663c00;
+  line-height: 1.4;
+  margin: 1.25rem 0;
+}
+
+.cp-card-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 1.5rem;
+}
+
+.cp-btn-prev {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  padding: 10px 20px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cp-btn-cancel-link {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cp-btn-pay {
+  background: #28a745;
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  font-weight: 700;
+  border-radius: 4px;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.cp-btn-prev:hover {
+  background: #e2e8f0;
+}
+
+.cp-btn-cancel-link:hover {
+  text-decoration: underline;
+}
+
+.cp-btn-pay:hover {
+  opacity: 0.9;
+}
+
+/* OTP MODAL (STEP 2c) */
+.cp-otp-box {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 420px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.cp-otp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #8b0000;
+  padding-bottom: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.cp-otp-bank-logo {
+  font-weight: 800;
+  color: #8b0000;
+  font-size: 1.1rem;
+}
+
+.cp-otp-secure {
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.cp-otp-desc {
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.cp-otp-amount-disp {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: center;
+  background: #f8fafc;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 1.25rem;
+}
+
+.cp-otp-input-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.cp-otp-input {
+  width: 160px;
+  padding: 10px;
+  border: 1px solid #94a3b8;
+  border-radius: 4px;
+  font-size: 1.25rem;
+  letter-spacing: 4px;
+  text-align: center;
+  outline: none;
+}
+
+.cp-otp-input:focus {
+  border-color: #8b0000;
+  box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+}
+
+.cp-otp-resend {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.cp-otp-resend-btn {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.cp-otp-resend-btn:hover {
+  text-decoration: underline;
+}
+
+/* SUCCESS RECEIPT STEP (STEP 3) */
+.enroll-receipt-wrap {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.receipt-success-icon {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+}
+
+.receipt-success-title {
+  color: #2c5f2d;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.receipt-success-sub {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin: 4px 0 1.5rem 0;
+}
+
+.receipt-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: left;
+  max-width: 500px;
+  margin: 0 auto 1.5rem auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.receipt-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #2c5f2d;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.receipt-badge {
+  font-size: 0.7rem;
+  background: #e2e8f0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #475569;
+  letter-spacing: 0.5px;
+}
+
+.receipt-info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.receipt-label {
+  color: #64748b;
+}
+
+.receipt-value {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.receipt-mono {
+  font-family: monospace;
+}
+
+.receipt-total-row {
+  border-top: 1px solid #e2e8f0;
+  margin-top: 6px;
+  padding-top: 10px;
+}
+
+.receipt-total-row .receipt-label {
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 0.9rem;
+}
+
+.receipt-amount {
+  font-size: 1.1rem;
+  color: #1b5e20;
+  font-weight: 800;
+}
+
+.receipt-payment-confirm {
+  background: #f1f8f1;
+  border: 1px solid #c2e0c2;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #1b5e20;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.receipt-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn-receipt-print {
+  background: #2c5f2d;
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  font-weight: 700;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-receipt-close {
+  background: #e2e8f0;
+  color: #334155;
+  border: none;
+  padding: 10px 24px;
+  font-weight: 700;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-receipt-print:hover {
+  background: #1e4620;
+}
+
+.btn-receipt-close:hover {
+  background: #cbd5e1;
+}
+
+
+
+

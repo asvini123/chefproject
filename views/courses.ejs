@@ -1,0 +1,1179 @@
+<%- include('partials/header', { title: 'ChefNest Culinary Academy - Professional Courses' }) %>
+<link rel="stylesheet" href="/css/courses.css">
+<main class="courses-page">
+
+  <section class="courses-hero">
+    <div class="courses-hero-overlay"></div>
+    <div class="courses-hero-content">
+      <span class="courses-subtitle">ChefNest Academy</span>
+      <h1 class="courses-title">Master the Art of Cooking</h1>
+      <p class="courses-tagline">Learn from verified professional chefs — cuisine courses, skill-level tracks, health-focused cooking, occasion specials &amp; a full certification path.</p>
+      <div class="hero-stats-row">
+        <div class="hero-stat"><span>16+</span><small>Courses</small></div>
+        <div class="hero-stat"><span>5</span><small>Categories</small></div>
+        <div class="hero-stat"><span>Pro</span><small>Instructors</small></div>
+        <div class="hero-stat"><span>&#127885;</span><small>E-Certificate</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="courses-filter-bar">
+    <div class="courses-container">
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" data-cat="all">All Courses</button>
+        <button class="filter-tab" data-cat="cuisine">Cuisine-Based</button>
+        <button class="filter-tab" data-cat="skill">Skill Level</button>
+        <button class="filter-tab" data-cat="health">Health &amp; Diet</button>
+        <button class="filter-tab" data-cat="occasion">Occasion</button>
+        <button class="filter-tab" data-cat="certification">Certification</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="courses-section">
+    <div class="courses-container">
+
+      <div class="courses-category-header" data-cat="cuisine">
+        <div><h2>Cuisine-Based Courses</h2><p>Master authentic recipes from Sri Lanka, India, China, and beyond</p></div>
+      </div>
+      <div class="courses-grid">
+
+        <div class="course-card" data-cat="cuisine">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/sri_lankan_cooking.png'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-cuisine">Cuisine</span><span class="course-duration">3 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-beginner">Beginner</span><span class="course-enrolled">234 enrolled</span></div>
+            <h3>Sri Lankan Cuisine</h3>
+            <p class="course-desc">Rice &amp; curry, pol sambol, dhal, hoppers, and traditional koththu from scratch.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#2C5F2D">SK</div>
+              <div><span class="instructor-name">Chef Sathya Kumar</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.9</span><span class="rating-count">(128 reviews)</span></div>
+            <div class="course-footer"><span class="course-price free-price">FREE</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="cuisine">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/south_indian_cooking.png'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-cuisine">Cuisine</span><span class="course-duration">4 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-intermediate">Intermediate</span><span class="course-enrolled">189 enrolled</span></div>
+            <h3>South Indian Cuisine</h3>
+            <p class="course-desc">Bold Chettinad spice blends, Kerala fish molee, appam, and coconut-based curries.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#b5601d">PP</div>
+              <div><span class="instructor-name">Chef Priya Patel</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.8</span><span class="rating-count">(96 reviews)</span></div>
+            <div class="course-footer"><span class="course-price">LKR 100</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="cuisine">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/north_indian_cooking.png'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-cuisine">Cuisine</span><span class="course-duration">4 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-intermediate">Intermediate</span><span class="course-enrolled">211 enrolled</span></div>
+            <h3>North Indian Cuisine</h3>
+            <p class="course-desc">Butter chicken, dal makhani, biryani, naan, and rich Mughlai gravy bases.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#c0392b">RK</div>
+              <div><span class="instructor-name">Chef Rajan Kapoor</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.9</span><span class="rating-count">(142 reviews)</span></div>
+            <div class="course-footer"><span class="course-price">LKR 4,500</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="cuisine">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/chinese_cooking.png'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-cuisine">Cuisine</span><span class="course-duration">3 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-beginner">Beginner</span><span class="course-enrolled">167 enrolled</span></div>
+            <h3>Chinese Cuisine</h3>
+            <p class="course-desc">Wok techniques, fried rice, dim sum basics, stir-fry sauces, and Cantonese broth-making.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#8b0000">LW</div>
+              <div><span class="instructor-name">Chef Li Wei</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span><span class="rating-num">4.7</span><span class="rating-count">(83 reviews)</span></div>
+            <div class="course-footer"><span class="course-price">LKR 3,800</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="cuisine">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/continental_cooking.png'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-cuisine">Cuisine</span><span class="course-duration">4 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-all">All Levels</span><span class="course-enrolled">145 enrolled</span></div>
+            <h3>Continental Cuisine</h3>
+            <p class="course-desc">French mother sauces, grilled proteins, pasta from scratch, soups &amp; bisques.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#1a237e">SJ</div>
+              <div><span class="instructor-name">Chef Sarah Jenkins</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.8</span><span class="rating-count">(74 reviews)</span></div>
+            <div class="course-footer"><span class="course-price">LKR 5,200</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="cuisine">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/italian_cooking.png'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-cuisine">Cuisine</span><span class="course-duration">5 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-intermediate">Intermediate</span><span class="course-enrolled">198 enrolled</span></div>
+            <h3>Italian Cuisine</h3>
+            <p class="course-desc">Handmade pasta, Neapolitan pizza, risotto, tiramisu, and classic Italian sauces from scratch.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#006400">MR</div>
+              <div><span class="instructor-name">Chef Marco Rossi</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.9</span><span class="rating-count">(156 reviews)</span></div>
+            <div class="course-footer"><span class="course-price">LKR 4,800</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="cuisine">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/mexican_cooking.png'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-cuisine">Cuisine</span><span class="course-duration">3 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-beginner">Beginner</span><span class="course-enrolled">143 enrolled</span></div>
+            <h3>Mexican Cuisine</h3>
+            <p class="course-desc">Authentic tacos, enchiladas, guacamole, chilli-lime marinades, and slow-cooked mole negro.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#b7410e">CG</div>
+              <div><span class="instructor-name">Chef Carlos Garcia</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span><span class="rating-num">4.6</span><span class="rating-count">(72 reviews)</span></div>
+            <div class="course-footer"><span class="course-price">LKR 3,200</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="cuisine">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/french_cooking.png'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-cuisine">Cuisine</span><span class="course-duration">6 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-advanced">Advanced</span><span class="course-enrolled">121 enrolled</span></div>
+            <h3>French Cuisine</h3>
+            <p class="course-desc">Hollandaise, consommé, crêpes, soufflé, croissants, and the 5 mother sauces in depth.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#002395">AM</div>
+              <div><span class="instructor-name">Chef Antoine Moreau</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">5.0</span><span class="rating-count">(89 reviews)</span></div>
+            <div class="course-footer"><span class="course-price">LKR 6,500</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="cuisine">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/vegan_cooking.png'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-cuisine">Cuisine</span><span class="course-duration">4 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-all">All Levels</span><span class="course-enrolled">276 enrolled</span></div>
+            <h3>Vegan &amp; Plant-Based Cuisine</h3>
+            <p class="course-desc">Protein-rich plant bowls, dairy-free sauces, tofu techniques, and flavourful vegan meal prep.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#2e7d32">NF</div>
+              <div><span class="instructor-name">Chef Nadia Fernando</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.8</span><span class="rating-count">(201 reviews)</span></div>
+            <div class="course-footer"><span class="course-price free-price">FREE</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+
+        <div class="courses-category-header full-width" data-cat="skill">
+          <div><h2>Skill-Level Courses</h2><p>From your first knife cut to hotel-style event plating</p></div>
+        </div>
+
+        <div class="course-card" data-cat="skill">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/knife_skills.png'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-skill">Skill</span><span class="course-duration">2 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-beginner">Beginner</span><span class="course-enrolled">412 enrolled</span></div>
+            <h3>Beginner Essentials — Knife Skills &amp; Rice/Curry</h3>
+            <p class="course-desc">Safe knife handling, basic cuts, heat control, and a perfect rice &amp; curry from scratch.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#2e7d32">NF</div>
+              <div><span class="instructor-name">Chef Nimal Fernando</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.9</span><span class="rating-count">(203 reviews)</span></div>
+            <div class="course-footer"><span class="course-price free-price">FREE</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="skill">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/sauce_masterclass.jpg'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-skill">Skill</span><span class="course-duration">3 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-intermediate">Intermediate</span><span class="course-enrolled">278 enrolled</span></div>
+            <h3>Intermediate — Meal Planning &amp; Spice Balancing</h3>
+            <p class="course-desc">Plan multi-dish family meals, balance spice layers, and execute full menus confidently.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#e65100">AP</div>
+              <div><span class="instructor-name">Chef Asha Perera</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.8</span><span class="rating-count">(156 reviews)</span></div>
+            <div class="course-footer"><span class="course-price">LKR 3,500</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="skill">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/baking_pastry.jpg'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-skill">Skill</span><span class="course-duration">5 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-advanced">Advanced / Pro</span><span class="course-enrolled">134 enrolled</span></div>
+            <h3>Advanced — Hotel Plating &amp; Bulk Event Cooking</h3>
+            <p class="course-desc">Professional plating, garnish artistry, scaling recipes for 50–200+ guests.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#37474f">MS</div>
+              <div><span class="instructor-name">Chef Marcus Silva</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">5.0</span><span class="rating-count">(87 reviews)</span></div>
+            <div class="course-footer"><span class="course-price">LKR 7,800</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="courses-category-header full-width" data-cat="health">
+          <div><h2>Health &amp; Diet-Focused Courses</h2><p>Integrated with Diet Classifier ML model for personalised recommendations</p></div>
+        </div>
+
+        <div class="course-card" data-cat="health">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/diabetic_friendly.jpg'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-health">Health</span><span class="course-duration">3 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-beginner">Beginner</span><span class="course-enrolled">198 enrolled</span></div>
+            <h3>Diabetic-Friendly Cooking</h3>
+            <p class="course-desc">Low-GI recipes, sugar substitutes, portion control, and adapted traditional Sri Lankan meals.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#1b5e20">DS</div>
+              <div><span class="instructor-name">Chef Dilhani Silva</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.9</span><span class="rating-count">(112 reviews)</span></div>
+            <div class="course-ml-badge">&#129302; ML Diet Classifier Integrated</div>
+            <div class="course-footer"><span class="course-price">LKR 4,000</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="health">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/allergy_safe.jpg'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-health">Health</span><span class="course-duration">2 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-all">All Levels</span><span class="course-enrolled">143 enrolled</span></div>
+            <h3>Allergy-Safe Cooking — Nut-Free &amp; Gluten-Free</h3>
+            <p class="course-desc">Identify hidden allergens, master gluten-free substitutes, safely cook for allergy guests.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#4a148c">KR</div>
+              <div><span class="instructor-name">Chef Kavya Raj</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.8</span><span class="rating-count">(78 reviews)</span></div>
+            <div class="course-ml-badge">&#129302; ML Diet Classifier Integrated</div>
+            <div class="course-footer"><span class="course-price">LKR 3,500</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="health">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/weight_management.jpg'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-health">Health</span><span class="course-duration">3 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-beginner">Beginner</span><span class="course-enrolled">221 enrolled</span></div>
+            <h3>Weight Management Meal Prep</h3>
+            <p class="course-desc">Calorie-conscious batch cooking, macro-balanced meal prep, low-calorie local dishes.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#006064">TN</div>
+              <div><span class="instructor-name">Chef Thilini Nanayakkara</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.7</span><span class="rating-count">(94 reviews)</span></div>
+            <div class="course-ml-badge">&#129302; ML Diet Classifier Integrated</div>
+            <div class="course-footer"><span class="course-price">LKR 4,000</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="courses-category-header full-width" data-cat="occasion">
+          <div><h2>Occasion-Based Courses</h2><p>Event catering, festival specials, and quick weeknight wins</p></div>
+        </div>
+
+        <div class="course-card" data-cat="occasion">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/event_catering.jpg'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-occasion">Occasion</span><span class="course-duration">4 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-intermediate">Intermediate</span><span class="course-enrolled">176 enrolled</span></div>
+            <h3>Party &amp; Event Catering Basics</h3>
+            <p class="course-desc">Scaling recipes for 50–200 guests, buffet setup, food safety, catering kitchen management.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#880e4f">MS</div>
+              <div><span class="instructor-name">Chef Marcus Silva</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.8</span><span class="rating-count">(89 reviews)</span></div>
+            <div class="course-footer"><span class="course-price">LKR 6,500</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="occasion">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/festival_special.jpg'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-occasion">Occasion</span><span class="course-duration">2 Weeks</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-all">All Levels</span><span class="course-enrolled">302 enrolled</span></div>
+            <h3>Festival Special Cooking — Pongal, Deepavali &amp; New Year</h3>
+            <p class="course-desc">Murukku, kokis, kavun, athirasa, and authentic Pongal — celebrate with traditional recipes.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#e65100">SK</div>
+              <div><span class="instructor-name">Chef Sathya Kumar</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.9</span><span class="rating-count">(178 reviews)</span></div>
+            <div class="course-footer"><span class="course-price free-price">FREE</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="course-card" data-cat="occasion">
+          <div class="course-img-wrap" style="background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.55)), url('/images/courses/quick_meals.jpg'); background-size: cover; background-position: center;">
+            <span class="course-badge badge-occasion">Occasion</span><span class="course-duration">1 Week</span>
+          </div>
+          <div class="course-body">
+            <div class="course-meta-row"><span class="course-level level-beginner">Beginner</span><span class="course-enrolled">389 enrolled</span></div>
+            <h3>Quick 30-Min Weeknight Meals</h3>
+            <p class="course-desc">10 complete dinner recipes under 30 minutes — fast, flavourful, and fuss-free for busy families.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar" style="background:#1a237e">AP</div>
+              <div><span class="instructor-name">Chef Asha Perera</span><span class="instructor-tag">Verified Pro Chef</span></div>
+            </div>
+            <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.9</span><span class="rating-count">(214 reviews)</span></div>
+            <div class="course-footer"><span class="course-price free-price">FREE</span><button type="button" class="btn-enroll" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll Now</button></div>
+          </div>
+        </div>
+
+        <div class="courses-category-header full-width" data-cat="certification">
+          <div><h2>Certification Track</h2><p>Complete the full track and unlock your Pro Chef upgrade path on ChefNest</p></div>
+        </div>
+
+        <div class="course-card cert-featured-card full-width" data-cat="certification">
+          <div class="cert-card-inner">
+            <div class="cert-card-left">
+              <div class="cert-big-icon">&#127885;</div>
+              <div>
+                <span class="course-badge badge-cert" style="position:static;display:inline-block;margin-bottom:0.7rem;">Certification</span>
+                <h3>"Home Cook to Pro Chef" — Full Certification Course</h3>
+                <p class="course-desc">The complete culinary journey from knife basics to professional event plating. Complete all modules, pass assessments, and earn a ChefNest Academy certificate usable as <strong>proof for the Pro Chef upgrade path</strong> during chef onboarding.</p>
+                <div class="cert-modules-list">
+                  <span class="cert-module">Module 1: Kitchen Fundamentals</span>
+                  <span class="cert-module">Module 2: Cuisine Mastery</span>
+                  <span class="cert-module">Module 3: Health &amp; Dietary Cooking</span>
+                  <span class="cert-module">Module 4: Event &amp; Occasion Cooking</span>
+                  <span class="cert-module">Module 5: Professional Plating &amp; Catering</span>
+                  <span class="cert-module">Final Assessment + Certificate</span>
+                </div>
+              </div>
+            </div>
+            <div class="cert-card-right">
+              <div class="cert-stats-grid">
+                <div class="cert-stat"><strong>12</strong><small>Weeks</small></div>
+                <div class="cert-stat"><strong>30+</strong><small>Lessons</small></div>
+                <div class="cert-stat"><strong>5</strong><small>Modules</small></div>
+                <div class="cert-stat"><strong>4.9</strong><small>Rating</small></div>
+              </div>
+              <div class="cert-instructor-row">
+                <div class="instructor-avatar lg-avatar" style="background:#2C5F2D">MS</div>
+                <div>
+                  <span class="instructor-name">Chef Marcus Silva</span>
+                  <span class="instructor-tag">Lead Instructor</span>
+                  <div class="course-rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="rating-num">4.9</span><span class="rating-count">(341 reviews)</span></div>
+                </div>
+              </div>
+              <div class="course-footer" style="margin-top:1.2rem">
+                <div><span class="course-price">LKR 18,500</span><div style="font-size:0.75rem;color:#888;margin-top:0.2rem">892 enrolled</div></div>
+                <button type="button" class="btn-enroll btn-enroll-lg" onclick="openEnrollModal(this.closest('.course-card').querySelector('h3').textContent)">Enroll &amp; Get Certified</button>
+              </div>
+              <div class="cert-upgrade-note">Certificate links to <strong>Pro Chef upgrade path</strong> during chef onboarding</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="certificate-section" id="certificate">
+    <div class="courses-container">
+      <div class="certificate-layout">
+        <div class="certificate-text">
+          <h2>Earn Your Verified E-Certificate</h2>
+          <p>Upon completing any professional cooking course at ChefNest Academy, you will be awarded a verified, high-fidelity digital E-Certificate. Show off your culinary achievements to friends, family, or add it to your professional CV!</p>
+          <ul class="certificate-features">
+            <li><span class="cert-icon-check">&#10003;</span> Authenticated QR verification code</li>
+            <li><span class="cert-icon-check">&#10003;</span> Signed by Michelin-experienced Chef Instructors</li>
+            <li><span class="cert-icon-check">&#10003;</span> High-resolution downloadable PDF &amp; image formats</li>
+            <li><span class="cert-icon-check">&#10003;</span> Easy share button to LinkedIn &amp; social networks</li>
+          </ul>
+          <button type="button" class="btn-view-sample-cert" id="btnOpenCertModal">View Sample Certificate</button>
+        </div>
+        <div class="certificate-preview-card" id="certPreviewCard">
+          <img src="/images/sample_certificate.png" alt="ChefNest Culinary Academy Certificate of Excellence">
+          <div class="cert-hover-overlay"><span>Expand Sample</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cert-modal" id="certModal" aria-hidden="true" role="dialog">
+    <div class="cert-modal-content">
+      <button type="button" class="cert-modal-close" id="btnCloseCertModal" aria-label="Close modal">&times;</button>
+      <img src="/images/sample_certificate.png" alt="ChefNest Culinary Academy Certificate - Large View">
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!--  ENROLLMENT MODAL  (3-step: Details → Payment → Receipt)      -->
+  <!-- ============================================================ -->
+  <div class="enroll-modal-backdrop" id="enrollModal" aria-hidden="true" role="dialog" aria-labelledby="enrollModalTitle">
+    <div class="enroll-modal-box">
+
+      <!-- ── Sticky Header ── -->
+      <div class="enroll-modal-header">
+        <div class="enroll-modal-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg></div>
+        <div style="flex:1;min-width:0">
+          <h2 id="enrollModalTitle">Join This Course</h2>
+          <p id="enrollCourseLabel" class="enroll-course-name">Course Name</p>
+        </div>
+        <button type="button" class="enroll-modal-close" id="btnCloseEnrollModal" aria-label="Close">&times;</button>
+      </div>
+
+      <!-- ── Step Indicator ── -->
+      <div class="enroll-steps" id="enrollSteps">
+        <div class="estep active" id="estep1"><span class="estep-num">1</span><span class="estep-lbl">Your Details</span></div>
+        <div class="estep-line"></div>
+        <div class="estep" id="estep2"><span class="estep-num">2</span><span class="estep-lbl">Payment</span></div>
+        <div class="estep-line"></div>
+        <div class="estep" id="estep3"><span class="estep-num">3</span><span class="estep-lbl">Receipt</span></div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════ -->
+      <!-- STEP 1 — Enrollment Details                             -->
+      <!-- ════════════════════════════════════════════════════════ -->
+      <form class="enroll-form" id="enrollForm" novalidate>
+        <input type="hidden" id="enrollCourseName" name="courseName">
+        <input type="hidden" id="enrollCoursePrice" name="coursePrice">
+        <input type="hidden" id="enrollPaymentId" name="paymentId">
+
+        <div class="enroll-form-row">
+          <div class="enroll-field">
+            <label for="enrollFullName">Full Name <span class="req">*</span></label>
+            <input type="text" id="enrollFullName" name="fullName" placeholder="e.g. Kavitha Raj" required autocomplete="name">
+            <span class="enroll-error" id="errFullName"></span>
+          </div>
+          <div class="enroll-field">
+            <label for="enrollEmail">Email Address <span class="req">*</span></label>
+            <input type="email" id="enrollEmail" name="email" placeholder="you@example.com" required autocomplete="email">
+            <span class="enroll-error" id="errEmail"></span>
+          </div>
+        </div>
+
+        <div class="enroll-form-row">
+          <div class="enroll-field">
+            <label for="enrollPhone">Phone Number <span class="req">*</span></label>
+            <div class="phone-input-wrap">
+              <span class="phone-prefix">+94</span>
+              <input type="tel" id="enrollPhone" name="phone" placeholder="7X XXX XXXX" required autocomplete="tel" maxlength="12">
+            </div>
+            <span class="enroll-hint">Sri Lankan numbers only: 07X / +94 7X format</span>
+            <span class="enroll-error" id="errPhone"></span>
+          </div>
+          <div class="enroll-field">
+            <label for="enrollCity">City / District</label>
+            <input type="text" id="enrollCity" name="city" placeholder="e.g. Jaffna, Colombo">
+          </div>
+        </div>
+
+        <div class="enroll-form-row">
+          <div class="enroll-field">
+            <label for="enrollExperience">Cooking Experience <span class="req">*</span></label>
+            <select id="enrollExperience" name="experience" required>
+              <option value="">-- Select your level --</option>
+              <option value="none">No experience — complete beginner</option>
+              <option value="home">Home cook (basic dishes)</option>
+              <option value="intermediate">Intermediate — cook regularly</option>
+              <option value="advanced">Advanced — professional background</option>
+            </select>
+            <span class="enroll-error" id="errExperience"></span>
+          </div>
+          <div class="enroll-field">
+            <label for="enrollSchedule">Preferred Schedule</label>
+            <select id="enrollSchedule" name="schedule">
+              <option value="">-- Select preference --</option>
+              <option value="weekday-morning">Weekday Mornings</option>
+              <option value="weekday-evening">Weekday Evenings</option>
+              <option value="weekend">Weekends Only</option>
+              <option value="flexible">Flexible / Any time</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="enroll-field">
+          <label for="enrollMessage">Note to Instructor <span style="font-weight:400;color:#999">(optional)</span></label>
+          <textarea id="enrollMessage" name="message" rows="2" placeholder="Dietary restrictions, allergies, specific goals..."></textarea>
+        </div>
+
+        <div class="enroll-agree">
+          <label class="agree-check">
+            <input type="checkbox" id="enrollAgree" required>
+            <span>I agree to ChefNest Academy's <a href="#" onclick="return false;">Terms &amp; Conditions</a> and enrollment is subject to seat availability.</span>
+          </label>
+          <span class="enroll-error" id="errAgree"></span>
+        </div>
+
+        <button type="submit" class="btn-enroll-submit" id="btnEnrollSubmit">
+          <span class="btn-submit-text">Proceed to Payment</span>
+          <span class="btn-submit-icon">&#8594;</span>
+        </button>
+      </form>
+
+      <!-- ════════════════════════════════════════════════════════ -->
+      <!-- STEP 2 — Credit Card Payment Portal (ICBT-style)        -->
+      <!-- ════════════════════════════════════════════════════════ -->
+      <div id="enrollPaymentStep" style="display:none">
+        <div class="cp-portal-title">Credit Card Payment Portal</div>
+        <div class="cp-portal-box">
+          <div class="cp-portal-toprow">
+            <div class="cp-portal-merchant">
+              <span class="cp-merchant-icon">🍽️</span>
+              <div><strong>ChefNest</strong><small>Academy</small></div>
+            </div>
+            <div class="cp-bank-badge">
+              <span class="cp-bank-icon">🏦</span>
+              <div><strong>BOC</strong><small>Bank of Ceylon</small></div>
+            </div>
+          </div>
+          <div class="cp-summary-table">
+            <div class="cp-summary-row">
+              <span class="cp-summary-label">Student ID :</span>
+              <span class="cp-summary-value" id="payDisplayId" style="font-family:monospace;font-weight:700"></span>
+            </div>
+            <div class="cp-summary-row">
+              <span class="cp-summary-label">Student Name :</span>
+              <span class="cp-summary-value" id="payDisplayName"></span>
+            </div>
+            <div class="cp-summary-row">
+              <span class="cp-summary-label">Course :</span>
+              <span class="cp-summary-value" id="payDisplayCourse"></span>
+            </div>
+            <div class="cp-summary-row">
+              <span class="cp-summary-label">Payment Type :</span>
+              <span class="cp-summary-value">Course fee</span>
+            </div>
+            <div class="cp-summary-row cp-amount-row">
+              <span class="cp-summary-label">Amount ( Rs ) :</span>
+              <span class="cp-summary-value cp-amount-val" id="payDisplayAmount"></span>
+            </div>
+          </div>
+          <div class="cp-portal-actions">
+            <button type="button" class="cp-btn-cancel" id="btnBackToForm">Cancel</button>
+            <button type="button" class="cp-btn-proceed" id="btnGoToCard" onclick="handleProceedClick()">Proceed</button>
+          </div>
+          <div class="cp-card-brands">
+            <span class="cp-visa-logo">VISA</span>
+            <span class="cp-mc-logo"><span style="color:#eb001b">●</span><span style="color:#f79e1b">●</span> mastercard</span>
+            <span class="cp-up-logo">UnionPay</span>
+            <div class="cp-gateway-badge">
+              <small>Payment Gateway Solutions by</small>
+              <strong>🏦 BOC</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════ -->
+      <!-- STEP 2b — Card Details Form                             -->
+      <!-- ════════════════════════════════════════════════════════ -->
+      <div id="enrollCardStep" style="display:none">
+        <div class="cp-card-form-header">
+          <span class="cp-card-amount-title" id="cardStepAmountLabel">ChefNest Academy : LKR 0.00</span>
+          <button type="button" class="cp-card-close" id="btnCloseCardStep" aria-label="Close">&times;</button>
+        </div>
+        <form id="cardPayForm" novalidate autocomplete="off">
+          <div class="cp-card-field">
+            <label for="cardNumber">Card number <span class="req">*</span></label>
+            <div class="cp-card-input-wrap">
+              <input type="text" id="cardNumber" name="cardNumber" maxlength="19"
+                placeholder="XXXX  XXXX  XXXX  XXXX" autocomplete="cc-number" inputmode="numeric">
+              <span class="cp-card-type-icon">
+                <span class="cp-mc-logo-sm"><span style="color:#eb001b">●</span><span style="color:#f79e1b">●</span></span>
+                <span class="cp-visa-logo-sm">VISA</span>
+              </span>
+            </div>
+            <span class="enroll-error" id="errCardNumber"></span>
+            <span class="cp-card-accept-hint">Supports Visa, Mastercard, UnionPay from Commercial Bank, Sampath, HNB, BOC or any bank.</span>
+          </div>
+          <div class="cp-card-row">
+            <div class="cp-card-field">
+              <label for="cardExpMonth">Expiry month <span class="req">*</span></label>
+              <select id="cardExpMonth" name="cardExpMonth">
+                <option value="">MM</option>
+                <option value="01">01</option><option value="02">02</option><option value="03">03</option>
+                <option value="04">04</option><option value="05">05</option><option value="06">06</option>
+                <option value="07">07</option><option value="08">08</option><option value="09">09</option>
+                <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+              </select>
+              <span class="enroll-error" id="errCardMonth"></span>
+            </div>
+            <div class="cp-card-field">
+              <label for="cardExpYear">Expiry year <span class="req">*</span></label>
+              <select id="cardExpYear" name="cardExpYear">
+                <option value="">YY</option>
+                <option value="25">25</option><option value="26">26</option><option value="27">27</option>
+                <option value="28">28</option><option value="29">29</option><option value="30">30</option>
+                <option value="31">31</option><option value="32">32</option>
+              </select>
+              <span class="enroll-error" id="errCardYear"></span>
+            </div>
+          </div>
+          <div class="cp-card-field">
+            <label for="cardName">Cardholder name <span class="req">*</span></label>
+            <input type="text" id="cardName" name="cardName" placeholder="Name as on card" autocomplete="cc-name">
+            <span class="enroll-error" id="errCardName"></span>
+          </div>
+          <div class="cp-card-field">
+            <label for="cardCvv">Security code <span class="req">*</span></label>
+            <div class="cp-cvv-wrap">
+              <input type="password" id="cardCvv" name="cardCvv" maxlength="4"
+                placeholder="&bull;&bull;&bull;" autocomplete="cc-csc" inputmode="numeric">
+              <span class="cp-cvv-hint">3 digits on back of your card</span>
+            </div>
+            <span class="enroll-error" id="errCardCvv"></span>
+          </div>
+          <div class="cp-otp-notice">
+            🔒 Your issuing bank will send an <strong>OTP</strong> to your registered mobile number for verification before payment is processed.
+          </div>
+          <div class="cp-card-form-actions">
+            <button type="button" class="cp-btn-prev" id="btnCardBack">Previous</button>
+            <button type="button" class="cp-btn-cancel-link" id="btnCardCancel">Cancel</button>
+            <button type="submit" class="cp-btn-pay" id="btnPayNow">Next</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════ -->
+      <!-- STEP 2c — OTP Verification                              -->
+      <!-- ════════════════════════════════════════════════════════ -->
+      <div id="enrollOtpStep" style="display:none">
+        <div class="cp-otp-box">
+          <div class="cp-otp-header">
+            <span class="cp-otp-bank-logo">🔒 Bank Secure Check</span>
+            <span class="cp-otp-secure">3D Secure</span>
+          </div>
+          <p class="cp-otp-desc">A One-Time Password (OTP) has been sent by your card-issuing bank to your registered mobile. Enter it below to complete payment.</p>
+          <div class="cp-otp-test-badge" style="background:#e0f2fe; border:1px solid #bae6fd; padding:10px; border-radius:4px; font-size:0.8rem; color:#0369a1; margin-bottom:12px; font-weight:600; text-align:center;">
+             💡 TEST MODE: Your OTP is <span id="testOtpDisplay" style="color:#0284c7; font-size:0.95rem; font-family:monospace; font-weight:800;">123456</span> (Sent via SMS in production).
+          </div>
+          <div class="cp-otp-amount-disp" id="otpAmountDisplay"></div>
+          <div class="cp-card-field">
+            <label for="otpInput">Enter OTP <span class="req">*</span></label>
+            <div class="cp-otp-input-wrap">
+              <input type="text" id="otpInput" maxlength="6" placeholder="&bull; &bull; &bull; &bull; &bull; &bull;"
+                autocomplete="one-time-code" inputmode="numeric" class="cp-otp-input">
+            </div>
+            <span class="enroll-error" id="errOtp"></span>
+            <span class="cp-otp-resend">Didn't receive?
+              <button type="button" class="cp-otp-resend-btn" id="btnResendOtp">Resend OTP</button>
+            </span>
+          </div>
+          <div class="cp-card-form-actions" style="margin-top:1.5rem">
+            <button type="button" class="cp-btn-prev" id="btnOtpBack">Previous</button>
+            <button type="button" class="cp-btn-pay" id="btnOtpVerify">Verify &amp; Pay</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════ -->
+      <!-- STEP 3 — Success + Receipt                              -->
+      <!-- ════════════════════════════════════════════════════════ -->
+      <div id="enrollReceiptStep" style="display:none">
+        <div class="enroll-receipt-wrap">
+          <div class="receipt-success-icon">✅</div>
+          <h2 class="receipt-success-title">Payment Successful!</h2>
+          <p class="receipt-success-sub">Enrollment confirmed. Your receipt is ready below.</p>
+          <div class="receipt-card">
+            <div class="receipt-card-header">
+              <span>🍽️ ChefNest Academy</span>
+              <span class="receipt-badge">OFFICIAL RECEIPT</span>
+            </div>
+            <div class="receipt-info-grid">
+              <div class="receipt-row"><span class="receipt-label">Payment ID</span><span class="receipt-value receipt-mono" id="rcptPaymentId"></span></div>
+              <div class="receipt-row"><span class="receipt-label">Date</span><span class="receipt-value" id="rcptDate"></span></div>
+              <div class="receipt-row"><span class="receipt-label">Student Name</span><span class="receipt-value" id="rcptName"></span></div>
+              <div class="receipt-row"><span class="receipt-label">Email</span><span class="receipt-value" id="rcptEmail"></span></div>
+              <div class="receipt-row"><span class="receipt-label">Phone</span><span class="receipt-value" id="rcptPhone"></span></div>
+              <div class="receipt-row"><span class="receipt-label">Course</span><span class="receipt-value" id="rcptCourse"></span></div>
+              <div class="receipt-row"><span class="receipt-label">Payment Type</span><span class="receipt-value">Course Fee — Card Payment</span></div>
+              <div class="receipt-row receipt-total-row"><span class="receipt-label">Amount Paid (LKR)</span><span class="receipt-value receipt-amount" id="rcptAmount"></span></div>
+            </div>
+            <div class="receipt-payment-confirm">✅ Payment verified via <strong>BOC Secure Card Payment</strong></div>
+          </div>
+          <div class="receipt-actions">
+            <button type="button" class="btn-receipt-print" id="btnViewReceipt">🖨️ Print / Download PDF</button>
+            <button type="button" class="btn-receipt-close" id="btnSuccessClose">Close</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.enroll-modal-box -->
+  </div><!-- /#enrollModal -->
+
+</main>
+
+<!-- PayHere Sandbox SDK —— loaded BEFORE footer so payhere object is defined -->
+<script async type="text/javascript" src="https://sandbox.payhere.lk/lib/payhere.js"></script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// ChefNest Academy — Enrollment & Payment Flow
+// ═══════════════════════════════════════════════════════════════
+
+var COURSE_PRICES = {
+  'Sri Lankan Cuisine':                                         'FREE',
+  'South Indian Cuisine':                                       'LKR 100.00',
+  'North Indian Cuisine':                                       'LKR 4,500.00',
+  'Chinese Cuisine':                                            'LKR 3,800.00',
+  'Continental Cuisine':                                        'LKR 5,200.00',
+  'Italian Cuisine':                                            'LKR 4,800.00',
+  'Mexican Cuisine':                                            'LKR 3,200.00',
+  'French Cuisine':                                             'LKR 6,500.00',
+  'Vegan & Plant-Based Cuisine':                                'FREE',
+  'Beginner Essentials � Knife Skills & Rice/Curry':         'FREE',
+  'Intermediate � Meal Planning & Spice Balancing':          'LKR 3,500.00',
+  'Advanced � Hotel Plating & Bulk Event Cooking':           'LKR 7,800.00',
+  'Diabetic-Friendly Cooking':                                  'LKR 4,000.00',
+  'Allergy-Safe Cooking � Nut-Free & Gluten-Free':           'LKR 3,500.00',
+  'Weight Management Meal Prep':                                'LKR 4,000.00',
+  'Party & Event Catering Basics':                              'LKR 6,500.00',
+  'Festival Special Cooking � Pongal, Deepavali & New Year':  'FREE',
+  'Quick 30-Min Weeknight Meals':                               'FREE',
+  '"Home Cook to Pro Chef" � Full Certification Course': 'LKR 18,500.00'
+};
+
+var currentEnrollment = null;
+var generatedOtp      = null;
+
+function getCoursePrice(title) {
+  if (!title) return 'LKR 4,000.00';
+  var t = title.trim();
+  for (var k in COURSE_PRICES) { if (t === k.trim()) return COURSE_PRICES[k]; }
+  return 'LKR 4,000.00';
+}
+
+function getPriceNumber(priceStr) {
+  if (priceStr === 'FREE') return 0;
+  var clean = priceStr.replace(/[^0-9.]/g, '');
+  return parseFloat(clean) || 0;
+}
+
+function generatePaymentId() {
+  var d = new Date();
+  return 'CNE-' + d.getFullYear() +
+    String(d.getMonth()+1).padStart(2,'0') +
+    String(d.getDate()).padStart(2,'0') + '-' +
+    String(Math.floor(1000 + Math.random() * 9000));
+}
+
+function generateOtp() {
+  return String(Math.floor(100000 + Math.random() * 900000));
+}
+
+function validateSriLankanPhone(phone) {
+  return /^(?:\+94|94|0)?7[0-9]{8}$/.test(phone.replace(/[\s\-()]/g,''));
+}
+
+function clearErrors() {
+  ['errFullName','errEmail','errPhone','errExperience','errAgree',
+   'errCardNumber','errCardMonth','errCardYear','errCardName','errCardCvv','errOtp'
+  ].forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=''; });
+}
+
+function setStep(step) {
+  var map = {
+    enrollForm:        step === 1,
+    enrollPaymentStep: step === 2,
+    enrollCardStep:    step === 3,
+    enrollOtpStep:     step === 4,
+    enrollReceiptStep: step === 5
+  };
+  for (var id in map) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = map[id] ? '' : 'none';
+  }
+  var s1 = document.getElementById('estep1');
+  var s2 = document.getElementById('estep2');
+  var s3 = document.getElementById('estep3');
+  if (s1) s1.className = 'estep' + (step === 1 ? ' active' : (step >= 2 ? ' completed' : ''));
+  if (s2) s2.className = 'estep' + ((step >= 2 && step <= 4) ? ' active' : (step === 5 ? ' completed' : ''));
+  if (s3) s3.className = 'estep' + (step === 5 ? ' active' : '');
+  var lines = document.querySelectorAll('.estep-line');
+  if (lines.length >= 2) {
+    if (step >= 2) lines[0].className = 'estep-line done'; else lines[0].className = 'estep-line';
+    if (step === 5) lines[1].className = 'estep-line done'; else lines[1].className = 'estep-line';
+  }
+}
+function openEnrollModal(courseTitle) {
+  var isUserLoggedIn = <%= (typeof user !== 'undefined' && user) ? 'true' : 'false' %>;
+  if (!isUserLoggedIn) {
+    window.location.href = '/login?redirect=' + encodeURIComponent('/user/dashboard#courses');
+    return;
+  }
+  window.location.href = '/user/dashboard#courses';
+}
+
+// Auto-open enroll modal if user just returned from login with ?course= param
+(function autoOpenFromLogin() {
+  var params = new URLSearchParams(window.location.search);
+  var courseParam = params.get('course');
+  if (courseParam) {
+    // Clean the URL without reloading
+    var cleanUrl = window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
+    // Wait for DOM to be ready then open modal
+    document.addEventListener('DOMContentLoaded', function() {
+      openEnrollModal(decodeURIComponent(courseParam));
+    });
+    if (document.readyState !== 'loading') {
+      openEnrollModal(decodeURIComponent(courseParam));
+    }
+  }
+})();
+
+
+function closeEnrollModal() {
+  var modal = document.getElementById('enrollModal');
+  modal.classList.remove('active');
+  modal.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+
+function populateReceipt() {
+  if (!currentEnrollment) return;
+  var e = currentEnrollment;
+  document.getElementById('rcptPaymentId').textContent = e.paymentId;
+  document.getElementById('rcptDate').textContent      = e.date;
+  document.getElementById('rcptName').textContent      = e.fullName;
+  document.getElementById('rcptEmail').textContent     = e.email;
+  document.getElementById('rcptPhone').textContent     = '+94 ' + e.phone;
+  document.getElementById('rcptCourse').textContent    = e.courseName;
+  document.getElementById('rcptAmount').textContent    = e.coursePrice;
+}
+
+function printReceipt() {
+  if (!currentEnrollment) return;
+  var e = currentEnrollment;
+  var w = window.open('','_blank');
+  if (!w) { alert('Please allow popups to download the receipt.'); return; }
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Receipt - ChefNest Academy</title>'
+    + '<style>body{font-family:Segoe UI,sans-serif;padding:30px;background:#f9f9f9;color:#333}'
+    + '.box{max-width:720px;margin:0 auto;background:#fff;padding:40px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.1)}'
+    + '.hdr{display:flex;justify-content:space-between;border-bottom:2px solid #2C5F2D;padding-bottom:18px;margin-bottom:24px}'
+    + '.logo{font-size:20px;font-weight:800;color:#2C5F2D}.logo small{display:block;font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase}'
+    + 'table{width:100%;border-collapse:collapse;margin:16px 0}'
+    + 'td{padding:9px 8px;font-size:13.5px;border-bottom:1px solid #f0f0f0}.lbl{color:#666;width:150px}.val{font-weight:600}'
+    + 'thead th{background:#2C5F2D;color:#fff;padding:12px;text-align:left;font-size:13px}'
+    + '.total td{font-size:15px;font-weight:800;color:#2C5F2D;border-bottom:2px solid #2C5F2D}'
+    + '.confirm{background:#f1f8f1;border:1px solid #c2e0c2;padding:12px 16px;border-radius:8px;margin-top:16px;font-size:13px}'
+    + '.foot{text-align:center;margin-top:36px;font-size:11px;color:#999;line-height:1.7}'
+    + '.btn{display:block;width:fit-content;margin:28px auto 0;background:#2C5F2D;color:#fff;border:none;padding:12px 32px;border-radius:30px;font-size:15px;font-weight:700;cursor:pointer}'
+    + '@media print{body{background:#fff;padding:0}.box{box-shadow:none;padding:0}.btn{display:none}}'
+    + '</style></head><body><div class="box">'
+    + '<div class="hdr"><div class="logo">&#127869; ChefNest Academy<small>Culinary Excellence Center</small></div><div style="font-size:18px;font-weight:700">OFFICIAL PAYMENT RECEIPT</div></div>'
+    + '<table><tr><td class="lbl">Payment ID</td><td class="val" style="font-family:monospace">' + e.paymentId + '</td>'
+    + '<td class="lbl" style="text-align:right">Date</td><td class="val" style="text-align:right">' + e.date + '</td></tr>'
+    + '<tr><td class="lbl">Student Name</td><td class="val">' + e.fullName + '</td>'
+    + '<td class="lbl" style="text-align:right">Phone</td><td class="val" style="text-align:right">+94 ' + e.phone + '</td></tr>'
+    + '<tr><td class="lbl">Email</td><td class="val">' + e.email + '</td>'
+    + '<td class="lbl" style="text-align:right">City</td><td class="val" style="text-align:right">' + (e.city||'N/A') + '</td></tr>'
+    + '</table>'
+    + '<table><thead><tr><th>Course Description</th><th style="text-align:right">Amount</th></tr></thead><tbody>'
+    + '<tr><td>' + e.courseName + '<br><small style="color:#888">Level: ' + e.experience + ' | Schedule: ' + e.schedule + '</small></td><td style="text-align:right;font-weight:600">' + e.coursePrice + '</td></tr>'
+    + '<tr class="total"><td>Total Paid (LKR)</td><td style="text-align:right">' + e.coursePrice + '</td></tr>'
+    + '</tbody></table>'
+    + '<div class="confirm"><strong style="color:#1b5e20">Payment Method: BOC Secure Card Payment</strong><br>Transaction Status: <span style="color:#2e7d32;font-weight:700">Verified &amp; Approved &#10003;</span></div>'
+    + '<div class="foot">This is a system-generated receipt. For inquiries, email support@chefnest.lk with your Payment ID.<br><strong>ChefNest Academy &mdash; Jaffna, Sri Lanka.</strong></div>'
+    + '<button class="btn" onclick="window.print()">&#128424; Print / Save as PDF</button>'
+    + '</div></body></html>');
+  w.document.close();
+}
+
+// ── DOMContentLoaded ────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function () {
+
+  // Filter tabs
+  var tabs = document.querySelectorAll('.filter-tab');
+  var cards = document.querySelectorAll('.course-card');
+  var catHdrs = document.querySelectorAll('.courses-category-header');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function(t){ t.classList.remove('active'); });
+      this.classList.add('active');
+      var cat = this.dataset.cat;
+      cards.forEach(function(c){ c.style.display=(cat==='all'||c.dataset.cat===cat)?'':'none'; });
+      catHdrs.forEach(function(h){ h.style.display=(cat==='all'||h.dataset.cat===cat)?'':'none'; });
+    });
+  });
+
+  // Certificate modal
+  var certModal    = document.getElementById('certModal');
+  var closeCertBtn = document.getElementById('btnCloseCertModal');
+  var openCertBtn  = document.getElementById('btnOpenCertModal');
+  var prevCard     = document.getElementById('certPreviewCard');
+  function openCertModal()  { if(certModal){ certModal.classList.add('active'); certModal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }}
+  function closeCertModal() { if(certModal){ certModal.classList.remove('active'); certModal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }}
+  if (openCertBtn)  openCertBtn.addEventListener('click', openCertModal);
+  if (prevCard)     prevCard.addEventListener('click', openCertModal);
+  if (closeCertBtn) closeCertBtn.addEventListener('click', closeCertModal);
+  if (certModal)    certModal.addEventListener('click', function(e){ if(e.target===certModal) closeCertModal(); });
+
+  // Enroll modal close
+  var enrollModal     = document.getElementById('enrollModal');
+  var closeEnrollBtn  = document.getElementById('btnCloseEnrollModal');
+  var successCloseBtn = document.getElementById('btnSuccessClose');
+  if (closeEnrollBtn)  closeEnrollBtn.addEventListener('click', closeEnrollModal);
+  if (successCloseBtn) successCloseBtn.addEventListener('click', closeEnrollModal);
+  if (enrollModal)     enrollModal.addEventListener('click', function(e){ if(e.target===enrollModal) closeEnrollModal(); });
+
+  // ── STEP 1: Enrollment form submit ─────────────────────────────
+  var enrollForm = document.getElementById('enrollForm');
+  if (enrollForm) {
+    enrollForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      clearErrors();
+      var fullName = document.getElementById('enrollFullName').value.trim();
+      var email    = document.getElementById('enrollEmail').value.trim();
+      var phone    = document.getElementById('enrollPhone').value.trim();
+      var exp      = document.getElementById('enrollExperience').value;
+      var agree    = document.getElementById('enrollAgree').checked;
+      var course   = document.getElementById('enrollCourseName').value;
+      var price    = document.getElementById('enrollCoursePrice').value;
+      var valid    = true;
+
+      if (!fullName) { document.getElementById('errFullName').textContent='Please enter your full name.'; valid=false; }
+      if (!email||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { document.getElementById('errEmail').textContent='Please enter a valid email.'; valid=false; }
+      if (!phone) { document.getElementById('errPhone').textContent='Please enter your phone number.'; valid=false; }
+      else if (!validateSriLankanPhone(phone)) { document.getElementById('errPhone').textContent='Use 07XXXXXXXX format.'; valid=false; }
+      if (!exp) { document.getElementById('errExperience').textContent='Please select your experience level.'; valid=false; }
+      if (!agree) { document.getElementById('errAgree').textContent='You must agree to the terms.'; valid=false; }
+      if (!valid) return;
+
+      var payId = generatePaymentId();
+      currentEnrollment = {
+        paymentId:  payId,
+        fullName:   fullName,
+        email:      email,
+        phone:      phone,
+        city:       document.getElementById('enrollCity').value.trim()||'Not Provided',
+        courseName: course,
+        coursePrice:price,
+        experience: exp,
+        schedule:   document.getElementById('enrollSchedule').value||'Flexible',
+        note:       document.getElementById('enrollMessage').value.trim()||'None',
+        date:       new Date().toLocaleDateString('en-GB')
+      };
+
+      if (price === 'FREE') {
+        populateReceipt();
+        setStep(5);
+      } else {
+        document.getElementById('payDisplayId').textContent     = payId;
+        document.getElementById('payDisplayName').textContent   = fullName;
+        document.getElementById('payDisplayCourse').textContent = course;
+        document.getElementById('payDisplayAmount').textContent = price;
+        setStep(2);
+      }
+    });
+  }
+
+  // ── STEP 2: Proceed → PayHere Secure Checkout Gateway ──────────
+  var btnGoToCard = document.getElementById('btnGoToCard');
+  if (btnGoToCard) {
+    btnGoToCard.addEventListener('click', function() {
+      if (!currentEnrollment) {
+        alert('Please fill in the enrollment form first.');
+        return;
+      }
+
+      // Check if PayHere SDK loaded
+      if (typeof payhere === 'undefined') {
+        alert('Payment gateway loading... please try again in 2 seconds.');
+        return;
+      }
+      
+      var priceVal = getPriceNumber(currentEnrollment.coursePrice);
+      
+      // Get secure signature hash from backend
+      fetch('/payment/hash', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId: currentEnrollment.paymentId,
+          amount: priceVal,
+          currency: 'LKR'
+        })
+      })
+      .then(function(res) {
+        return res.text().then(function(text) {
+          try { return JSON.parse(text); }
+          catch(e) { throw new Error('Server returned: ' + text.substring(0, 200)); }
+        });
+      })
+      .then(function(data) {
+        if (!data.hash) {
+          alert('Hash error: ' + JSON.stringify(data));
+          return;
+        }
+
+        // Configure PayHere payment object
+        var payment = {
+          "sandbox": true,
+          "merchant_id": "1236941",
+          "return_url": window.location.href,
+          "cancel_url": window.location.href,
+          "notify_url": "http://localhost:3000/payment/notify",
+          "order_id": currentEnrollment.paymentId,
+          "items": currentEnrollment.courseName,
+          "amount": priceVal.toFixed(2),
+          "currency": "LKR",
+          "hash": data.hash,
+          "first_name": currentEnrollment.fullName.split(' ')[0] || 'Student',
+          "last_name": currentEnrollment.fullName.split(' ').slice(1).join(' ') || 'Name',
+          "email": currentEnrollment.email,
+          "phone": currentEnrollment.phone,
+          "address": currentEnrollment.city,
+          "city": currentEnrollment.city,
+          "country": "Sri Lanka"
+        };
+
+        // SDK Callbacks
+        payhere.onCompleted = function(orderId) {
+          console.log("PayHere: Payment success: " + orderId);
+          populateReceipt();
+          setStep(5);
+        };
+
+        payhere.onDismissed = function() {
+          console.log("PayHere: Payment modal closed");
+        };
+
+        payhere.onError = function(error) {
+          console.log("PayHere: Payment error: " + error);
+          alert("Payment failed: " + error);
+        };
+
+        // Launch the secure popup PayHere checkout iframe
+        payhere.startPayment(payment);
+      })
+      .catch(function(err) {
+        console.error('PayHere fetch error:', err);
+        var msg = 'ERROR DETAILS (copy this):\n' + (err.message || String(err));
+        prompt('Payment service error — copy the text below:', msg);
+      });
+    });
+  }
+  var btnBackToForm = document.getElementById('btnBackToForm');
+  if (btnBackToForm) btnBackToForm.addEventListener('click', function(){ setStep(1); });
+
+  // ── STEP 3: Card form ──────────────────────────────────────────
+  var cardNumInput = document.getElementById('cardNumber');
+  if (cardNumInput) {
+    cardNumInput.addEventListener('input', function() {
+      var d = this.value.replace(/\D/g,'');
+      this.value = d.replace(/(.{4})/g,'$1 ').trim().substring(0,19);
+    });
+  }
+  var btnCloseCardStep = document.getElementById('btnCloseCardStep');
+  var btnCardBack      = document.getElementById('btnCardBack');
+  var btnCardCancel    = document.getElementById('btnCardCancel');
+  if (btnCloseCardStep) btnCloseCardStep.addEventListener('click', closeEnrollModal);
+  if (btnCardBack)      btnCardBack.addEventListener('click', function(){ setStep(2); });
+  if (btnCardCancel)    btnCardCancel.addEventListener('click', closeEnrollModal);
+
+  var cardPayForm = document.getElementById('cardPayForm');
+  if (cardPayForm) {
+    cardPayForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      clearErrors();
+      var cardNum = document.getElementById('cardNumber').value.replace(/\s/g,'');
+      var month   = document.getElementById('cardExpMonth').value;
+      var year    = document.getElementById('cardExpYear').value;
+      var name    = document.getElementById('cardName').value.trim();
+      var cvv     = document.getElementById('cardCvv').value.trim();
+      var valid   = true;
+      if (!cardNum||cardNum.length<13) { document.getElementById('errCardNumber').textContent='Enter a valid card number.'; valid=false; }
+      if (!month) { document.getElementById('errCardMonth').textContent='Select expiry month.'; valid=false; }
+      if (!year)  { document.getElementById('errCardYear').textContent='Select expiry year.'; valid=false; }
+      if (!name)  { document.getElementById('errCardName').textContent='Enter cardholder name.'; valid=false; }
+      if (!cvv||cvv.length<3) { document.getElementById('errCardCvv').textContent='Enter valid security code.'; valid=false; }
+      if (!valid) return;
+
+      // Generate and show OTP (demo - in production this comes from bank/PayHere)
+      generatedOtp = generateOtp();
+      console.log('[DEV] OTP for testing:', generatedOtp, '— In production, OTP is sent by the bank to user\'s mobile.');
+      document.getElementById('testOtpDisplay').textContent = generatedOtp;
+      document.getElementById('otpAmountDisplay').textContent =
+        '💳 ' + (currentEnrollment ? currentEnrollment.coursePrice : '');
+      document.getElementById('otpInput').value = '';
+      setStep(4);
+    });
+  }
+
+  // ── STEP 4: OTP verify ─────────────────────────────────────────
+  var btnOtpBack   = document.getElementById('btnOtpBack');
+  var btnOtpVerify = document.getElementById('btnOtpVerify');
+  var btnResendOtp = document.getElementById('btnResendOtp');
+  if (btnOtpBack)   btnOtpBack.addEventListener('click', function(){ setStep(3); });
+  if (btnResendOtp) {
+    btnResendOtp.addEventListener('click', function() {
+      generatedOtp = generateOtp();
+      console.log('[DEV] Resent OTP:', generatedOtp);
+      document.getElementById('testOtpDisplay').textContent = generatedOtp;
+      this.textContent = 'OTP Resent ✓';
+      var btn = this;
+      setTimeout(function(){ btn.textContent = 'Resend OTP'; }, 3000);
+    });
+  }
+  if (btnOtpVerify) {
+    btnOtpVerify.addEventListener('click', function() {
+      var entered = document.getElementById('otpInput').value.trim();
+      document.getElementById('errOtp').textContent = '';
+      if (!entered) { document.getElementById('errOtp').textContent='Please enter the OTP.'; return; }
+      if (entered !== generatedOtp) { document.getElementById('errOtp').textContent='Incorrect OTP. Please try again.'; return; }
+      populateReceipt();
+      setStep(5);
+    });
+  }
+
+  // ── STEP 5: Print ──────────────────────────────────────────────
+  var btnViewReceipt = document.getElementById('btnViewReceipt');
+  if (btnViewReceipt) btnViewReceipt.addEventListener('click', printReceipt);
+
+  // ── Escape key ─────────────────────────────────────────────────
+  document.addEventListener('keydown', function(e) {
+    if (e.key==='Escape') {
+      if (certModal   && certModal.classList.contains('active'))   closeCertModal();
+      if (enrollModal && enrollModal.classList.contains('active')) closeEnrollModal();
+    }
+  });
+
+});
+</script>
+
+<%- include('partials/footer') %>

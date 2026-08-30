@@ -152,15 +152,26 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // MongoDB connection (cloud / local)
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/chefnest')
-  .then(() => {
-    console.log('MongoDB connected ✅');
-    // Seed default admin account
-    const User = require('./models/User');
-    const bcrypt = require('bcryptjs');
-    seedAdmin(User, bcrypt);
-  })
-  .catch((err) => console.error('MongoDB connection error ❌', err));
+const mongoURI = process.env.MONGODB_URI;
+if (mongoURI) {
+  mongoose.connect(mongoURI, { serverSelectionTimeoutMS: 5000 })
+    .then(() => {
+      console.log('MongoDB connected ✅');
+      const User = require('./models/User');
+      const bcrypt = require('bcryptjs');
+      seedAdmin(User, bcrypt);
+    })
+    .catch((err) => console.error('MongoDB connection error ❌', err.message));
+} else if (!process.env.VERCEL) {
+  mongoose.connect('mongodb://localhost:27017/chefnest', { serverSelectionTimeoutMS: 5000 })
+    .then(() => {
+      console.log('MongoDB local connected ✅');
+      const User = require('./models/User');
+      const bcrypt = require('bcryptjs');
+      seedAdmin(User, bcrypt);
+    })
+    .catch((err) => console.error('MongoDB local connection error ❌', err.message));
+}
 
 async function seedAdmin(User, bcrypt) {
   try {

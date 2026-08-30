@@ -4,7 +4,6 @@
 
 ![ChefNest Banner](https://asvini123.github.io/chefproject/images/graph1_confusion_matrix.png)
 
-[![Live Demo](https://img.shields.io/badge/🌐%20Live%20Demo-GitHub%20Pages-FF5A5F?style=for-the-badge)](https://asvini123.github.io/chefproject/)
 [![GitHub Repo](https://img.shields.io/badge/📦%20Source%20Code-GitHub-181717?style=for-the-badge&logo=github)](https://github.com/asvini123/chefproject)
 [![Node.js](https://img.shields.io/badge/Node.js-v18+-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb)](https://mongodb.com/)

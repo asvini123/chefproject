@@ -151,8 +151,8 @@ app.use((req, res, next) => {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// MongoDB connection (local)
-mongoose.connect('mongodb://localhost:27017/chefnest')
+// MongoDB connection (cloud / local)
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/chefnest')
   .then(() => {
     console.log('MongoDB connected ✅');
     // Seed default admin account
